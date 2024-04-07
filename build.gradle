@@ -21,6 +21,12 @@ dependencies {
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client' //開啟spring security
+    implementation "org.springframework.boot:spring-boot-starter-security" // 開啟OAuth google登入服務
 }
 
 tasks.named('test') {

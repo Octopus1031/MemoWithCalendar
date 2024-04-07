@@ -8,8 +8,9 @@ public class SpringBootEx {
     public static void main(String[] args) {
 
     }
-    @RequestMapping
+    @RequestMapping("/")
     public String sayHello() {
         return "hi";
     }
+
 }

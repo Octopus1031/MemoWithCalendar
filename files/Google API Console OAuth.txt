@@ -1,0 +1,6 @@
+Google API Console OAuth
+- 用戶端編號
+212015020914-09hf5s5sl2isaseu2mbmlae8obq70ib2.apps.googleusercontent.com
+
+- 用戶端密鑰
+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
