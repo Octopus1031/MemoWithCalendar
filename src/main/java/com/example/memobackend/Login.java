@@ -2,11 +2,13 @@ package com.example.memobackend;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.exc.InvalidDefinitionException;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
+import java.util.Map;
 
 @RestController
 public class Login {
@@ -20,9 +22,18 @@ public class Login {
         return principal;
     }
 
-    @GetMapping("/username")
-    public String getUsername(Principal principal) {
-        return principal.getName();
-    }
+//    要取得"想像的"使用者名稱要使用OAuth2AuthenticationToken
+//    也就是下面那個function
+//    @GetMapping("/username")
+//    public String getUsername(Principal principal) {
+//        return principal.getName();
+//    }
 
+    // 取得登入的使用者Google資訊
+    @RequestMapping(value = "/user_info")
+    public Map<String, Object> userInfo(Principal principal) {
+        OAuth2AuthenticationToken token = (OAuth2AuthenticationToken) principal;
+        OAuth2User user = token.getPrincipal();
+        return user.getAttributes();
+    }
 }

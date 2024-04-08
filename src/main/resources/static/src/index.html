@@ -2,23 +2,34 @@
 
 <html lang="zh-Hant-TW">
 
-<head>
-    <title>Memo With Calendar</title>
-    <link rel="stylesheet" type="text/css" href="../style/frame.css">
-</head>
+    <head>
+        <title>Memo With Calendar</title>
+        <link rel="stylesheet" type="text/css" href="../style/frame.css">
+    </head>
 
-<body>
-<div>
-    <h1>Memo With Calendar</h1>
-</div>
-<div class="container">
-    <div class="block_memo">
-        memo block
-    </div>
-    <div class="block_calendar">
-        calendar block
-    </div>
-</div>
-</body>
+    <body>
+        <div>
+            <h1>Memo With Calendar</h1>
+        </div>
+        <div>歡迎，<span id="username"></span>！</div>
+        <div class="container">
+            <div class="block_memo">
+                memo block
+            </div>
+            <div class="block_calendar">
+                calendar block
+            </div>
+        </div>
+
+        <script>
+            window.onload = function() {
+                fetch('/user_info')
+                    .then(response => response.json())
+                    .then(userInfo => {
+                        document.getElementById('username').textContent = userInfo["given_name"];
+                    });
+            };
+        </script>
+    </body>
 
 </html>
