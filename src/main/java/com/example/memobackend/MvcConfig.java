@@ -9,6 +9,7 @@ public class MvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
+        // 把"/"網址轉到"/src/index.html"
         registry.addViewController("/").setViewName("forward:/src/index.html");
     }
 
