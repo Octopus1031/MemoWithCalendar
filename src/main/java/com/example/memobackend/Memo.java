@@ -16,6 +16,18 @@ public class Memo {
                 "2024/04/24", "完成design部分"));
         memoList.addMemoItem(new MemoItem("瞎搞", "2024/04/24",
                 "2024/04/24", "繼續瞎搞"));
+        memoList.addMemoItem(new MemoItem("瞎搞", "2024/04/24",
+                "2024/04/24", "繼續瞎搞"));
+        memoList.addMemoItem(new MemoItem("瞎搞", "2024/04/24",
+                "2024/04/24", "繼續瞎搞"));
+        memoList.addMemoItem(new MemoItem("瞎搞", "2024/04/24",
+                "2024/04/24", "繼續瞎搞"));
+        memoList.addMemoItem(new MemoItem("瞎搞", "2024/04/24",
+                "2024/04/24", "繼續瞎搞"));
+        memoList.addMemoItem(new MemoItem("瞎搞", "2024/04/24",
+                "2024/04/24", "繼續瞎搞"));
+        memoList.addMemoItem(new MemoItem("瞎搞", "2024/04/24",
+                "2024/04/24", "繼續瞎搞"));
         memoList.addMemoItem(new MemoItem("瞎毀", "2024/04/24",
                 "2024/04/24", null));
         return memoList.getMemoItems();

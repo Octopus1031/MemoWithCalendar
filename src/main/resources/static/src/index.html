@@ -13,7 +13,7 @@
 </div>
 <div class="container">
     <div class="block_memo" id="memoItem">
-        memo block
+        <div class="title">Memo List</div>
         <script>
             fetch('/get_memo_item')
                 .then(response => response.json())
@@ -22,12 +22,12 @@
                     memoItems.forEach(memoItem => {
                         const setItem = document.createElement('div');
                         if (memoItem.description != null) {
-                            setItem.innerHTML = `<span class="memo_item_title">${memoItem.title}<br>
-                                                ${memoItem.description}<br>${memoItem.time}</span>`;
+                            setItem.innerHTML = `<span class="memo_item_title"><b>${memoItem.title}</b>
+                                                 <br>${memoItem.description}<br>${memoItem.time}</span>`;
                             setItem.style.height = "60px";
                         } else {
-                            setItem.innerHTML = `<span class="memo_item_title">${memoItem.title}<br>
-                                                ${memoItem.time}</span>`;
+                            setItem.innerHTML = `<span class="memo_item_title"><b>${memoItem.title}</b>
+                                                 <br>${memoItem.time}</span>`;
                             setItem.style.height = "40px";
                         }
                         setItem.className = "memo_item";
