@@ -23,7 +23,6 @@ h1 {
 .block_memo {
     flex: 1;
     margin: 10px;
-
     background-color: #e27f95;
 }
 
@@ -31,4 +30,26 @@ h1 {
     flex: 1;
     margin: 10px;
     background-color: #a0f0f0;
+}
+
+.memo_item {
+    /*對外框做設定*/
+    border-width: 3px;
+    width: 545px;
+    height: 60px;
+    padding: 5px;
+    text-align: center;
+    background-color: rgb(230, 230, 240);
+    /*外框圓潤化*/
+    border-radius: 10px;
+    /*對內部字體*/
+    display: flex;
+    align-items: center; /*縱向居中對齊*/
+
+    margin-left: 10px; /* 設定右邊間距 */
+    margin-top: 5px;
+}
+
+.memo_item_title {
+    text-align: left; /*文字左對齊*/
 }
