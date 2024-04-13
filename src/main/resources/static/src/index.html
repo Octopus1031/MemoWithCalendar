@@ -12,27 +12,30 @@
     <h1>Memo With Calendar</h1>
 </div>
 <div class="container">
-    <div class="block_memo">
+    <div class="block_memo" id="memoItem">
         memo block
-        <div class="memo_item">
-            <span class="memo_item_title" id="memoItem"></span>
-            <script>
-                fetch('/get_memo_item')
-                    .then(response => response.json())
-                    .then(memoItems => {
-                        const memoItemSet = document.getElementById('memoItem');
-                        memoItems.forEach(memoItem => {
-                            const setItem = document.createElement('p');
-                            setItem.innerHTML = `${memoItem.title}<br>${memoItem.description}<br>${memoItem.time}`;
-                            memoItemSet.appendChild(setItem);
-                        })
+        <script>
+            fetch('/get_memo_item')
+                .then(response => response.json())
+                .then(memoItems => {
+                    const memoItemSet = document.getElementById('memoItem');
+                    memoItems.forEach(memoItem => {
+                        const setItem = document.createElement('div');
+                        if (memoItem.description != null) {
+                            setItem.innerHTML = `<span class="memo_item_title">${memoItem.title}<br>
+                                                ${memoItem.description}<br>${memoItem.time}</span>`;
+                            setItem.style.height = "60px";
+                        } else {
+                            setItem.innerHTML = `<span class="memo_item_title">${memoItem.title}<br>
+                                                ${memoItem.time}</span>`;
+                            setItem.style.height = "40px";
+                        }
+                        setItem.className = "memo_item";
+                        memoItemSet.appendChild(setItem);
                     })
-                    .catch(error => console.error('Error fetching name:', error));
-            </script>
-        </div>
-        <div class="memo_item">
-            <span class="memo_item_title">123456</span>
-        </div>
+                })
+                .catch(error => console.error('Error fetching name:', error));
+        </script>
     </div>
     <div class="block_calendar">
         calendar block

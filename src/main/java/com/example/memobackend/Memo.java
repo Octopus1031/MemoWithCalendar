@@ -12,10 +12,12 @@ public class Memo {
     @RequestMapping(value = "/get_memo_item")
     public Set<MemoItem> getMemoItemSetOfMemoList() {
         MemoList memoList = new MemoList();
-//        memoList.addMemoItem(new MemoItem("完成HW4作業", "2024/04/24",
-//                "2024/04/24", "完成design部分"));
+        memoList.addMemoItem(new MemoItem("完成HW4作業", "2024/04/24",
+                "2024/04/24", "完成design部分"));
         memoList.addMemoItem(new MemoItem("瞎搞", "2024/04/24",
                 "2024/04/24", "繼續瞎搞"));
+        memoList.addMemoItem(new MemoItem("瞎毀", "2024/04/24",
+                "2024/04/24", null));
         return memoList.getMemoItems();
     }
 }
