@@ -33,7 +33,17 @@ public class Login {
     @RequestMapping(value = "/user_info")
     public Map<String, Object> userInfo(Principal principal) {
         OAuth2AuthenticationToken token = (OAuth2AuthenticationToken) principal;
-        OAuth2User user = token.getPrincipal();
-        return user.getAttributes();
+        OAuth2User userInfo = token.getPrincipal();
+
+        // set user info
+        User user = new User(userInfo.getAttribute("sub"), userInfo.getAttribute("given_name"), userInfo.getAttribute("email"));
+        System.out.print("id: ");
+        System.out.println(user.getId());
+        System.out.print("name: ");
+        System.out.println(user.getName());
+        System.out.print("email: ");
+        System.out.println(user.getEmail());
+
+        return userInfo.getAttributes();
     }
 }
