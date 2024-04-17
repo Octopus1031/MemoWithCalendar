@@ -17,17 +17,45 @@
                 memo block
             </div>
             <div class="block_calendar">
-                calendar block
+                <div class="calendar">
+                    <div class="calendar_header">
+                        <div class="year_picker">
+                            <span class="year_change"><</span>
+                            <span class="year">2024</span>
+                            <span class="year_change">></span>    
+                        </div>
+
+                        <div class="month_picker">四月</div>
+                        
+                    </div>
+                    <div class="calendar_body">
+                        <div class="calendar_week_day">
+                            <div class="calendar_day">日</div>
+                            <div class="calendar_day">一</div>
+                            <div class="calendar_day">二</div>
+                            <div class="calendar_day">三</div>
+                            <div class="calendar_day">四</div>
+                            <div class="calendar_day">五</div>
+                            <div class="calendar_day">六</div>
+                        </div>
+                        <div class="calender_days">
+
+                        </div>
+
+                </div>
             </div>
         </div>
 
         <script>
             window.onload = function() {
+                // 設定使用者名稱
                 fetch('/user_info')
                     .then(response => response.json())
                     .then(userInfo => {
                         document.getElementById('username').textContent = userInfo["given_name"];
                     });
+                // 製作行事曆
+
             };
         </script>
     </body>
