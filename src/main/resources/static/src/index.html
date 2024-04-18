@@ -19,13 +19,13 @@
             <div class="block_calendar">
                 <div class="calendar">
                     <div class="calendar_header">
-                        <div class="year_picker">
-                            <span class="year_change"><</span>
-                            <span class="year">2024</span>
-                            <span class="year_change">></span>    
+                        <div class="year_picker">2024</div>
+                        <div class="month_picker">
+                            <span class="month_change" onclick="changeMonth(-1)"><</span>
+                            <span class="month">四月</span>
+                            <span class="month_change" onclick="changeMonth(1)">></span>
                         </div>
-
-                        <div class="month_picker">四月</div>
+                        
                         
                     </div>
                     <div class="calendar_body">
@@ -47,6 +47,9 @@
         </div>
 
         <script>
+            var Today, Year, Month, Day;
+            var monthNames = ["一月", "二月", "三月", "四月", "五月", "六月",
+                "七月", "八月", "九月", "十月", "十一月", "十二月"];
             window.onload = function() {
                 // 設定使用者名稱
                 fetch('/user_info')
@@ -55,12 +58,38 @@
                         document.getElementById('username').textContent = userInfo["given_name"];
                     });
                 // 製作行事曆
-                fetch('/calendar?year=2024&month=4')
+                Today = new Date();
+                year = Today.getFullYear();
+                month = Today.getMonth()+1;
+                day = Today.getDate();
+                window.alert(year + ' ' + month + ' ' + day);
+                fetch('/calendar?year='+ year + '&month=' + month)
                     .then(response => response.text())
                     .then(calendarHtml => {
                         document.querySelector('.calendar_days').innerHTML = calendarHtml;
                     });
+                    document.querySelector('.year_picker').textContent = year;
+                    document.querySelector('.month').textContent = monthNames[month-1];
             };
+
+            function changeMonth(count) {
+                // count=1: 下個月, count=-1: 上個月
+                month += count;
+                if (month > 12) {
+                    month = 1;
+                    year += 1;
+                } else if (month < 1) {
+                    month = 12;
+                    year -= 1;
+                }
+                fetch('/calendar?year='+ year + '&month=' + month)
+                    .then(response => response.text())
+                    .then(calendarHtml => {
+                        document.querySelector('.calendar_days').innerHTML = calendarHtml;
+                    });
+                document.querySelector('.year_picker').textContent = year;
+                document.querySelector('.month').textContent = monthNames[month-1];
+            }
         </script>
     </body>
 

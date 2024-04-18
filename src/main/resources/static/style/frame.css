@@ -53,12 +53,12 @@ h1 {
 }
 
 .year_picker {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    align-items: center;
+    border-radius: 10px;
+    cursor: pointer;
+    margin: 5px;
 }
 
-.year_change {
+.month_change {
     border-radius: 50%;
     display: grid;
     place-items: center;
@@ -68,9 +68,9 @@ h1 {
 }
 
 .month_picker {
-    border-radius: 10px;
-    cursor: pointer;
-    margin: 5px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    align-items: center;
 }
 
 .calendar_week_day {
@@ -107,3 +107,9 @@ h1 {
     place-items: center;
     font-size:larger;
 }
+
+/* .selected_day {
+    background-color: #5CADAD;
+    color: white;
+    border-radius: 50%;
+} */
