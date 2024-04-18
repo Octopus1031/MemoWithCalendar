@@ -32,7 +32,6 @@ h1 {
     margin: 10px;
     display: grid;
     place-items: center;
-    /* background-color: #a0f0f0; */
 }
 
 .calendar {
@@ -50,6 +49,7 @@ h1 {
     padding: 10px;
     background-color: #5CADAD;
     border: 1px solid #5c5c5c;
+    border-radius: 20px 20px 0 0;
 }
 
 .year_picker {
@@ -65,6 +65,8 @@ h1 {
     margin: 0 10px;
     cursor: pointer;
     font-weight: bolder;
+    user-select: none;
+    -webkit-user-select: none;
 }
 
 .month_picker {
@@ -92,13 +94,15 @@ h1 {
     border-left: 1px solid #5c5c5c;
     border-right: 1px solid #5c5c5c;
     border-bottom: 1px solid #5c5c5c;
+    border-radius: 0 0 20px 20px;
+    background-color: #D1E9E9;
 }
 
 .calendar_days {
-    /* height: 50px; */
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    background-color: #D1E9E9;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 .calendar_days div {
@@ -108,8 +112,8 @@ h1 {
     font-size:larger;
 }
 
-/* .selected_day {
-    background-color: #5CADAD;
+.selected_day {
+    background-color: #48916e;
     color: white;
     border-radius: 50%;
-} */
+}

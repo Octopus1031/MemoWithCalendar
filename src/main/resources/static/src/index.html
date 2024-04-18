@@ -19,14 +19,16 @@
             <div class="block_calendar">
                 <div class="calendar">
                     <div class="calendar_header">
-                        <div class="year_picker">2024</div>
+                        <div class="year_picker">
+                            <!-- 年份 -->
+                        </div>
                         <div class="month_picker">
                             <span class="month_change" onclick="changeMonth(-1)"><</span>
-                            <span class="month">四月</span>
+                            <span class="month">
+                                <!-- 月份 -->
+                            </span>
                             <span class="month_change" onclick="changeMonth(1)">></span>
                         </div>
-                        
-                        
                     </div>
                     <div class="calendar_body">
                         <div class="calendar_week_day">
@@ -62,8 +64,7 @@
                 year = Today.getFullYear();
                 month = Today.getMonth()+1;
                 day = Today.getDate();
-                window.alert(year + ' ' + month + ' ' + day);
-                fetch('/calendar?year='+ year + '&month=' + month)
+                fetch('/calendar?year='+ year + '&month=' + month + '&day=' + day)
                     .then(response => response.text())
                     .then(calendarHtml => {
                         document.querySelector('.calendar_days').innerHTML = calendarHtml;
@@ -82,13 +83,26 @@
                     month = 12;
                     year -= 1;
                 }
-                fetch('/calendar?year='+ year + '&month=' + month)
+                fetch('/calendar?year='+ year + '&month=' + month + '&day=' + day)
                     .then(response => response.text())
                     .then(calendarHtml => {
                         document.querySelector('.calendar_days').innerHTML = calendarHtml;
                     });
                 document.querySelector('.year_picker').textContent = year;
                 document.querySelector('.month').textContent = monthNames[month-1];
+            }
+
+            function selectDay(){
+                //取消之前選擇的日期的樣式
+                var selected_day = document.querySelector(".selected_day");
+                if(selected_day != null){
+                    selected_day.classList.remove('selected_day');
+                }
+                
+                // 改變被選擇日期的樣式
+                var id = event.target.id;
+                document.querySelector("#"+id).setAttribute('class', 'selected_day');
+                
             }
         </script>
     </body>
