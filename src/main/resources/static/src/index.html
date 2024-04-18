@@ -38,10 +38,10 @@
                             <div class="calendar_day">五</div>
                             <div class="calendar_day">六</div>
                         </div>
-                        <div class="calender_days">
-
+                        <div class="calendar_days">
+                            <!-- 日期 -->
                         </div>
-
+                    </div>
                 </div>
             </div>
         </div>
@@ -55,7 +55,11 @@
                         document.getElementById('username').textContent = userInfo["given_name"];
                     });
                 // 製作行事曆
-
+                fetch('/calendar?year=2024&month=4')
+                    .then(response => response.text())
+                    .then(calendarHtml => {
+                        document.querySelector('.calendar_days').innerHTML = calendarHtml;
+                    });
             };
         </script>
     </body>
