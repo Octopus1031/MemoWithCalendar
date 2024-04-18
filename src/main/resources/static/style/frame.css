@@ -27,6 +27,14 @@ h1 {
     overflow-y: scroll; /* 允許垂直滾動 */
 }
 
+.block_memo_top {
+
+}
+
+.block_memo_bottom {
+
+}
+
 .block_calendar {
     flex: 1;
     margin: 10px;
@@ -38,7 +46,7 @@ h1 {
     font-weight: bold; /* 設置粗體 */
     text-align: center; /* 文字置中 */
     /*border-bottom: 1px solid #ccc; !* 添加底部邊線 *!*/
-    padding-bottom: 5px; /* 在底線下添加一些間距 */
+    padding: 10px; /* 在底線下添加一些間距 */
     /*margin-bottom: 5px;*/
 }
 
@@ -64,4 +72,14 @@ h1 {
 
 .memo_item_title {
     text-align: left; /*文字左對齊*/
+}
+
+.custom-button {
+    display: inline-block;
+    padding: 4px 8px;
+    background-color: rgb(230, 230, 240);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 10px; /* 添加邊距，使按钮之间有间隔 */
 }
