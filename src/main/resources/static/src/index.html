@@ -46,7 +46,7 @@
                 <button id="submit">submit</button>
             </form>
             <iframe name="hidden_iframe" style="display:none;"></iframe>
-            <button id="close">close</button>
+            <button id="cancel">cancel</button>
         </dialog>
         <!-- 標題 -->
         <div class="title">Memo List</div>
@@ -55,11 +55,11 @@
             // 在新增MemoItem的彈出視窗按下按鈕時並做出相應的行為
             let btn = document.querySelector("#show");
             let infoModal = document.querySelector("#infoModal");
-            let close = document.querySelector("#close");
+            let cancel = document.querySelector("#cancel");
             btn.addEventListener("click", function () {
                 infoModal.showModal();
             })
-            close.addEventListener("click", function () {
+            cancel.addEventListener("click", function () {
                 infoModal.close();
             })
             let submit = document.querySelector("#submit");
@@ -67,7 +67,7 @@
                 window.location.reload();
             })
 
-            // 动态生成年份选项
+            // 動態生成年份選項
             let currentYear = new Date().getFullYear();
             let yearSelect = document.getElementById("year");
             for (let i = currentYear; i <= currentYear + 5; i++) {
@@ -76,7 +76,7 @@
                 option.text = i;
                 yearSelect.appendChild(option);
             }
-            // 动态生成月份选项
+            // 動態生成月份選項
             let monthSelect = document.getElementById("month");
             for (let i = 1; i <= 12; i++) {
                 let option = document.createElement("option");
@@ -85,7 +85,7 @@
                 option.text = month;
                 monthSelect.appendChild(option);
             }
-            // 动态生成日份选项（简化处理，每月最多31天）
+            // 動態生成日份選項（簡化處理，每月最多31天）
             let daySelect = document.getElementById("day");
             for (let i = 1; i <= 31; i++) {
                 let option = document.createElement("option");
@@ -94,7 +94,7 @@
                 option.text = day;
                 daySelect.appendChild(option);
             }
-            // 动态生成小时选项
+            // 動態生成小時選項
             let hourSelect = document.getElementById("hour");
             for (let i = 0; i < 24; i++) {
                 let option = document.createElement("option");
@@ -103,7 +103,7 @@
                 option.text = hour;
                 hourSelect.appendChild(option);
             }
-            // 动态生成分钟选项
+            // 動態生成分鐘選項
             let minuteSelect = document.getElementById("minute");
             for (let i = 0; i < 60; i++) {
                 let option = document.createElement("option");
