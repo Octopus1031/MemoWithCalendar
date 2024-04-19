@@ -20,10 +20,15 @@ public class Memo {
 
     @PostMapping(value = "/add_memo_item")
     public void addMemo(@RequestParam("title") String title,
-                        @RequestParam("time") String time,
-                        @RequestParam("alert_time") String alert_time,
+                        @RequestParam("year") String year,
+                        @RequestParam("month") String month,
+                        @RequestParam("day") String day,
+                        @RequestParam("hour") String hour,
+                        @RequestParam("minute") String minute,
+                        @RequestParam("alertTimeSelection") String alertTimeSelection,
                         @RequestParam("description") String description) {
+        String time = year + '/' + month + '/' + day + ' ' + hour + ':' + minute;
         memoList.addMemoItem(new MemoItem(title, time,
-                alert_time, description));
+                alertTimeSelection, description));
     }
 }

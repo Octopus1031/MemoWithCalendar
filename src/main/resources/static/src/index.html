@@ -14,18 +14,113 @@
 <div class="container">
     <div class="block_memo" id="memoItem">
         <!-- 自定義按鈕 -->
-        <button class="custom-button" onclick="changeIcon()">+</button>
+        <button id="show">+</button>
+        <dialog id="infoModal"> <!-- 彈出新增MemoItem的視窗 -->
+            <form id="memoForm" action="/add_memo_item" method="post" target="hidden_iframe">
+                <label for="title">Title:</label><br>
+                <input type="text" id="title" name="title"><br>
+                <label >Time</label><br>
+                <label for="year"></label>
+                <label for="month"></label>
+                <label for="day"></label>
+                <label for="hour"></label>
+                <label for="minute"></label>
+                <select id="year" name="year"></select><label> /</label>
+                <select id="month" name="month"></select><label> /</label>
+                <select id="day" name="day"></select><br>
+                <select id="hour" name="hour"></select><label> :</label>
+                <select id="minute" name="minute"></select><br>
+                <label for="alertTimeSelection">Alert Time:</label><br>
+                <select id="alertTimeSelection" name="alertTimeSelection">
+                    <option value=""></option>
+                    <option value="Time of Memo">Time of Memo</option>
+                    <option value="5 minutes ago">5 minutes ago</option>
+                    <option value="10 minutes ago">10 minutes ago</option>
+                    <option value="15 minutes ago">15 minutes ago</option>
+                    <option value="30 minutes ago">30 minutes ago</option>
+                    <option value="1 hour ago">1 hour ago</option>
+                    <option value="2 hours ago">2 hours ago</option>
+                </select><br>
+                <label for="description">Description:</label><br>
+                <textarea id="description" name="description"></textarea><br><br>
+                <button id="submit">submit</button>
+            </form>
+            <iframe name="hidden_iframe" style="display:none;"></iframe>
+            <button id="close">close</button>
+        </dialog>
         <!-- 標題 -->
         <div class="title">Memo List</div>
         <!-- 列出備忘清單 -->
         <script>
+            // 在新增MemoItem的彈出視窗按下按鈕時並做出相應的行為
+            let btn = document.querySelector("#show");
+            let infoModal = document.querySelector("#infoModal");
+            let close = document.querySelector("#close");
+            btn.addEventListener("click", function () {
+                infoModal.showModal();
+            })
+            close.addEventListener("click", function () {
+                infoModal.close();
+            })
+            let submit = document.querySelector("#submit");
+            submit.addEventListener("click", function () {
+                window.location.reload();
+            })
+
+            // 动态生成年份选项
+            let currentYear = new Date().getFullYear();
+            let yearSelect = document.getElementById("year");
+            for (let i = currentYear; i <= currentYear + 5; i++) {
+                let option = document.createElement("option");
+                option.value = i;
+                option.text = i;
+                yearSelect.appendChild(option);
+            }
+            // 动态生成月份选项
+            let monthSelect = document.getElementById("month");
+            for (let i = 1; i <= 12; i++) {
+                let option = document.createElement("option");
+                let month = i < 10 ? '0' + i : i;
+                option.value = month;
+                option.text = month;
+                monthSelect.appendChild(option);
+            }
+            // 动态生成日份选项（简化处理，每月最多31天）
+            let daySelect = document.getElementById("day");
+            for (let i = 1; i <= 31; i++) {
+                let option = document.createElement("option");
+                let day = i < 10 ? '0' + i : i;
+                option.value = day;
+                option.text = day;
+                daySelect.appendChild(option);
+            }
+            // 动态生成小时选项
+            let hourSelect = document.getElementById("hour");
+            for (let i = 0; i < 24; i++) {
+                let option = document.createElement("option");
+                let hour = i < 10 ? '0' + i : i;
+                option.value = hour;
+                option.text = hour;
+                hourSelect.appendChild(option);
+            }
+            // 动态生成分钟选项
+            let minuteSelect = document.getElementById("minute");
+            for (let i = 0; i < 60; i++) {
+                let option = document.createElement("option");
+                let minute = i < 10 ? '0' + i : i;
+                option.value = minute;
+                option.text = minute;
+                minuteSelect.appendChild(option);
+            }
+
+            // 輸出MemoItem的資訊
             fetch('/get_memo_item')
                 .then(response => response.json())
                 .then(memoItems => {
                     const memoItemSet = document.getElementById('memoItem');
                     memoItems.forEach(memoItem => {
                         const setItem = document.createElement('div');
-                        if (memoItem.description != null) {
+                        if (memoItem.description !== "") {
                             setItem.innerHTML = `<span class="memo_item_title"><b>${memoItem.title}</b>
                                                  <br>${memoItem.description}<br>${memoItem.time}</span>`;
                             setItem.style.height = "60px";
@@ -39,10 +134,6 @@
                     })
                 })
                 .catch(error => console.error('Error fetching name:', error));
-
-            function changeIcon() {
-
-            }
         </script>
     </div>
     <div class="block_calendar">
