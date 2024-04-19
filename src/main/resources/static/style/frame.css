@@ -23,12 +23,49 @@ h1 {
 .block_memo {
     flex: 1;
     margin: 10px;
-
     background-color: #e27f95;
+    overflow-y: scroll; /* 允許垂直滾動 */
 }
 
 .block_calendar {
     flex: 1;
     margin: 10px;
     background-color: #a0f0f0;
+}
+
+.title {
+    font-size: 24px; /* 放大文字大小 */
+    font-weight: bold; /* 設置粗體 */
+    text-align: center; /* 文字置中 */
+    /*border-bottom: 1px solid #ccc; !* 添加底部邊線 *!*/
+    padding: 10px; /* 在底線下添加一些間距 */
+    /*margin-bottom: 5px;*/
+}
+
+.memo_item {
+    /*對外框做設定*/
+    border-width: 3px;
+    width: 95%;
+    padding: 5px;
+    text-align: center;
+    background-color: rgb(230, 230, 240);
+
+    /*外框圓潤化*/
+    border-radius: 10px;
+
+    /*對內部字體*/
+    display: flex;
+    align-items: center; /*縱向居中對齊*/
+
+    /*設定memoItem與背景框外圍的*/
+    margin-left: 10px; /* 設定右邊間距 */
+    margin-bottom: 5px;
+}
+
+.memo_item_title {
+    text-align: left; /*文字左對齊*/
+}
+
+.add_memo {
+    float: right;
 }
