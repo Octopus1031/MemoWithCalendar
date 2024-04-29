@@ -89,7 +89,7 @@ h1 {
     background-color: #E0E0E0;
 }
 
-.calendar_body{
+.calendar_body {
     height: auto;
     border-left: 1px solid #5c5c5c;
     border-right: 1px solid #5c5c5c;
@@ -109,7 +109,7 @@ h1 {
     height: 50px;
     display: grid;
     place-items: center;
-    font-size:larger;
+    font-size: larger;
 }
 
 .selected_day {

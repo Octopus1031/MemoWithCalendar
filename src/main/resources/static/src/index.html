@@ -2,228 +2,229 @@
 
 <html lang="zh-Hant-TW">
 
-    <head>
-        <title>Memo With Calendar</title>
-        <link rel="stylesheet" type="text/css" href="../style/frame.css">
-    </head>
+<head>
+    <title>Memo With Calendar</title>
+    <link rel="stylesheet" type="text/css" href="../style/frame.css">
+    <meta charset="UTF-8">
+</head>
 
-    <body>
-        <div>
-            <h1>Memo With Calendar</h1>
-        </div>
-        <div>歡迎，<span id="username"></span>！</div>
-            <div class="container">
-              <div class="block_memo" id="memoItem">
-                <!-- 自定義按鈕 -->
-                <button id="show">+</button>
-                <dialog id="infoModal"> <!-- 彈出新增MemoItem的視窗 -->
-                    <form id="memoForm" action="/add_memo_item" method="post" target="hidden_iframe">
-                        <label for="title">Title:</label><br>
-                        <input type="text" id="title" name="title"><br>
-                        <label >Time</label><br>
-                        <label for="year"></label>
-                        <label for="month"></label>
-                        <label for="day"></label>
-                        <label for="hour"></label>
-                        <label for="minute"></label>
-                        <select id="year" name="year"></select><label> /</label>
-                        <select id="month" name="month"></select><label> /</label>
-                        <select id="day" name="day"></select><br>
-                        <select id="hour" name="hour"></select><label> :</label>
-                        <select id="minute" name="minute"></select><br>
-                        <label for="alertTimeSelection">Alert Time:</label><br>
-                        <select id="alertTimeSelection" name="alertTimeSelection">
-                            <option value=""></option>
-                            <option value="Time of Memo">Time of Memo</option>
-                            <option value="5 minutes ago">5 minutes ago</option>
-                            <option value="10 minutes ago">10 minutes ago</option>
-                            <option value="15 minutes ago">15 minutes ago</option>
-                            <option value="30 minutes ago">30 minutes ago</option>
-                            <option value="1 hour ago">1 hour ago</option>
-                            <option value="2 hours ago">2 hours ago</option>
-                        </select><br>
-                        <label for="description">Description:</label><br>
-                        <textarea id="description" name="description"></textarea><br><br>
-                        <button id="submit">submit</button>
-                    </form>
-                    <iframe name="hidden_iframe" style="display:none;"></iframe>
-                    <button id="cancel">cancel</button>
-                </dialog>
-                <!-- 標題 -->
-                <div class="title">Memo List</div>
-            </div>
-            <div class="block_calendar">
-                <div class="calendar">
-                    <div class="calendar_header">
-                        <div class="year_picker">
-                            <!-- 年份 -->
-                        </div>
-                        <div class="month_picker">
-                            <span class="month_change" onclick="changeMonth(-1)"><</span>
-                            <span class="month">
+<body>
+<div>
+    <h1>Memo With Calendar</h1>
+</div>
+<div>歡迎，<span id="username"></span>！</div>
+<div class="container">
+    <div class="block_memo" id="memoItem">
+        <!-- 自定義按鈕 -->
+        <button id="show">+</button>
+        <dialog id="infoModal"> <!-- 彈出新增MemoItem的視窗 -->
+            <form id="memoForm" action="/add_memo_item" method="post" target="hidden_iframe">
+                <label for="title">Title:</label><br>
+                <input type="text" id="title" name="title"><br>
+                <label>Time</label><br>
+                <label for="year"></label>
+                <label for="month"></label>
+                <label for="day"></label>
+                <label for="hour"></label>
+                <label for="minute"></label>
+                <select id="year" name="year"></select><label> /</label>
+                <select id="month" name="month"></select><label> /</label>
+                <select id="day" name="day"></select><br>
+                <select id="hour" name="hour"></select><label> :</label>
+                <select id="minute" name="minute"></select><br>
+                <label for="alertTimeSelection">Alert Time:</label><br>
+                <select id="alertTimeSelection" name="alertTimeSelection">
+                    <option value=""></option>
+                    <option value="Time of Memo">Time of Memo</option>
+                    <option value="5 minutes ago">5 minutes ago</option>
+                    <option value="10 minutes ago">10 minutes ago</option>
+                    <option value="15 minutes ago">15 minutes ago</option>
+                    <option value="30 minutes ago">30 minutes ago</option>
+                    <option value="1 hour ago">1 hour ago</option>
+                    <option value="2 hours ago">2 hours ago</option>
+                </select><br>
+                <label for="description">Description:</label><br>
+                <textarea id="description" name="description"></textarea><br><br>
+                <button id="submit">submit</button>
+            </form>
+            <iframe name="hidden_iframe" style="display:none;"></iframe>
+            <button id="cancel">cancel</button>
+        </dialog>
+        <!-- 標題 -->
+        <div class="title">Memo List</div>
+    </div>
+    <div class="block_calendar">
+        <div class="calendar">
+            <div class="calendar_header">
+                <div class="year_picker">
+                    <!-- 年份 -->
+                </div>
+                <div class="month_picker">
+                    <span class="month_change" onclick="changeMonth(-1)"><</span>
+                    <span class="month">
                                 <!-- 月份 -->
                             </span>
-                            <span class="month_change" onclick="changeMonth(1)">></span>
-                        </div>
-                    </div>
-                    <div class="calendar_body">
-                        <div class="calendar_week_day">
-                            <div class="calendar_day">日</div>
-                            <div class="calendar_day">一</div>
-                            <div class="calendar_day">二</div>
-                            <div class="calendar_day">三</div>
-                            <div class="calendar_day">四</div>
-                            <div class="calendar_day">五</div>
-                            <div class="calendar_day">六</div>
-                        </div>
-                        <div class="calendar_days">
-                            <!-- 日期 -->
-                        </div>
-                    </div>
+                    <span class="month_change" onclick="changeMonth(1)">></span>
+                </div>
+            </div>
+            <div class="calendar_body">
+                <div class="calendar_week_day">
+                    <div class="calendar_day">日</div>
+                    <div class="calendar_day">一</div>
+                    <div class="calendar_day">二</div>
+                    <div class="calendar_day">三</div>
+                    <div class="calendar_day">四</div>
+                    <div class="calendar_day">五</div>
+                    <div class="calendar_day">六</div>
+                </div>
+                <div class="calendar_days">
+                    <!-- 日期 -->
                 </div>
             </div>
         </div>
+    </div>
+</div>
 
-        <script>
-            var Today, Year, Month, Day;
-            var monthNames = ["一月", "二月", "三月", "四月", "五月", "六月",
-                "七月", "八月", "九月", "十月", "十一月", "十二月"];
-            window.onload = function() {
-                // 設定使用者名稱
-                fetch('/user_info')
-                    .then(response => response.json())
-                    .then(userInfo => {
-                        document.getElementById('username').textContent = userInfo["given_name"];
-                    });
-                // 製作行事曆
-                Today = new Date();
-                year = Today.getFullYear();
-                month = Today.getMonth()+1;
-                day = Today.getDate();
-                fetch('/calendar?year='+ year + '&month=' + month + '&day=' + day)
-                    .then(response => response.text())
-                    .then(calendarHtml => {
-                        document.querySelector('.calendar_days').innerHTML = calendarHtml;
-                    });
-                    document.querySelector('.year_picker').textContent = year;
-                    document.querySelector('.month').textContent = monthNames[month-1];
-            };
+<script>
+    var Today, Year, Month, Day;
+    var monthNames = ["一月", "二月", "三月", "四月", "五月", "六月",
+        "七月", "八月", "九月", "十月", "十一月", "十二月"];
+    window.onload = function () {
+        // 設定使用者名稱
+        fetch('/user_info')
+            .then(response => response.json())
+            .then(userInfo => {
+                document.getElementById('username').textContent = userInfo["given_name"];
+            });
+        // 製作行事曆
+        Today = new Date();
+        year = Today.getFullYear();
+        month = Today.getMonth() + 1;
+        day = Today.getDate();
+        fetch('/calendar?year=' + year + '&month=' + month + '&day=' + day)
+            .then(response => response.text())
+            .then(calendarHtml => {
+                document.querySelector('.calendar_days').innerHTML = calendarHtml;
+            });
+        document.querySelector('.year_picker').textContent = year;
+        document.querySelector('.month').textContent = monthNames[month - 1];
+    };
 
-            function changeMonth(count) {
-                // count=1: 下個月, count=-1: 上個月
-                month += count;
-                if (month > 12) {
-                    month = 1;
-                    year += 1;
-                } else if (month < 1) {
-                    month = 12;
-                    year -= 1;
-                }
-                fetch('/calendar?year='+ year + '&month=' + month + '&day=' + day)
-                    .then(response => response.text())
-                    .then(calendarHtml => {
-                        document.querySelector('.calendar_days').innerHTML = calendarHtml;
-                    });
-                document.querySelector('.year_picker').textContent = year;
-                document.querySelector('.month').textContent = monthNames[month-1];
-            }
+    function changeMonth(count) {
+        // count=1: 下個月, count=-1: 上個月
+        month += count;
+        if (month > 12) {
+            month = 1;
+            year += 1;
+        } else if (month < 1) {
+            month = 12;
+            year -= 1;
+        }
+        fetch('/calendar?year=' + year + '&month=' + month + '&day=' + day)
+            .then(response => response.text())
+            .then(calendarHtml => {
+                document.querySelector('.calendar_days').innerHTML = calendarHtml;
+            });
+        document.querySelector('.year_picker').textContent = year;
+        document.querySelector('.month').textContent = monthNames[month - 1];
+    }
 
-            function selectDay(){
-                //取消之前選擇的日期的樣式
-                var selected_day = document.querySelector(".selected_day");
-                if(selected_day != null){
-                    selected_day.classList.remove('selected_day');
-                }
-                
-                // 改變被選擇日期的樣式
-                var id = event.target.id;
-                document.querySelector("#"+id).setAttribute('class', 'selected_day');
-                
-            }
-          
-            // 在新增MemoItem的彈出視窗按下按鈕時並做出相應的行為
-            let btn = document.querySelector("#show");
-            let infoModal = document.querySelector("#infoModal");
-            let cancel = document.querySelector("#cancel");
-            btn.addEventListener("click", function () {
-                infoModal.showModal();
-            })
-            cancel.addEventListener("click", function () {
-                infoModal.close();
-            })
-            let submit = document.querySelector("#submit");
-            submit.addEventListener("click", function () {
-                window.location.reload();
-            })
+    function selectDay() {
+        //取消之前選擇的日期的樣式
+        var selected_day = document.querySelector(".selected_day");
+        if (selected_day != null) {
+            selected_day.classList.remove('selected_day');
+        }
 
-            // 動態生成年份選項
-            let currentYear = new Date().getFullYear();
-            let yearSelect = document.getElementById("year");
-            for (let i = currentYear; i <= currentYear + 5; i++) {
-                let option = document.createElement("option");
-                option.value = i;
-                option.text = i;
-                yearSelect.appendChild(option);
-            }
-            // 動態生成月份選項
-            let monthSelect = document.getElementById("month");
-            for (let i = 1; i <= 12; i++) {
-                let option = document.createElement("option");
-                let month = i < 10 ? '0' + i : i;
-                option.value = month;
-                option.text = month;
-                monthSelect.appendChild(option);
-            }
-            // 動態生成日份選項（簡化處理，每月最多31天）
-            let daySelect = document.getElementById("day");
-            for (let i = 1; i <= 31; i++) {
-                let option = document.createElement("option");
-                let day = i < 10 ? '0' + i : i;
-                option.value = day;
-                option.text = day;
-                daySelect.appendChild(option);
-            }
-            // 動態生成小時選項
-            let hourSelect = document.getElementById("hour");
-            for (let i = 0; i < 24; i++) {
-                let option = document.createElement("option");
-                let hour = i < 10 ? '0' + i : i;
-                option.value = hour;
-                option.text = hour;
-                hourSelect.appendChild(option);
-            }
-            // 動態生成分鐘選項
-            let minuteSelect = document.getElementById("minute");
-            for (let i = 0; i < 60; i++) {
-                let option = document.createElement("option");
-                let minute = i < 10 ? '0' + i : i;
-                option.value = minute;
-                option.text = minute;
-                minuteSelect.appendChild(option);
-            }
+        // 改變被選擇日期的樣式
+        var id = event.target.id;
+        document.querySelector("#" + id).setAttribute('class', 'selected_day');
 
-            // 輸出MemoItem的資訊
-            fetch('/get_memo_item')
-                .then(response => response.json())
-                .then(memoItems => {
-                    const memoItemSet = document.getElementById('memoItem');
-                    memoItems.forEach(memoItem => {
-                        const setItem = document.createElement('div');
-                        if (memoItem.description !== "") {
-                            setItem.innerHTML = `<span class="memo_item_title"><b>${memoItem.title}</b>
+    }
+
+    // 在新增MemoItem的彈出視窗按下按鈕時並做出相應的行為
+    let btn = document.querySelector("#show");
+    let infoModal = document.querySelector("#infoModal");
+    let cancel = document.querySelector("#cancel");
+    btn.addEventListener("click", function () {
+        infoModal.showModal();
+    })
+    cancel.addEventListener("click", function () {
+        infoModal.close();
+    })
+    let submit = document.querySelector("#submit");
+    submit.addEventListener("click", function () {
+        window.location.reload();
+    })
+
+    // 動態生成年份選項
+    let currentYear = new Date().getFullYear();
+    let yearSelect = document.getElementById("year");
+    for (let i = currentYear; i <= currentYear + 5; i++) {
+        let option = document.createElement("option");
+        option.value = i;
+        option.text = i;
+        yearSelect.appendChild(option);
+    }
+    // 動態生成月份選項
+    let monthSelect = document.getElementById("month");
+    for (let i = 1; i <= 12; i++) {
+        let option = document.createElement("option");
+        let month = i < 10 ? '0' + i : i;
+        option.value = month;
+        option.text = month;
+        monthSelect.appendChild(option);
+    }
+    // 動態生成日份選項（簡化處理，每月最多31天）
+    let daySelect = document.getElementById("day");
+    for (let i = 1; i <= 31; i++) {
+        let option = document.createElement("option");
+        let day = i < 10 ? '0' + i : i;
+        option.value = day;
+        option.text = day;
+        daySelect.appendChild(option);
+    }
+    // 動態生成小時選項
+    let hourSelect = document.getElementById("hour");
+    for (let i = 0; i < 24; i++) {
+        let option = document.createElement("option");
+        let hour = i < 10 ? '0' + i : i;
+        option.value = hour;
+        option.text = hour;
+        hourSelect.appendChild(option);
+    }
+    // 動態生成分鐘選項
+    let minuteSelect = document.getElementById("minute");
+    for (let i = 0; i < 60; i++) {
+        let option = document.createElement("option");
+        let minute = i < 10 ? '0' + i : i;
+        option.value = minute;
+        option.text = minute;
+        minuteSelect.appendChild(option);
+    }
+
+    // 輸出MemoItem的資訊
+    fetch('/get_memo_item')
+        .then(response => response.json())
+        .then(memoItems => {
+            const memoItemSet = document.getElementById('memoItem');
+            memoItems.forEach(memoItem => {
+                const setItem = document.createElement('div');
+                if (memoItem.description !== "") {
+                    setItem.innerHTML = `<span class="memo_item_title"><b>${memoItem.title}</b>
                                                  <br>${memoItem.description}<br>${memoItem.time}</span>`;
-                            setItem.style.height = "60px";
-                        } else {
-                            setItem.innerHTML = `<span class="memo_item_title"><b>${memoItem.title}</b>
+                    setItem.style.height = "60px";
+                } else {
+                    setItem.innerHTML = `<span class="memo_item_title"><b>${memoItem.title}</b>
                                                  <br>${memoItem.time}</span>`;
-                            setItem.style.height = "40px";
-                        }
-                        setItem.className = "memo_item";
-                        memoItemSet.appendChild(setItem);
-                    })
-                })
-                .catch(error => console.error('Error fetching name:', error));
-        </script>
-    </body>
+                    setItem.style.height = "40px";
+                }
+                setItem.className = "memo_item";
+                memoItemSet.appendChild(setItem);
+            })
+        })
+        .catch(error => console.error('Error fetching name:', error));
+</script>
+</body>
 
 </html>

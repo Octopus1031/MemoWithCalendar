@@ -1,26 +1,26 @@
 <!DOCTYPE html>
 <html lang="zh-Hant-TW">
-  <head>
-      <meta charset="UTF-8">
-      <title>User Info</title>
-  </head>
-  <body>
-    <div>----這個頁面顯示取得的使用者Google資訊----</div>
-    <div id="user-info"></div>
+<head>
+    <meta charset="UTF-8">
+    <title>User Info</title>
+</head>
+<body>
+<div>----這個頁面顯示取得的使用者Google資訊----</div>
+<div id="user-info"></div>
 
-    <script>
-      window.onload = function() {
-          fetch('/user_info')
-              .then(response => response.json())
-              .then(userInfo => {
-                  let userInfoDiv = document.getElementById('user-info');
-                  for (let key in userInfo) {
-                      let p = document.createElement('p');
-                      p.textContent = key + ': ' + userInfo[key];
-                      userInfoDiv.appendChild(p);
-                  }
-              });
-      };
-    </script>
-  </body>
+<script>
+    window.onload = function () {
+        fetch('/user_info')
+            .then(response => response.json())
+            .then(userInfo => {
+                let userInfoDiv = document.getElementById('user-info');
+                for (let key in userInfo) {
+                    let p = document.createElement('p');
+                    p.textContent = key + ': ' + userInfo[key];
+                    userInfoDiv.appendChild(p);
+                }
+            });
+    };
+</script>
+</body>
 </html>

@@ -36,7 +36,8 @@ public class MemoItem {
                 hour = Integer.parseInt(matcher.group(4));
                 minute = Integer.parseInt(matcher.group(5));
             } else {
-                System.out.println("未找到匹配的日期时间格式！");
+                System.out.println("未找到匹配的日期時間格式！");
+                return "";
             }
             // 將分離出的5個元素放進LocalDateTime裡，方便做時間的加減
             LocalDateTime standardTime = LocalDateTime.of(year, month, day, hour, minute);
@@ -77,5 +78,22 @@ public class MemoItem {
 
     public String getDescription() {
         return this.description;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        MemoItem other = (MemoItem) obj;
+        return title.equals(other.getTitle()) && time.equals(other.getTime())
+                && alert_time.equals(other.getAlertTime()) && description.equals(other.getDescription());
+    }
+    @Override
+    public int hashCode() {
+        return Objects.hash(title, title, alert_time, description);
     }
 }
