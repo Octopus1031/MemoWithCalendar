@@ -40,7 +40,7 @@ public class CalendarTest {
         result = calendar.generateCalendarDays(2024, 2, 30);
         assertEquals("Illegal date input!", result);
 
-        result = calendar.generateCalendarDays(2024, 6, 31);
+        result = calendar.generateCalendarDays(2024, -1, 31);
         assertEquals("Illegal date input!", result);
     }
 }

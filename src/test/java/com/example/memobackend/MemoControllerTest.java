@@ -8,9 +8,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
 
-public class MemoTest {
+public class MemoControllerTest {
 
     @Before
     public void setUp() throws Exception {
@@ -28,12 +27,12 @@ public class MemoTest {
         memoItemSet.add(new MemoItem("bbb", "2024/04/30 12:00",
                 "1 hour ago", "123456"));
 
-        Memo memo = new Memo();
-        memo.addMemo("aaa", "2024", "04", "29", "15", "00",
+        MemoController memoController = new MemoController();
+        memoController.addMemo("aaa", "2024", "04", "29", "15", "00",
                 "Time of Memo", "");
-        memo.addMemo("bbb", "2024", "04", "30", "12", "00",
+        memoController.addMemo("bbb", "2024", "04", "30", "12", "00",
                 "1 hour ago", "123456");
-        Set<MemoItem> result = memo.getMemoItemSetOfMemoList();
+        Set<MemoItem> result = memoController.getMemoItemSetOfMemoList();
 
         assertEquals(result, memoItemSet);
     }

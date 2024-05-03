@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.Set;
 
 @RestController
-public class Memo {
+public class MemoController {
     MemoList memoList = new MemoList();
 
     // 從MemoList中獲取MemoItem

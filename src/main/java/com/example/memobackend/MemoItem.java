@@ -94,6 +94,6 @@ public class MemoItem {
     }
     @Override
     public int hashCode() {
-        return Objects.hash(title, title, alert_time, description);
+        return Objects.hash(title, time, alert_time, description);
     }
 }
