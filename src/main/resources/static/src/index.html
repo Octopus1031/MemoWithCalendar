@@ -14,7 +14,7 @@
 </div>
 <div>歡迎，<span id="username"></span>！</div>
 <div class="container">
-    <div class="block_memo" id="memoItem">
+    <div class="block_memo">
         <!-- 自定義按鈕 -->
         <button id="show">+</button>
         <dialog id="infoModal"> <!-- 彈出新增MemoItem的視窗 -->
@@ -52,6 +52,7 @@
         </dialog>
         <!-- 標題 -->
         <div class="title">Memo List</div>
+        <div id="memoItem"></div>
     </div>
     <div class="block_calendar">
         <div class="calendar">
@@ -151,10 +152,49 @@
     })
     cancel.addEventListener("click", function () {
         infoModal.close();
+        // 初始化表單
+        document.getElementById('title').value = '';
+        document.getElementById('year').value = '2024';
+        document.getElementById('month').value = '01';
+        document.getElementById('day').value = '01';
+        document.getElementById('hour').value = '00';
+        document.getElementById('minute').value = '00';
+        document.getElementById('alertTimeSelection').value = '';
+        document.getElementById('description').value = '';
     })
     let submit = document.querySelector("#submit");
-    submit.addEventListener("click", function () {
-        window.location.reload();
+    submit.addEventListener("click", function (event) {
+        event.preventDefault(); // 防止表單提交後的頁面刷新
+
+        // 獲取表單數據
+        let formData = new FormData(document.getElementById('memoForm'));
+
+        // 使用 fetch API 提交表單數據
+        fetch('/add_memo_item', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                // 更新 memoItem 的內容
+                updateMemoItem();
+                // 關閉彈出視窗
+                infoModal.close();
+                // 初始化表單
+                document.getElementById('title').value = '';
+                document.getElementById('year').value = '2024';
+                document.getElementById('month').value = '01';
+                document.getElementById('day').value = '01';
+                document.getElementById('hour').value = '00';
+                document.getElementById('minute').value = '00';
+                document.getElementById('alertTimeSelection').value = '';
+                document.getElementById('description').value = '';
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
     })
 
     // 動態生成年份選項
@@ -203,27 +243,32 @@
         minuteSelect.appendChild(option);
     }
 
+    updateMemoItem();
+
     // 輸出MemoItem的資訊
-    fetch('/get_memo_item')
-        .then(response => response.json())
-        .then(memoItems => {
-            const memoItemSet = document.getElementById('memoItem');
-            memoItems.forEach(memoItem => {
-                const setItem = document.createElement('div');
-                if (memoItem.description !== "") {
-                    setItem.innerHTML = `<span class="memo_item_title"><b>${memoItem.title}</b>
+    function updateMemoItem() {
+        let memoItemSet = document.getElementById('memoItem');
+        memoItemSet.innerHTML = '';
+        fetch('/get_memo_item')
+            .then(response => response.json())
+            .then(memoItems => {
+                memoItems.forEach(memoItem => {
+                    const setItem = document.createElement('div');
+                    if (memoItem.description !== "") {
+                        setItem.innerHTML = `<span class="memo_item_title"><b>${memoItem.title}</b>
                                                  <br>${memoItem.description}<br>${memoItem.time}</span>`;
-                    setItem.style.height = "60px";
-                } else {
-                    setItem.innerHTML = `<span class="memo_item_title"><b>${memoItem.title}</b>
+                        setItem.style.height = "60px";
+                    } else {
+                        setItem.innerHTML = `<span class="memo_item_title"><b>${memoItem.title}</b>
                                                  <br>${memoItem.time}</span>`;
-                    setItem.style.height = "40px";
-                }
-                setItem.className = "memo_item";
-                memoItemSet.appendChild(setItem);
+                        setItem.style.height = "40px";
+                    }
+                    setItem.className = "memo_item";
+                    memoItemSet.appendChild(setItem);
+                })
             })
-        })
-        .catch(error => console.error('Error fetching name:', error));
+            .catch(error => console.error('Error fetching name:', error));
+    }
 </script>
 </body>
 
