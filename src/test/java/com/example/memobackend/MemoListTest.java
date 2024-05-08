@@ -13,7 +13,8 @@ public class MemoListTest {
     String time = "2024/04/29 15:00";
     String alertTimeSelection = "Time of Memo";
     String description = "123456";
-    MemoItem memoItem = new MemoItem(title, time, alertTimeSelection, description);
+    Long id = 0L;
+    MemoItem memoItem = new MemoItem(title, time, alertTimeSelection, description, id);
     MemoList memoList = new MemoList();
 
     @Before
@@ -44,7 +45,7 @@ public class MemoListTest {
         String time = "2024/04/29 15:00";
         String alertTimeSelection = "Time of Memo";
         String description = "123456";
-        MemoItem memoItem2 = new MemoItem(title, time, alertTimeSelection, description);
+        MemoItem memoItem2 = new MemoItem(title, time, alertTimeSelection, description, 0L);
         memoList.addMemoItem(memoItem2);
         Set<MemoItem> memoItemSet = new HashSet<>();
         memoItemSet.add(memoItem);

@@ -130,8 +130,8 @@ h1 {
 .memo_item {
     /*對外框做設定*/
     border-width: 3px;
-    width: 95%;
-    padding: 5px;
+    width: 92%;
+    padding: 10px;
     text-align: center;
     background-color: rgb(230, 230, 240);
 
@@ -140,6 +140,7 @@ h1 {
 
     /*對內部字體*/
     display: flex;
+    justify-content: space-between;
     align-items: center; /*縱向居中對齊*/
 
     /*設定memoItem與背景框外圍的*/
@@ -149,6 +150,12 @@ h1 {
 
 .memo_item_title {
     text-align: left; /*文字左對齊*/
+}
+
+.memo_item_delete_button {
+    color: white; /* 設置按鈕內部文字顏色為白色 */
+    background-color: #FF3358; /* 新增此行 */
+    border-radius: 8px; /*外框圓潤化*/
 }
 
 .add_memo {

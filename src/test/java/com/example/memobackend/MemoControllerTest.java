@@ -23,9 +23,9 @@ public class MemoControllerTest {
     public void testGetMemoItemSetAndAddMemo() throws Exception {
         Set<MemoItem> memoItemSet = new HashSet<>();
         memoItemSet.add(new MemoItem("aaa", "2024/04/29 15:00",
-                "Time of Memo", ""));
+                "Time of Memo", "", 0L));
         memoItemSet.add(new MemoItem("bbb", "2024/04/30 12:00",
-                "1 hour ago", "123456"));
+                "1 hour ago", "123456", 0L));
 
         MemoController memoController = new MemoController();
         memoController.addMemo("aaa", "2024", "04", "29", "15", "00",

@@ -256,11 +256,13 @@
                     const setItem = document.createElement('div');
                     if (memoItem.description !== "") {
                         setItem.innerHTML = `<span class="memo_item_title"><b>${memoItem.title}</b>
-                                                 <br>${memoItem.description}<br>${memoItem.time}</span>`;
+                                                 <br>${memoItem.description}<br>${memoItem.time}</span>
+                                                 <button class="memo_item_delete_button">delete</button>`;
                         setItem.style.height = "60px";
                     } else {
                         setItem.innerHTML = `<span class="memo_item_title"><b>${memoItem.title}</b>
-                                                 <br>${memoItem.time}</span>`;
+                                                 <br>${memoItem.time}</span>
+                                                 <button class="memo_item_delete_button">delete</button>`;
                         setItem.style.height = "40px";
                     }
                     setItem.className = "memo_item";

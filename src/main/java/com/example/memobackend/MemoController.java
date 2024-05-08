@@ -1,9 +1,6 @@
 package com.example.memobackend;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
 
@@ -28,7 +25,14 @@ public class MemoController {
                         @RequestParam("alertTimeSelection") String alertTimeSelection,
                         @RequestParam("description") String description) {
         String time = year + '/' + month + '/' + day + ' ' + hour + ':' + minute;
+        Long id = memoList.generateId();
         memoList.addMemoItem(new MemoItem(title, time,
-                alertTimeSelection, description));
+                alertTimeSelection, description, id));
     }
+
+    // 刪除指定的MemoItem
+//    @DeleteMapping(value = "/delete_memo_item")
+//    public void deleteMemoItem(MemoItem memoItem) {
+//        memoList.removeMemoItem(memoItem);
+//    }
 }
