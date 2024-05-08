@@ -257,12 +257,14 @@
                     if (memoItem.description !== "") {
                         setItem.innerHTML = `<span class="memo_item_title"><b>${memoItem.title}</b>
                                                  <br>${memoItem.description}<br>${memoItem.time}</span>
-                                                 <button class="memo_item_delete_button">delete</button>`;
+                                                 <button class="memo_item_delete_button"
+                                                 onclick="deleteMemoItem(${memoItem.id})">delete</button>`;
                         setItem.style.height = "60px";
                     } else {
                         setItem.innerHTML = `<span class="memo_item_title"><b>${memoItem.title}</b>
                                                  <br>${memoItem.time}</span>
-                                                 <button class="memo_item_delete_button">delete</button>`;
+                                                 <button class="memo_item_delete_button"
+                                                 onclick="deleteMemoItem(${memoItem.id})">delete</button>`;
                         setItem.style.height = "40px";
                     }
                     setItem.className = "memo_item";
@@ -270,6 +272,23 @@
                 })
             })
             .catch(error => console.error('Error fetching name:', error));
+    }
+
+    function deleteMemoItem(id) {
+        // 使用 fetch API 發送請求
+        fetch('/delete_memo_item/' + id, {
+            method: 'DELETE'
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                // 更新 memoItem 的內容
+                updateMemoItem();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
     }
 </script>
 </body>

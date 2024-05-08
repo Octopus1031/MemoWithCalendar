@@ -31,8 +31,9 @@ public class MemoController {
     }
 
     // 刪除指定的MemoItem
-//    @DeleteMapping(value = "/delete_memo_item")
-//    public void deleteMemoItem(MemoItem memoItem) {
-//        memoList.removeMemoItem(memoItem);
-//    }
+    @DeleteMapping(value = "/delete_memo_item/{id}")
+    public void deleteMemoItem(@PathVariable String id) {
+        Long memoItemId = Long.parseLong(id);
+        memoList.removeMemoItemById(memoItemId);
+    }
 }

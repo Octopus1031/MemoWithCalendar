@@ -26,10 +26,19 @@ public class MemoList {
     }
 
     // 刪除集合中的某個 memoItem
-    public void removeMemoItem(MemoItem memoItem) {
-        if (containsMemoItem(memoItem)) {
-            memoItems.remove(memoItem);
+    public void removeMemoItemById(Long id) {
+        MemoItem memoItem = findMemoItemById(id);
+        memoItems.remove(memoItem);
+    }
+
+    // 在集合中尋找具有特定 id 的 MemoItem
+    public MemoItem findMemoItemById(Long id) {
+        for (MemoItem memoItem : memoItems) {
+            if (memoItem.getId().equals(id)) {
+                return memoItem;
+            }
         }
+        return null;
     }
 
     public Long generateId() {

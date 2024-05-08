@@ -3,6 +3,7 @@ package com.example.memobackend;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -34,7 +35,7 @@ public class MemoListTest {
     @Test
     public void testRemoveMemoItem() throws Exception {
         memoList.addMemoItem(memoItem);
-        memoList.removeMemoItem(memoItem);
+        memoList.removeMemoItemById(memoItem.getId());
         assertFalse(memoList.containsMemoItem(memoItem));
     }
 

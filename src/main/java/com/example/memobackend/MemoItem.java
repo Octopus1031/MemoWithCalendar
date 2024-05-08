@@ -99,6 +99,7 @@ public class MemoItem {
         return title.equals(other.getTitle()) && time.equals(other.getTime())
                 && alert_time.equals(other.getAlertTime()) && description.equals(other.getDescription()); // id看情況比較
     }
+
     @Override
     public int hashCode() {
         return Objects.hash(title, time, alert_time, description); // id看情況比較
