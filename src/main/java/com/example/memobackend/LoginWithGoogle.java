@@ -11,11 +11,11 @@ import java.security.Principal;
 import java.util.Map;
 
 @RestController
-public class Login {
+public class LoginWithGoogle {
 
     // 取得登入的使用者資訊
     // 進入http://localhost:8080/user可以看到回傳的使用者資訊
-    @RequestMapping(value = "/user")
+    // @RequestMapping(value = "/user")
     public Principal user(Principal principal) throws JsonProcessingException, InvalidDefinitionException {
         System.out.println("principal: ");
         System.out.println(principal.toString());
@@ -30,7 +30,7 @@ public class Login {
 //    }
 
     // 取得登入的使用者Google資訊
-    @RequestMapping(value = "/user_info")
+//    @RequestMapping(value = "/user_info")
     public Map<String, Object> userInfo(Principal principal) {
         OAuth2AuthenticationToken token = (OAuth2AuthenticationToken) principal;
         OAuth2User userInfo = token.getPrincipal();
