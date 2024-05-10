@@ -3,6 +3,7 @@ package com.example.memobackend;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,7 +14,8 @@ public class MemoListTest {
     String time = "2024/04/29 15:00";
     String alertTimeSelection = "Time of Memo";
     String description = "123456";
-    MemoItem memoItem = new MemoItem(title, time, alertTimeSelection, description);
+    Long id = 0L;
+    MemoItem memoItem = new MemoItem(title, time, alertTimeSelection, description, id);
     MemoList memoList = new MemoList();
 
     @Before
@@ -33,7 +35,7 @@ public class MemoListTest {
     @Test
     public void testRemoveMemoItem() throws Exception {
         memoList.addMemoItem(memoItem);
-        memoList.removeMemoItem(memoItem);
+        memoList.removeMemoItemById(memoItem.getId());
         assertFalse(memoList.containsMemoItem(memoItem));
     }
 
@@ -44,7 +46,7 @@ public class MemoListTest {
         String time = "2024/04/29 15:00";
         String alertTimeSelection = "Time of Memo";
         String description = "123456";
-        MemoItem memoItem2 = new MemoItem(title, time, alertTimeSelection, description);
+        MemoItem memoItem2 = new MemoItem(title, time, alertTimeSelection, description, 0L);
         memoList.addMemoItem(memoItem2);
         Set<MemoItem> memoItemSet = new HashSet<>();
         memoItemSet.add(memoItem);

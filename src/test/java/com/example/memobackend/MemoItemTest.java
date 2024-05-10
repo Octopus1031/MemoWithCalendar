@@ -4,6 +4,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Optional;
+
 import static org.junit.Assert.*;
 
 public class MemoItemTest {
@@ -27,13 +29,13 @@ public class MemoItemTest {
         String alertTimeSelection5 = "30 minutes ago";
         String alertTimeSelection6 = "1 hour ago";
         String alertTimeSelection7 = "2 hours ago";
-        MemoItem memoItem1 = new MemoItem(title, time, alertTimeSelection1, "");
-        MemoItem memoItem2 = new MemoItem(title, time, alertTimeSelection2, "");
-        MemoItem memoItem3 = new MemoItem(title, time, alertTimeSelection3, "");
-        MemoItem memoItem4 = new MemoItem(title, time, alertTimeSelection4, "");
-        MemoItem memoItem5 = new MemoItem(title, time, alertTimeSelection5, "");
-        MemoItem memoItem6 = new MemoItem(title, time, alertTimeSelection6, "");
-        MemoItem memoItem7 = new MemoItem(title, time, alertTimeSelection7, "");
+        MemoItem memoItem1 = new MemoItem(title, time, alertTimeSelection1, "", 0L);
+        MemoItem memoItem2 = new MemoItem(title, time, alertTimeSelection2, "", 0L);
+        MemoItem memoItem3 = new MemoItem(title, time, alertTimeSelection3, "", 0L);
+        MemoItem memoItem4 = new MemoItem(title, time, alertTimeSelection4, "", 0L);
+        MemoItem memoItem5 = new MemoItem(title, time, alertTimeSelection5, "", 0L);
+        MemoItem memoItem6 = new MemoItem(title, time, alertTimeSelection6, "", 0L);
+        MemoItem memoItem7 = new MemoItem(title, time, alertTimeSelection7, "", 0L);
         assertEquals("2024/04/29 15:00", memoItem1.getAlertTime());
         assertEquals("2024/04/29 14:55", memoItem2.getAlertTime());
         assertEquals("2024/04/29 14:50", memoItem3.getAlertTime());
@@ -48,7 +50,7 @@ public class MemoItemTest {
         String title = "aaa";
         String time = "2024/4/29 15:0";
         String alertTimeSelection = "Time of Memo";
-        MemoItem memoItem = new MemoItem(title, time, alertTimeSelection, "");
+        MemoItem memoItem = new MemoItem(title, time, alertTimeSelection, "", 0L);
         assertEquals("", memoItem.getAlertTime());
     }
 
@@ -58,10 +60,11 @@ public class MemoItemTest {
         String time = "2024/04/29 15:00";
         String alertTimeSelection = "";
         String description = "123456";
-        MemoItem memoItem = new MemoItem(title, time, alertTimeSelection, description);
+        MemoItem memoItem = new MemoItem(title, time, alertTimeSelection, description, 0L);
         assertEquals("aaa", memoItem.getTitle());
         assertEquals("2024/04/29 15:00", memoItem.getTime());
         assertEquals("", memoItem.getAlertTime());
         assertEquals("123456", memoItem.getDescription());
+        assertEquals(Optional.of(0L), Optional.of(memoItem.getId()));
     }
 }

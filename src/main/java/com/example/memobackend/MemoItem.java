@@ -15,11 +15,14 @@ public class MemoItem {
 
     String description;
 
-    public MemoItem(String title, String time, String alertTimeSelection, String description) {
+    Long id;
+
+    public MemoItem(String title, String time, String alertTimeSelection, String description, Long id) {
         this.title = title;
         this.time = time;
         this.alert_time = SelectAlertTime(time, alertTimeSelection);
         this.description = description;
+        this.id = id;
     }
 
     public String SelectAlertTime(String time, String alertTimeSelection) {
@@ -80,6 +83,10 @@ public class MemoItem {
         return this.description;
     }
 
+    public Long getId() {
+        return this.id;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -90,10 +97,11 @@ public class MemoItem {
         }
         MemoItem other = (MemoItem) obj;
         return title.equals(other.getTitle()) && time.equals(other.getTime())
-                && alert_time.equals(other.getAlertTime()) && description.equals(other.getDescription());
+                && alert_time.equals(other.getAlertTime()) && description.equals(other.getDescription()); // id看情況比較
     }
+
     @Override
     public int hashCode() {
-        return Objects.hash(title, time, alert_time, description);
+        return Objects.hash(title, time, alert_time, description); // id看情況比較
     }
 }

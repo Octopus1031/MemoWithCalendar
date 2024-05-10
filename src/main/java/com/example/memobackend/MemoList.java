@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.Random;
 
 public class MemoList {
     Set<MemoItem> memoItems;
@@ -25,10 +26,40 @@ public class MemoList {
     }
 
     // 刪除集合中的某個 memoItem
-    public void removeMemoItem(MemoItem memoItem) {
-        if (containsMemoItem(memoItem)) {
-            memoItems.remove(memoItem);
+    public void removeMemoItemById(Long id) {
+        MemoItem memoItem = findMemoItemById(id);
+        memoItems.remove(memoItem);
+    }
+
+    // 在集合中尋找具有特定 id 的 MemoItem
+    public MemoItem findMemoItemById(Long id) {
+        for (MemoItem memoItem : memoItems) {
+            if (memoItem.getId().equals(id)) {
+                return memoItem;
+            }
         }
+        return null;
+    }
+
+    public Long generateId() {
+        Long id;
+        // 生成隨機數字
+        Random random = new Random();
+        do {
+            id = random.nextLong() % 1000000; // 產生隨機數
+        } while (id <= 0 || containsId(id)); // 檢查是否為0或負數，以及是否已經存在
+
+        return id;
+    }
+
+    // 檢查集合中是否存在具有特定 id 的 MemoItem
+    public boolean containsId(Long id) {
+        for (MemoItem memoItem : memoItems) {
+            if (memoItem.getId().equals(id)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public Set<MemoItem> getMemoItems() {
