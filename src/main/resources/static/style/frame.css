@@ -41,6 +41,7 @@ h1 {
     padding: 20px;
     position: relative;
     background-color: #f0f0f0;
+    margin-bottom: 10px;
 }
 
 .calendar_header {
@@ -109,7 +110,13 @@ h1 {
     height: 50px;
     display: grid;
     place-items: center;
-    font-size: larger;
+    margin: 10px;
+    aspect-ratio: 1;
+    font-size: xx-large;
+    /* -webkit-text-stroke: 1px #000000; */
+    text-shadow: 0 0 2px #000000, 0 0 2px #000000, 0 0 2px #000000, 0 0 2px #000000;
+    color: #ffffff;
+    font-weight: bolder;
 }
 
 .selected_day {
