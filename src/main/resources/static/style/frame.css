@@ -2,7 +2,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    /* justify-content: center; */
     height: 100vh;
     margin: 0;
     padding: 0;
@@ -68,6 +68,8 @@ h1 {
     font-weight: bolder;
     user-select: none;
     -webkit-user-select: none;
+    /* aspect-ratio: 1; */
+    /* background-color: #f0f0f0; */
 }
 
 .month_picker {
@@ -120,9 +122,13 @@ h1 {
 }
 
 .selected_day {
+    /* old */
     background-color: #48916e;
-    color: white;
+    /* color: white; */
     border-radius: 50%;
+
+    /* new */
+    /* color: #000000; */
 }
 
 .title {
