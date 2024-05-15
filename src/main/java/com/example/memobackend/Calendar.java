@@ -34,20 +34,26 @@ public class Calendar {
         // 暫時在事前處理時僅先將當天的日期加上selected_day的class
         int initDay = 1;
         for (int i = 0; i < 6; i++) { // for each week
+            String htmlCode_event = "";
             for (int j = 0; j < 7; j++) { // for each day
                 if (i == 0 && j < MonthFirstDayWeek || initDay > daysInMonth) {
                     calendarHtml.append("<div></div>");
+                    htmlCode_event += "<div class='no_event'></div>";
                 } else {
                     String htmlCode;
                     if(initDay == day && todayMonth == month && todayYear == year) {
                         htmlCode = "<div class='selected_day' id='d_" + initDay + "' onclick='selectDay()'>";
                     } else {
-                        htmlCode = "<div id='d_" + initDay + "' onclick='selectDay()'>";
+                        htmlCode = "<div class='unselected_day' id='d_" + initDay + "' onclick='selectDay()'>";
                     }
                     calendarHtml.append(htmlCode).append(initDay).append("</div>");
+
+                    htmlCode_event += "<div class='no_event' id='e_" + initDay + "'></div>";
                     initDay++;
                 }
             }
+            calendarHtml.append(htmlCode_event);
+
             if (initDay > daysInMonth) {
                 break;
             }

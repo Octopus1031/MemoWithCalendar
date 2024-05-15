@@ -27,8 +27,8 @@ dependencies {
 dependencies {
     testImplementation 'junit:junit:4.13.1'
     testImplementation 'org.springframework.security:spring-security-test'
-    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client' //開啟spring security
-    implementation "org.springframework.boot:spring-boot-starter-security" // 開啟OAuth google登入服務
+//    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client' //開啟spring security
+//    implementation "org.springframework.boot:spring-boot-starter-security" // 開啟OAuth google登入服務
 }
 
 tasks.named('test') {

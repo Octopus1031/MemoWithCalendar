@@ -80,43 +80,6 @@
                     </div>
                     <div class="calendar_days">
                         <!-- 日期 -->
-                        <!-- test use days -->
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div id="d_1" onclick="selectDay()">1</div>
-                        <div id="d_2" onclick="selectDay()">2</div>
-                        <div id="d_3" onclick="selectDay()">3</div>
-                        <div id="d_4" onclick="selectDay()">4</div>
-                        <div id="d_5" onclick="selectDay()">5</div>
-                        <div id="d_6" onclick="selectDay()">6</div>
-                        <div id="d_7" onclick="selectDay()" class="">7</div>
-                        <div id="d_8" onclick="selectDay()">8</div>
-                        <div id="d_9" onclick="selectDay()">9</div>
-                        <div id="d_10" onclick="selectDay()">10</div>
-                        <div id="d_11" onclick="selectDay()">11</div>
-                        <div id="d_12" onclick="selectDay()">12</div>
-                        <div id="d_13" onclick="selectDay()">13</div>
-                        <div class="selected_day" id="d_14" onclick="selectDay()">14</div>
-                        <div id="d_15" onclick="selectDay()">15</div>
-                        <div id="d_16" onclick="selectDay()">16</div>
-                        <div id="d_17" onclick="selectDay()">17</div>
-                        <div id="d_18" onclick="selectDay()">18</div>
-                        <div id="d_19" onclick="selectDay()">19</div>
-                        <div id="d_20" onclick="selectDay()">20</div>
-                        <div id="d_21" onclick="selectDay()">21</div>
-                        <div id="d_22" onclick="selectDay()">22</div>
-                        <div id="d_23" onclick="selectDay()">23</div>
-                        <div id="d_24" onclick="selectDay()">24</div>
-                        <div id="d_25" onclick="selectDay()">25</div>
-                        <div id="d_26" onclick="selectDay()">26</div>
-                        <div id="d_27" onclick="selectDay()">27</div>
-                        <div id="d_28" onclick="selectDay()">28</div>
-                        <div id="d_29" onclick="selectDay()">29</div>
-                        <div id="d_30" onclick="selectDay()">30</div>
-                        <div id="d_31" onclick="selectDay()">31</div>
-                        <div></div>
-                        <!-- test use days -->
                     </div>
                 </div>
             </div>
@@ -172,6 +135,7 @@
             var selected_day = document.querySelector(".selected_day");
             if (selected_day != null) {
                 selected_day.classList.remove('selected_day');
+                selected_day.classList.add('unselected_day');
             }
 
             // 改變被選擇日期的樣式
