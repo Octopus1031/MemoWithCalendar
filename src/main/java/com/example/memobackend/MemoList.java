@@ -1,18 +1,21 @@
 package com.example.memobackend;
 
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.TreeSet;
-import java.util.Random;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+@Component
 public class MemoList {
     Set<MemoItem> memoItems;
+    Calendar calendar;
 
     public MemoList() {
         memoItems = new HashSet<>();
+        calendar = new Calendar(this);
     }
 
     // 添加 memoItem 到集合
@@ -29,6 +32,8 @@ public class MemoList {
     public void removeMemoItemById(Long id) {
         MemoItem memoItem = findMemoItemById(id);
         memoItems.remove(memoItem);
+//          TODO:
+//        calendar.removeEventDay();
     }
 
     // 在集合中尋找具有特定 id 的 MemoItem
@@ -65,4 +70,19 @@ public class MemoList {
     public Set<MemoItem> getMemoItems() {
         return this.memoItems;
     }
+
+    // 取得所有的日期
+    public List<Integer> getAllMemoItemDay(){
+        List<Integer> days = new ArrayList<>();
+        System.out.println("memoItems.size(): " + memoItems.size());
+        for (MemoItem memoItem : memoItems) {
+            days.add(memoItem.parsedDay());
+        }
+        return days;
+    }
+
+    public Calendar getCalendar() {
+        return calendar;
+    }
+
 }

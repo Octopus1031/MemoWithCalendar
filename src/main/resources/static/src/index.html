@@ -87,7 +87,7 @@
     </div>
 
     <script>
-        var Today, Year, Month, Day;
+        var today, year, month, day;
         var monthNames = ["一月", "二月", "三月", "四月", "五月", "六月",
             "七月", "八月", "九月", "十月", "十一月", "十二月"];
         window.onload = function () {
@@ -97,11 +97,16 @@
                 .then(userInfo => {
                     document.getElementById('username').textContent = userInfo["given_name"];
                 });
+
             // 製作行事曆
-            Today = new Date();
-            year = Today.getFullYear();
-            month = Today.getMonth() + 1;
-            day = Today.getDate();
+            generateCalendar();
+        };
+
+        function generateCalendar() {
+            today = new Date();
+            year = today.getFullYear();
+            month = today.getMonth() + 1;
+            day = today.getDate();
             fetch('/calendar?year=' + year + '&month=' + month + '&day=' + day)
                 .then(response => response.text())
                 .then(calendarHtml => {
@@ -109,7 +114,8 @@
                 });
             document.querySelector('.year_picker').textContent = year;
             document.querySelector('.month').textContent = monthNames[month - 1];
-        };
+            // alert("success");
+        }
 
         function changeMonth(count) {
             // count=1: 下個月, count=-1: 上個月
@@ -125,9 +131,27 @@
                 .then(response => response.text())
                 .then(calendarHtml => {
                     document.querySelector('.calendar_days').innerHTML = calendarHtml;
+                    refresh_highlight();
                 });
             document.querySelector('.year_picker').textContent = year;
             document.querySelector('.month').textContent = monthNames[month - 1];
+        }
+
+        function refresh_highlight(){
+            fetch('refresh_highlight?year=' + year + '&month=' + month)
+                .then(response => response.json())
+                .then(eventDays => {
+                    eventDays.forEach(eventDay => {
+                        addHighlightEventDay(eventDay);
+                    });
+                });
+        }
+
+        function addHighlightEventDay(eventDay) {
+            var id = "#e_" + eventDay;
+            // alert("add highlight" + id);
+            document.querySelector(id).classList.remove('no_event');
+            document.querySelector(id).classList.add('event_highlight');
         }
 
         function selectDay() {
@@ -143,6 +167,7 @@
             document.querySelector("#" + id).setAttribute('class', 'selected_day');
 
         }
+
 
         // 在新增MemoItem的彈出視窗按下按鈕時並做出相應的行為
         let btn = document.querySelector("#show");
@@ -170,6 +195,11 @@
             // 獲取表單數據
             let formData = new FormData(document.getElementById('memoForm'));
 
+            // 取得新增的memoItem日期資訊來做日曆的highlight處理
+            let newMemoItemYear = document.getElementById('year').value;
+            let newMemoItemMonth = document.getElementById('month').value;
+            let newMemoItemDay = document.getElementById('day').value;
+
             // 使用 fetch API 提交表單數據
             fetch('/add_memo_item', {
                 method: 'POST',
@@ -183,6 +213,8 @@
                     updateMemoItem();
                     // 關閉彈出視窗
                     infoModal.close();
+                    // 更新日曆
+                    refresh_highlight();
                     // 初始化表單
                     document.getElementById('title').value = '';
                     document.getElementById('year').value = '2024';
@@ -275,6 +307,7 @@
                 .catch(error => console.error('Error fetching name:', error));
         }
 
+        // TODO: 刪除時更新日曆
         function deleteMemoItem(id) {
             // 使用 fetch API 發送請求
             fetch('/delete_memo_item/' + id, {

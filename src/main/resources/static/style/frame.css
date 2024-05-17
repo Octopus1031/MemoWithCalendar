@@ -136,7 +136,7 @@ h1 {
 }
 
 .no_event{
-    background-color: #dbc753;
+    /* background-color: #dbc753; */
     height: 5px;
     width: 40px;
     margin-bottom: 15px;

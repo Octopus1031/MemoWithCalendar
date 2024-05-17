@@ -1,10 +1,21 @@
 package com.example.memobackend;
-
 import java.time.LocalDate;
 import java.time.YearMonth;
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class Calendar {
     int MonthFirstDayWeek;
+    int showingYear, showingMonth;
+    MemoList memoList;
+
+    Calendar() {
+    }
+
+    Calendar( MemoList memoList) {
+        this.memoList = memoList;
+    }
 
     public String generateCalendarDays(int year, int month, int day) {
         try {
@@ -20,6 +31,10 @@ public class Calendar {
         } catch (Exception e) {
             return "Illegal date input!";
         }
+        // 儲存正在顯示的年月以做為後續更新日曆判別是否加上event highlight的參數
+        showingYear = year;
+        showingMonth = month;
+        System.out.println("update showingYear: " + showingYear + ", showingMonth: " + showingMonth);
         YearMonth yearMonth = YearMonth.of(year, month);
         LocalDate firstOfMonth = yearMonth.atDay(1);
         int daysInMonth = yearMonth.lengthOfMonth();
@@ -49,6 +64,7 @@ public class Calendar {
                     calendarHtml.append(htmlCode).append(initDay).append("</div>");
 
                     htmlCode_event += "<div class='no_event' id='e_" + initDay + "'></div>";
+
                     initDay++;
                 }
             }
@@ -64,5 +80,23 @@ public class Calendar {
 
     int getMonthFirstDayWeek() {
         return MonthFirstDayWeek;
+    }
+
+    // 取得當年月的所有有event的日期
+    public List<Integer> getMonthHighlightDays() {
+        List<Integer> monthHighlightDays = new ArrayList<>();
+        List<Integer> allMemoItemDay = memoList.getAllMemoItemDay();
+        System.out.println("memoList.getAllMemoItemDay().size(): " + allMemoItemDay.size());
+        for (Integer i : allMemoItemDay) {
+            int year = i / 10000;
+            if (year == showingYear) {
+                int month = (i % 10000) / 100;
+                if (month == showingMonth) {
+                    monthHighlightDays.add(i % 100);
+                }
+            }
+        }
+        System.out.println("showingYear: " + showingYear + ", showingMonth: " + showingMonth);
+        return monthHighlightDays;
     }
 }

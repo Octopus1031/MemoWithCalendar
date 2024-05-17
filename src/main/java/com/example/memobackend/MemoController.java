@@ -1,12 +1,15 @@
 package com.example.memobackend;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
 
 @RestController
 public class MemoController {
-    MemoList memoList = new MemoList();
+//    MemoList memoList = new MemoList();
+    @Autowired
+    private MemoList memoList;
 
     // 從MemoList中獲取MemoItem
     // 之後會看要不要新增ID搜尋，透過ID尋找指定的MemoList
