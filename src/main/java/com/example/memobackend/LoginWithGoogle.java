@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.exc.InvalidDefinitionException;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
@@ -15,7 +14,6 @@ public class LoginWithGoogle {
 
     // 取得登入的使用者資訊
     // 進入http://localhost:8080/user可以看到回傳的使用者資訊
-    // @RequestMapping(value = "/user")
     public Principal user(Principal principal) throws JsonProcessingException, InvalidDefinitionException {
         System.out.println("principal: ");
         System.out.println(principal.toString());
@@ -30,7 +28,6 @@ public class LoginWithGoogle {
 //    }
 
     // 取得登入的使用者Google資訊
-//    @RequestMapping(value = "/user_info")
     public Map<String, Object> userInfo(Principal principal) {
         OAuth2AuthenticationToken token = (OAuth2AuthenticationToken) principal;
         OAuth2User userInfo = token.getPrincipal();

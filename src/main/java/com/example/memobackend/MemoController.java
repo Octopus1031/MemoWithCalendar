@@ -7,7 +7,6 @@ import java.util.Set;
 
 @RestController
 public class MemoController {
-//    MemoList memoList = new MemoList();
     @Autowired
     private MemoList memoList;
 

@@ -1,12 +1,8 @@
 package com.example.memobackend;
 
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Component
 public class MemoList {
@@ -32,8 +28,6 @@ public class MemoList {
     public void removeMemoItemById(Long id) {
         MemoItem memoItem = findMemoItemById(id);
         memoItems.remove(memoItem);
-//          TODO:
-//        calendar.removeEventDay();
     }
 
     // 在集合中尋找具有特定 id 的 MemoItem
