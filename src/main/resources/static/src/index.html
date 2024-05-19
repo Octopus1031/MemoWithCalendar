@@ -131,13 +131,13 @@
                 .then(response => response.text())
                 .then(calendarHtml => {
                     document.querySelector('.calendar_days').innerHTML = calendarHtml;
-                    refresh_highlight();
+                    updateCalendarHighlight();
                 });
             document.querySelector('.year_picker').textContent = year;
             document.querySelector('.month').textContent = monthNames[month - 1];
         }
 
-        function refresh_highlight(){
+        function updateCalendarHighlight(){
             fetch('refresh_highlight?year=' + year + '&month=' + month)
                 .then(response => response.json())
                 .then(eventDays => {
@@ -152,6 +152,17 @@
             // alert("add highlight" + id);
             document.querySelector(id).classList.remove('no_event');
             document.querySelector(id).classList.add('event_highlight');
+        }
+
+        function deleteHighlightEventDay() {
+            fetch('/calendar?year=' + year + '&month=' + month + '&day=' + day)
+                .then(response => response.text())
+                .then(calendarHtml => {
+                    document.querySelector('.calendar_days').innerHTML = calendarHtml;
+                    updateCalendarHighlight();
+                });
+            document.querySelector('.year_picker').textContent = year;
+            document.querySelector('.month').textContent = monthNames[month - 1];
         }
 
         function selectDay() {
@@ -214,7 +225,7 @@
                     // 關閉彈出視窗
                     infoModal.close();
                     // 更新日曆
-                    refresh_highlight();
+                    updateCalendarHighlight();
                     // 初始化表單
                     document.getElementById('title').value = '';
                     document.getElementById('year').value = '2024';
@@ -319,6 +330,7 @@
                     }
                     // 更新 memoItem 的內容
                     updateMemoItem();
+                    deleteHighlightEventDay();
                 })
                 .catch(error => {
                     console.error('Error:', error);
