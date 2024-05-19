@@ -6,14 +6,14 @@ import java.util.List;
 
 
 public class Calendar {
-    int MonthFirstDayWeek;
-    int showingYear, showingMonth;
-    MemoList memoList;
+    private int MonthFirstDayWeek;
+    private int showingYear, showingMonth;
+    private MemoList memoList;
 
-    Calendar() {
+    public Calendar() {
     }
 
-    Calendar( MemoList memoList) {
+    public Calendar( MemoList memoList) {
         this.memoList = memoList;
     }
 

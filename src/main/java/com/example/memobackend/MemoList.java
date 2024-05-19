@@ -6,8 +6,8 @@ import java.util.*;
 
 @Component
 public class MemoList {
-    Set<MemoItem> memoItems;
-    Calendar calendar;
+    private Set<MemoItem> memoItems;
+    private Calendar calendar;
 
     public MemoList() {
         memoItems = new HashSet<>();
