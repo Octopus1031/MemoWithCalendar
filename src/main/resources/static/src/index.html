@@ -114,7 +114,6 @@
                 });
             document.querySelector('.year_picker').textContent = year;
             document.querySelector('.month').textContent = monthNames[month - 1];
-            // alert("success");
         }
 
         function changeMonth(count) {
@@ -318,7 +317,6 @@
                 .catch(error => console.error('Error fetching name:', error));
         }
 
-        // TODO: 刪除時更新日曆
         function deleteMemoItem(id) {
             // 使用 fetch API 發送請求
             fetch('/delete_memo_item/' + id, {
