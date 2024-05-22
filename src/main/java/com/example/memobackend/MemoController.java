@@ -10,9 +10,14 @@ public class MemoController {
 
     // 從MemoList中獲取MemoItem
     // 之後會看要不要新增ID搜尋，透過ID尋找指定的MemoList
-    @RequestMapping(value = "/get_memo_item")
+    @RequestMapping(value = "/get_memo_items")
     public Set<MemoItem> getMemoItemSetOfMemoList() {
         return memoList.getMemoItems();
+    }
+
+    @RequestMapping(value = "/get_memo_item/{id}")
+    public MemoItem getMemoItemOfMemoList(@PathVariable Long id) {
+        return memoList.getMemoItemById(id);
     }
 
     @PostMapping(value = "/add_memo_item")

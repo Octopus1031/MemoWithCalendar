@@ -11,15 +11,18 @@ public class MemoItem {
 
     String time; // time和alert_time的格式為yyyy/MM/dd hh:mm
 
+    String alertTimeSelection;
+
     String alert_time;
 
     String description;
 
-    Long id;
+    final Long id;
 
     public MemoItem(String title, String time, String alertTimeSelection, String description, Long id) {
         this.title = title;
         this.time = time;
+        this.alertTimeSelection = alertTimeSelection;
         this.alert_time = selectAlertTime(time, alertTimeSelection);
         this.description = description;
         this.id = id;
@@ -82,6 +85,10 @@ public class MemoItem {
         return this.time;
     }
 
+    public String getAlertTimeSelection() {
+        return this.alertTimeSelection;
+    }
+
     public String getAlertTime() {
         return this.alert_time;
     }
@@ -95,7 +102,7 @@ public class MemoItem {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(Object obj) { // 由於MemoItem內容會有被改變的可能，因此MemoItem間的比較以id為主
         if (this == obj) {
             return true;
         }
@@ -103,12 +110,11 @@ public class MemoItem {
             return false;
         }
         MemoItem other = (MemoItem) obj;
-        return title.equals(other.getTitle()) && time.equals(other.getTime())
-                && alert_time.equals(other.getAlertTime()) && description.equals(other.getDescription()); // id看情況比較
+        return id.equals(other.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(title, time, alert_time, description); // id看情況比較
+        return Objects.hash(id);
     }
 }

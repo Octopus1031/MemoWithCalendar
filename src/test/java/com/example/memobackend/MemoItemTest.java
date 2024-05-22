@@ -63,6 +63,7 @@ public class MemoItemTest {
         MemoItem memoItem = new MemoItem(title, time, alertTimeSelection, description, 0L);
         assertEquals("aaa", memoItem.getTitle());
         assertEquals("2024/04/29 15:00", memoItem.getTime());
+        assertEquals("", memoItem.getAlertTimeSelection());
         assertEquals("", memoItem.getAlertTime());
         assertEquals("123456", memoItem.getDescription());
         assertEquals(Optional.of(0L), Optional.of(memoItem.getId()));
