@@ -152,6 +152,11 @@ h1 {
     text-align: left; /*文字左對齊*/
 }
 
+.memo_item_edit_button {
+    margin-left: 280px; /*與delete按鈕之間縮小間距*/
+    border-radius: 8px; /*外框圓潤化*/
+}
+
 .memo_item_delete_button {
     color: white; /* 設置按鈕內部文字顏色為白色 */
     background-color: #FF3358; /* 新增此行 */

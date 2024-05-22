@@ -179,7 +179,7 @@
                     throw new Error('Network response was not ok');
                 }
                 // 更新 memoItem 的內容
-                updateMemoItem();
+                updateMemoItems();
                 // 關閉彈出視窗
                 infoModal.close();
                 // 初始化表單
@@ -243,10 +243,10 @@
         minuteSelect.appendChild(option);
     }
 
-    updateMemoItem();
+    updateMemoItems();
 
     // 輸出MemoItem的資訊
-    function updateMemoItem() {
+    function updateMemoItems() {
         let memoItemSet = document.getElementById('memoItem');
         memoItemSet.innerHTML = '';
         fetch('/get_memo_item')
@@ -257,12 +257,16 @@
                     if (memoItem.description !== "") {
                         setItem.innerHTML = `<span class="memo_item_title"><b>${memoItem.title}</b>
                                                  <br>${memoItem.description}<br>${memoItem.time}</span>
+                                                 <button class="memo_item_edit_button"
+                                                 onclick="">edit</button>
                                                  <button class="memo_item_delete_button"
                                                  onclick="deleteMemoItem(${memoItem.id})">delete</button>`;
                         setItem.style.height = "60px";
                     } else {
                         setItem.innerHTML = `<span class="memo_item_title"><b>${memoItem.title}</b>
                                                  <br>${memoItem.time}</span>
+                                                 <button class="memo_item_edit_button"
+                                                 onclick="">edit</button>
                                                  <button class="memo_item_delete_button"
                                                  onclick="deleteMemoItem(${memoItem.id})">delete</button>`;
                         setItem.style.height = "40px";
@@ -284,7 +288,7 @@
                     throw new Error('Network response was not ok');
                 }
                 // 更新 memoItem 的內容
-                updateMemoItem();
+                updateMemoItems();
             })
             .catch(error => {
                 console.error('Error:', error);

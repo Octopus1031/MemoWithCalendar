@@ -20,12 +20,12 @@ public class MemoItem {
     public MemoItem(String title, String time, String alertTimeSelection, String description, Long id) {
         this.title = title;
         this.time = time;
-        this.alert_time = SelectAlertTime(time, alertTimeSelection);
+        this.alert_time = selectAlertTime(time, alertTimeSelection);
         this.description = description;
         this.id = id;
     }
 
-    public String SelectAlertTime(String time, String alertTimeSelection) {
+    public String selectAlertTime(String time, String alertTimeSelection) {
         if (!Objects.equals(alertTimeSelection, "")) {
             // 將time的內容分離出年、月、日、時、分5個元素
             String regex = "(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2})";
@@ -65,6 +65,13 @@ public class MemoItem {
 //            case "1 week ago" -> standardTime.minusDays(7);
             default -> standardTime;
         };
+    }
+
+    public void editContent(String title, String time, String alertTimeSelection, String description) {
+        this.title = title;
+        this.time = time;
+        this.alert_time = selectAlertTime(time, alertTimeSelection);
+        this.description = description;
     }
 
     public String getTitle() {

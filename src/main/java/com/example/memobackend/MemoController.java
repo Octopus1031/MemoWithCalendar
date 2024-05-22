@@ -36,4 +36,18 @@ public class MemoController {
         Long memoItemId = Long.parseLong(id);
         memoList.removeMemoItemById(memoItemId);
     }
+
+    @PutMapping(value = "/edit_memo_item/{id}")
+    public void editMemoItem(@PathVariable Long id,
+                             @RequestParam("title") String title,
+                             @RequestParam("year") String year,
+                             @RequestParam("month") String month,
+                             @RequestParam("day") String day,
+                             @RequestParam("hour") String hour,
+                             @RequestParam("minute") String minute,
+                             @RequestParam("alertTimeSelection") String alertTimeSelection,
+                             @RequestParam("description") String description) {
+        String time = year + '/' + month + '/' + day + ' ' + hour + ':' + minute;
+        memoList.editContentOfMemoItemById(title, time, alertTimeSelection, description, id);
+    }
 }
