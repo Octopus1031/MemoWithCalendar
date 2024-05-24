@@ -27,8 +27,8 @@
                     <label for="day"></label>
                     <label for="hour"></label>
                     <label for="minute"></label>
-                    <select id="year" name="year"></select><label> /</label>
-                    <select id="month" name="month"></select><label> /</label>
+                    <select id="year" name="year" onchange="updateDays()"></select><label> /</label>
+                    <select id="month" name="month" onchange="updateDays()"></select><label> /</label>
                     <select id="day" name="day"></select><br>
                     <select id="hour" name="hour"></select><label> :</label>
                     <select id="minute" name="minute"></select><br>
@@ -267,6 +267,24 @@
             option.text = day;
             daySelect.appendChild(option);
         }
+
+        function updateDays(){
+            const year = document.getElementById('year').value;
+            const month = document.getElementById('month').value;
+            const daySelect = document.getElementById('day');
+            const daysInMonth = new Date(year, month, 0).getDate();
+
+            daySelect.innerHTML = ''; // Clear previous options
+
+            for (let i = 1; i <= daysInMonth; i++) {
+                const option = document.createElement('option');
+                let day = i < 10 ? '0' + i : i;
+                option.value = day;
+                option.textContent = day;
+                daySelect.appendChild(option);
+            }
+        }
+
         // 動態生成小時選項
         let hourSelect = document.getElementById("hour");
         for (let i = 0; i < 24; i++) {
