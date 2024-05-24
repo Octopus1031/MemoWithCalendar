@@ -117,4 +117,28 @@ public class MemoItem {
     public int hashCode() {
         return Objects.hash(id);
     }
+
+    // return format is yyyyMMdd
+    public int parsedDay(){
+        String time = this.time;
+        String regex = "(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2})";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(time);
+        int year = 0, month = 0, day = 0;
+        try {
+            if (matcher.matches()) {
+                year = Integer.parseInt(matcher.group(1));
+                month = Integer.parseInt(matcher.group(2));
+                day = Integer.parseInt(matcher.group(3));
+            } else {
+                throw new IllegalArgumentException("未找到匹配的日期時間格式！");
+            }
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+        day = year* 10000 + month * 100 + day;
+        return day;
+    }
+
+
 }
