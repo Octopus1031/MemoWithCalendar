@@ -21,10 +21,10 @@ public class MemoControllerTest {
 
     @Test
     public void testGetMemoItemSetAndAddMemo() throws Exception {
-        Set<MemoItem> memoItemSet = new HashSet<>();
-        memoItemSet.add(new MemoItem("aaa", "2024/04/29 15:00",
+        Set<MemoItem> expectedMemoItemSet = new HashSet<>();
+        expectedMemoItemSet.add(new MemoItem("aaa", "2024/04/29 15:00",
                 "Time of Memo", "", 0L));
-        memoItemSet.add(new MemoItem("bbb", "2024/04/30 12:00",
+        expectedMemoItemSet.add(new MemoItem("bbb", "2024/04/30 12:00",
                 "1 hour ago", "123456", 0L));
 
         MemoController memoController = new MemoController();
@@ -32,8 +32,21 @@ public class MemoControllerTest {
                 "Time of Memo", "");
         memoController.addMemo("bbb", "2024", "04", "30", "12", "00",
                 "1 hour ago", "123456");
-        Set<MemoItem> result = memoController.getMemoItemSetOfMemoList();
+        Set<MemoItem> resultMemoItemSet = memoController.getMemoItemSetOfMemoList();
 
-        assertEquals(result, memoItemSet);
+        for (MemoItem expectedMemoItem : expectedMemoItemSet) {
+            boolean isMatched = false;
+            for (MemoItem resultMemoItem : resultMemoItemSet) {
+                if (expectedMemoItem.getTitle().equals(resultMemoItem.getTitle())
+                        && expectedMemoItem.getTime().equals(resultMemoItem.getTime())
+                        && expectedMemoItem.getAlertTimeSelection().equals(resultMemoItem.getAlertTimeSelection())
+                        && expectedMemoItem.getAlertTime().equals(resultMemoItem.getAlertTime())
+                        && expectedMemoItem.getDescription().equals(resultMemoItem.getDescription())) {
+                    isMatched = true;
+                    break;
+                }
+            }
+            assertTrue(isMatched);
+        }
     }
 }

@@ -176,69 +176,94 @@
             var id = event.target.id;
             document.querySelector("#" + id).setAttribute('class', 'selected_day');
 
+    // 在新增MemoItem的彈出視窗按下按鈕時並做出相應的行為
+    let btn = document.querySelector("#show");
+    btn.addEventListener("click", function () {
+        openAddDialog();
+    })
+    let cancel = document.querySelector("#cancel");
+    cancel.addEventListener("click", function () {
+        document.querySelector("#infoModal").close();
+        resetForm();
+    })
+    function openAddDialog() {
+        openDialog(0);
+    }
+    function openEditDialog(id) {
+        openDialog(id);
+    }
+    function openDialog(id) {
+        let infoModal = document.querySelector("#infoModal");
+        let submit = document.querySelector("#submit");
+        let form = document.getElementById('memoForm');
+
+        if (id === 0) {
+            // Add operation
+            form.action = '/add_memo_item';
+            submit.onclick = function(event) {
+                event.preventDefault();
+                submitForm('POST');
+            };
+        } else {
+            // Edit operation
+            form.action = '/edit_memo_item/' + id;
+            submit.onclick = function(event) {
+                event.preventDefault();
+                submitForm('PUT');
+            };
+            fetch('/get_memo_item/' + id)
+                .then(response => response.json())
+                .then(memoItem => {
+                    document.getElementById('title').value = memoItem.title;
+                    let dateTime = memoItem.time.split(' ');
+                    let date = dateTime[0].split('/');
+                    let time = dateTime[1].split(':');
+                    document.getElementById('year').value = date[0];
+                    document.getElementById('month').value = date[1];
+                    document.getElementById('day').value = date[2];
+                    document.getElementById('hour').value = time[0];
+                    document.getElementById('minute').value = time[1];
+                    document.getElementById('alertTimeSelection').value = memoItem.alertTimeSelection;
+                    document.getElementById('description').value = memoItem.description;
+                })
+                .catch(error => console.error('Error:', error));
         }
 
+        infoModal.showModal();
+    }
+    function submitForm(method) {
+        let formData = new FormData(document.getElementById('memoForm'));
+        let actionUrl = document.getElementById('memoForm').action;
 
-        // 在新增MemoItem的彈出視窗按下按鈕時並做出相應的行為
-        let btn = document.querySelector("#show");
-        let infoModal = document.querySelector("#infoModal");
-        let cancel = document.querySelector("#cancel");
-        btn.addEventListener("click", function () {
-            infoModal.showModal();
+        fetch(actionUrl, {
+            method: method,
+            body: formData
         })
-        cancel.addEventListener("click", function () {
-            infoModal.close();
-            // 初始化表單
-            document.getElementById('title').value = '';
-            document.getElementById('year').value = '2024';
-            document.getElementById('month').value = '01';
-            document.getElementById('day').value = '01';
-            document.getElementById('hour').value = '00';
-            document.getElementById('minute').value = '00';
-            document.getElementById('alertTimeSelection').value = '';
-            document.getElementById('description').value = '';
-        })
-        let submit = document.querySelector("#submit");
-        submit.addEventListener("click", function (event) {
-            event.preventDefault(); // 防止表單提交後的頁面刷新
-
-            // 獲取表單數據
-            let formData = new FormData(document.getElementById('memoForm'));
-
-            // 取得新增的memoItem日期資訊來做日曆的highlight處理
-            let newMemoItemYear = document.getElementById('year').value;
-            let newMemoItemMonth = document.getElementById('month').value;
-            let newMemoItemDay = document.getElementById('day').value;
-
-            // 使用 fetch API 提交表單數據
-            fetch('/add_memo_item', {
-                method: 'POST',
-                body: formData
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                updateMemoItems();
+                document.querySelector("#infoModal").close();
+                // 更新日曆
+                updateCalendarHighlight();
+                resetForm();
             })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    // 更新 memoItem 的內容
-                    updateMemoItem();
-                    // 關閉彈出視窗
-                    infoModal.close();
-                    // 更新日曆
-                    updateCalendarHighlight();
-                    // 初始化表單
-                    document.getElementById('title').value = '';
-                    document.getElementById('year').value = '2024';
-                    document.getElementById('month').value = '01';
-                    document.getElementById('day').value = '01';
-                    document.getElementById('hour').value = '00';
-                    document.getElementById('minute').value = '00';
-                    document.getElementById('alertTimeSelection').value = '';
-                    document.getElementById('description').value = '';
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-        })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+    // 初始化表單
+    function resetForm() {
+        document.getElementById('title').value = '';
+        document.getElementById('year').value = '2024';
+        document.getElementById('month').value = '01';
+        document.getElementById('day').value = '01';
+        document.getElementById('hour').value = '00';
+        document.getElementById('minute').value = '00';
+        document.getElementById('alertTimeSelection').value = '';
+        document.getElementById('description').value = '';
+    }
 
         // 動態生成年份選項
         let currentYear = new Date().getFullYear();
@@ -318,12 +343,16 @@
                         if (memoItem.description !== "") {
                             setItem.innerHTML = `<span class="memo_item_title"><b>${memoItem.title}</b>
                                                  <br>${memoItem.description}<br>${memoItem.time}</span>
+                                                 <button class="memo_item_edit_button"
+                                                 onclick="openEditDialog(${memoItem.id})">edit</button>
                                                  <button class="memo_item_delete_button"
                                                  onclick="deleteMemoItem(${memoItem.id})">delete</button>`;
                             setItem.style.height = "60px";
                         } else {
                             setItem.innerHTML = `<span class="memo_item_title"><b>${memoItem.title}</b>
                                                  <br>${memoItem.time}</span>
+                                                 <button class="memo_item_edit_button"
+                                                 onclick="openEditDialog(${memoItem.id})">edit</button>
                                                  <button class="memo_item_delete_button"
                                                  onclick="deleteMemoItem(${memoItem.id})">delete</button>`;
                             setItem.style.height = "40px";
@@ -345,7 +374,7 @@
                         throw new Error('Network response was not ok');
                     }
                     // 更新 memoItem 的內容
-                    updateMemoItem();
+                    updateMemoItems();
                     deleteHighlightEventDay();
                 })
                 .catch(error => {

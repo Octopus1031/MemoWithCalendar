@@ -26,18 +26,8 @@ public class MemoList {
 
     // 刪除集合中的某個 memoItem
     public void removeMemoItemById(Long id) {
-        MemoItem memoItem = findMemoItemById(id);
+        MemoItem memoItem = getMemoItemById(id);
         memoItems.remove(memoItem);
-    }
-
-    // 在集合中尋找具有特定 id 的 MemoItem
-    public MemoItem findMemoItemById(Long id) {
-        for (MemoItem memoItem : memoItems) {
-            if (memoItem.getId().equals(id)) {
-                return memoItem;
-            }
-        }
-        return null;
     }
 
     public Long generateId() {
@@ -61,10 +51,26 @@ public class MemoList {
         return false;
     }
 
+    public void editContentOfMemoItemById(String title, String time, String alertTimeSelection,
+                                            String description, Long id) {
+        MemoItem memoItem = getMemoItemById(id);
+        memoItem.editContent(title, time, alertTimeSelection, description);
+    }
+
     public Set<MemoItem> getMemoItems() {
         return this.memoItems;
     }
 
+    // 在集合中尋找具有特定 id 的 MemoItem
+    public MemoItem getMemoItemById(Long id) {
+        for (MemoItem memoItem : memoItems) {
+            if (memoItem.getId().equals(id)) {
+                return memoItem;
+            }
+        }
+        return null;
+    }
+  
     // 取得所有的日期
     public List<Integer> getAllMemoItemDay(){
         List<Integer> days = new ArrayList<>();
@@ -78,5 +84,4 @@ public class MemoList {
     public Calendar getCalendar() {
         return calendar;
     }
-
 }
