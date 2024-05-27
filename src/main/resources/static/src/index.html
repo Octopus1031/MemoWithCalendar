@@ -413,12 +413,16 @@ function resetForm() {
                         setItem.innerHTML = `<span class="memo_item_title"><b>${memoItem.title}</b><br>${memoItem.description}<br>${memoItem.time}</span>
                                              ${labelsHtml}
                                              <button onclick="selectLabelOpen(${memoItem.id})" id="label">add label</button>
+                                             <button class="memo_item_edit_button"
+                                             onclick="openEditDialog(${memoItem.id})">edit</button>
                                              <button class="memo_item_delete_button" onclick="deleteMemoItem(${memoItem.id})">delete</button>`;
                         //setItem.style.height = "60px";
                     } else {
                         setItem.innerHTML = `<span class="memo_item_title"><b>${memoItem.title}</b><br>${memoItem.time}</span>
                                              ${labelsHtml}
                                              <button onclick="selectLabelOpen(${memoItem.id})" id="label">add label</button>
+                                             <button class="memo_item_edit_button"
+                                             onclick="openEditDialog(${memoItem.id})">edit</button>
                                              <button class="memo_item_delete_button" onclick="deleteMemoItem(${memoItem.id})">delete</button>`;
                         //setItem.style.height = "40px";
                     }
