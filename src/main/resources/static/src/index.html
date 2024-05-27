@@ -27,8 +27,8 @@
                 <label for="day"></label>
                 <label for="hour"></label>
                 <label for="minute"></label>
-                <select id="year" name="year" onchange="updateDays()"></select><label> /</label>
-                <select id="month" name="month" onchange="updateDays()"></select><label> /</label>
+                <select id="year" name="year" onchange="updateFormDaysOption()"></select><label> /</label>
+                <select id="month" name="month" onchange="updateFormDaysOption()"></select><label> /</label>
                 <select id="day" name="day"></select><br>
                 <select id="hour" name="hour"></select><label> :</label>
                 <select id="minute" name="minute"></select><br>
@@ -246,7 +246,7 @@ function submitForm(method) {
             updateMemoItem();
             document.querySelector("#infoModal").close();
             // 更新日曆
-            updateCalendarHighlight();
+            deleteHighlightEventDay();
             resetForm();
         })
         .catch(error => {
@@ -263,6 +263,7 @@ function resetForm() {
     document.getElementById('minute').value = '00';
     document.getElementById('alertTimeSelection').value = '';
     document.getElementById('description').value = '';
+    updateFormDaysOption();
 }
 
     // 動態生成年份選項
@@ -293,7 +294,7 @@ function resetForm() {
         daySelect.appendChild(option);
     }
 
-    function updateDays(){
+    function updateFormDaysOption(){
         const year = document.getElementById('year').value;
         const month = document.getElementById('month').value;
         const daySelect = document.getElementById('day');
