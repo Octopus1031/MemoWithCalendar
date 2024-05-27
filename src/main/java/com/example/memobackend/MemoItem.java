@@ -73,6 +73,7 @@ public class MemoItem {
     public void editContent(String title, String time, String alertTimeSelection, String description) {
         this.title = title;
         this.time = time;
+        this.alertTimeSelection = alertTimeSelection;
         this.alert_time = selectAlertTime(time, alertTimeSelection);
         this.description = description;
     }

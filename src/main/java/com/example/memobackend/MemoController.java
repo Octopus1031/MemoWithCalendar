@@ -8,7 +8,7 @@ import java.util.Set;
 @RestController
 public class MemoController {
     @Autowired
-    private MemoList memoList;
+    private MemoList memoList = new MemoList();
 
     // 從MemoList中獲取MemoItem
     // 之後會看要不要新增ID搜尋，透過ID尋找指定的MemoList
