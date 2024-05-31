@@ -43,8 +43,8 @@
                 <label for="day"></label>
                 <label for="hour"></label>
                 <label for="minute"></label>
-                <select id="year" name="year" onchange="updateDays()"></select><label> /</label>
-                <select id="month" name="month" onchange="updateDays()"></select><label> /</label>
+                <select id="year" name="year" onchange="updateFormDaysOption()"></select><label> /</label>
+                <select id="month" name="month" onchange="updateFormDaysOption()"></select><label> /</label>
                 <select id="day" name="day"></select><br>
                 <select id="hour" name="hour"></select><label> :</label>
                 <select id="minute" name="minute"></select><br>
@@ -72,6 +72,9 @@
     </div>
     <div class="block_calendar">
         <div class="calendar">
+            <div>
+                <button class="calendar_add_but" onclick="openAddByCalendarDialog()">+</button>
+            </div>
             <div class="calendar_header">
                 <div class="year_picker">
                     <!-- 年份 -->
@@ -104,6 +107,7 @@
 
 <script>
     var today, year, month, day;
+    var selectDayNum = -1; // -1表示未選擇日期
     var monthNames = ["一月", "二月", "三月", "四月", "五月", "六月",
         "七月", "八月", "九月", "十月", "十一月", "十二月"];
     window.onload = function () {
@@ -111,8 +115,8 @@
         fetch('/user_info')
             .then(response => response.json())
             .then(userInfo => {
-                document.getElementById('username').textContent = userInfo["given_name"];
-            });
+            document.getElementById('username').textContent = userInfo["given_name"];
+        });
 
         // 製作行事曆
         generateCalendar();
@@ -123,11 +127,12 @@
         year = today.getFullYear();
         month = today.getMonth() + 1;
         day = today.getDate();
+        selectDayNum = day;
         fetch('/calendar?year=' + year + '&month=' + month + '&day=' + day)
             .then(response => response.text())
             .then(calendarHtml => {
-                document.querySelector('.calendar_days').innerHTML = calendarHtml;
-            });
+            document.querySelector('.calendar_days').innerHTML = calendarHtml;
+        });
         document.querySelector('.year_picker').textContent = year;
         document.querySelector('.month').textContent = monthNames[month - 1];
     }
@@ -142,12 +147,22 @@
             month = 12;
             year -= 1;
         }
+        // 如果不是當年月，則日期設為1
+        if( !(year==today.getFullYear() && month==today.getMonth()+1) ){
+            day = 1;
+            selectDayNum = -1;
+        }
+        else{
+            day = today.getDate();
+            selectDayNum = day;
+        }
+        console.log("year: " + year + ", month: " + month + ", day: " + day);
         fetch('/calendar?year=' + year + '&month=' + month + '&day=' + day)
             .then(response => response.text())
             .then(calendarHtml => {
-                document.querySelector('.calendar_days').innerHTML = calendarHtml;
-                updateCalendarHighlight();
-            });
+            document.querySelector('.calendar_days').innerHTML = calendarHtml;
+            updateCalendarHighlight();
+        });
         document.querySelector('.year_picker').textContent = year;
         document.querySelector('.month').textContent = monthNames[month - 1];
     }
@@ -156,10 +171,10 @@
         fetch('refresh_highlight?year=' + year + '&month=' + month)
             .then(response => response.json())
             .then(eventDays => {
-                eventDays.forEach(eventDay => {
-                    addHighlightEventDay(eventDay);
-                });
+            eventDays.forEach(eventDay => {
+                addHighlightEventDay(eventDay);
             });
+        });
     }
 
     function addHighlightEventDay(eventDay) {
@@ -173,9 +188,9 @@
         fetch('/calendar?year=' + year + '&month=' + month + '&day=' + day)
             .then(response => response.text())
             .then(calendarHtml => {
-                document.querySelector('.calendar_days').innerHTML = calendarHtml;
-                updateCalendarHighlight();
-            });
+            document.querySelector('.calendar_days').innerHTML = calendarHtml;
+            updateCalendarHighlight();
+        });
         document.querySelector('.year_picker').textContent = year;
         document.querySelector('.month').textContent = monthNames[month - 1];
     }
@@ -190,86 +205,117 @@
 
         // 改變被選擇日期的樣式
         var id = event.target.id;
+        selectDayNum = id.split("_")[1];
+        console.log("selectDayNum: " + selectDayNum);
         document.querySelector("#" + id).setAttribute('class', 'selected_day');
     }
-// 在新增MemoItem的彈出視窗按下按鈕時並做出相應的行為
-let btn = document.querySelector("#show");
-btn.addEventListener("click", function () {
-    openAddDialog();
-})
-let cancel = document.querySelector("#cancel");
-cancel.addEventListener("click", function () {
-    document.querySelector("#infoModal").close();
-    resetForm();
-})
-function openAddDialog() {
-    openDialog(0);
-}
-function openEditDialog(id) {
-    openDialog(id);
-}
-function openDialog(id) {
-    let infoModal = document.querySelector("#infoModal");
-    let submit = document.querySelector("#submit");
-    let form = document.getElementById('memoForm');
-
-    if (id === 0) {
-        // Add operation
-        form.action = '/add_memo_item';
-        submit.onclick = function(event) {
-            event.preventDefault();
-            submitForm('POST');
-        };
-    } else {
-        // Edit operation
-        form.action = '/edit_memo_item/' + id;
-        submit.onclick = function(event) {
-            event.preventDefault();
-            submitForm('PUT');
-        };
-        fetch('/get_memo_item/' + id)
-            .then(response => response.json())
-            .then(memoItem => {
-                document.getElementById('title').value = memoItem.title;
-                let dateTime = memoItem.time.split(' ');
-                let date = dateTime[0].split('/');
-                let time = dateTime[1].split(':');
-                document.getElementById('year').value = date[0];
-                document.getElementById('month').value = date[1];
-                document.getElementById('day').value = date[2];
-                document.getElementById('hour').value = time[0];
-                document.getElementById('minute').value = time[1];
-                document.getElementById('alertTimeSelection').value = memoItem.alertTimeSelection;
-                document.getElementById('description').value = memoItem.description;
-            })
-            .catch(error => console.error('Error:', error));
-    }
-
-    infoModal.showModal();
-}
-function submitForm(method) {
-    let formData = new FormData(document.getElementById('memoForm'));
-    let actionUrl = document.getElementById('memoForm').action;
-
-    fetch(actionUrl, {
-        method: method,
-        body: formData
+    // 在新增MemoItem的彈出視窗按下按鈕時並做出相應的行為
+    let btn = document.querySelector("#show");
+    btn.addEventListener("click", function () {
+        openAddDialog();
     })
-        .then(response => {
+    let cancel = document.querySelector("#cancel");
+    cancel.addEventListener("click", function () {
+        document.querySelector("#infoModal").close();
+        resetForm();
+    })
+    function openAddDialog() {
+        openDialog(0, 0);
+    }
+    function openEditDialog(id) {
+        openDialog(id, 0);
+    }
+    function openAddByCalendarDialog() {
+        if(selectDayNum != -1)
+        openDialog(0, 1);
+        else
+        alert("Please select a day first.");
+    }
+    function openDialog(id, type) {
+        let infoModal = document.querySelector("#infoModal");
+        let submit = document.querySelector("#submit");
+        let form = document.getElementById('memoForm');
+
+        if (type === 0){ // 0: memo
+            if (id === 0) {
+                // Add operation
+                form.action = '/add_memo_item';
+                submit.onclick = function(event) {
+                    event.preventDefault();
+                    submitForm('POST');
+                };
+            } else {
+                // Edit operation
+                form.action = '/edit_memo_item/' + id;
+                submit.onclick = function(event) {
+                    event.preventDefault();
+                    submitForm('PUT');
+                };
+                fetch('/get_memo_item/' + id)
+                    .then(response => response.json())
+                    .then(memoItem => {
+                    document.getElementById('title').value = memoItem.title;
+                    let dateTime = memoItem.time.split(' ');
+                    let date = dateTime[0].split('/');
+                    let time = dateTime[1].split(':');
+                    document.getElementById('year').value = date[0];
+                    document.getElementById('month').value = date[1];
+                    document.getElementById('day').value = date[2];
+                    document.getElementById('hour').value = time[0];
+                    document.getElementById('minute').value = time[1];
+                    document.getElementById('alertTimeSelection').value = memoItem.alertTimeSelection;
+                    document.getElementById('description').value = memoItem.description;
+                })
+                    .catch(error => console.error('Error:', error));
+            }
+        } else { // 1: calendar
+            form.action = '/add_memo_item';
+            submit.onclick = function(event) {
+                event.preventDefault();
+                submitForm('POST');
+
+                // 非當年月，新增完會消除嗨賴，故需要重製為-1
+                if( !(year==today.getFullYear() && month==today.getMonth()+1) ){
+                    selectDayNum = -1;
+                }
+            };
+
+            document.getElementById('year').value = year;
+            if(month<10)
+            document.getElementById('month').value = '0' + month;
+            else
+            document.getElementById('month').value = month;
+
+            if(selectDayNum<10)
+            document.getElementById('day').value = '0' +selectDayNum;
+            else
+            document.getElementById('day').value = selectDayNum;
+        }
+
+        infoModal.showModal();
+    }
+    function submitForm(method) {
+        let formData = new FormData(document.getElementById('memoForm'));
+        let actionUrl = document.getElementById('memoForm').action;
+
+        fetch(actionUrl, {
+            method: method,
+            body: formData
+        })
+            .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
             updateMemoItem();
             document.querySelector("#infoModal").close();
             // 更新日曆
-            updateCalendarHighlight();
+            deleteHighlightEventDay();
             resetForm();
         })
-        .catch(error => {
+            .catch(error => {
             console.error('Error:', error);
         });
-}
-
+    }
     let addLabel = document.querySelector("#addLabel");
     let LabelModal = document.querySelector("#LabelModal");
     let LabelSubmit = document.querySelector("#LabelSubmit");
@@ -310,17 +356,17 @@ function submitForm(method) {
             });
         console.log()
     })
-// 初始化表單
-function resetForm() {
-    document.getElementById('title').value = '';
-    document.getElementById('year').value = '2024';
-    document.getElementById('month').value = '01';
-    document.getElementById('day').value = '01';
-    document.getElementById('hour').value = '00';
-    document.getElementById('minute').value = '00';
-    document.getElementById('alertTimeSelection').value = '';
-    document.getElementById('description').value = '';
-}
+    // 初始化表單
+    function resetForm() {
+        document.getElementById('title').value = '';
+        document.getElementById('year').value = '2024';
+        document.getElementById('month').value = '01';
+        document.getElementById('day').value = '01';
+        document.getElementById('hour').value = '00';
+        document.getElementById('minute').value = '00';
+        document.getElementById('alertTimeSelection').value = '';
+        document.getElementById('description').value = '';
+    }
 
     // 動態生成年份選項
     let currentYear = new Date().getFullYear();
@@ -350,7 +396,7 @@ function resetForm() {
         daySelect.appendChild(option);
     }
 
-    function updateDays(){
+    function updateFormDaysOption(){
         const year = document.getElementById('year').value;
         const month = document.getElementById('month').value;
         const daySelect = document.getElementById('day');
@@ -430,6 +476,7 @@ function resetForm() {
                     memoItemSet.appendChild(setItem);
                 })
             })
+        })
             .catch(error => console.error('Error fetching name:', error));
 
         let selectLabel = document.getElementById('addLabelForm');
@@ -487,16 +534,16 @@ function resetForm() {
             method: 'DELETE'
         })
             .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                // 更新 memoItem 的內容
-                updateMemoItem();
-                deleteHighlightEventDay();
-            })
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            // 更新 memoItem 的內容
+            updateMemoItem();
+            deleteHighlightEventDay();
+        })
             .catch(error => {
-                console.error('Error:', error);
-            });
+            console.error('Error:', error);
+        });
     }
 
     function selectLabelOpen(id) {

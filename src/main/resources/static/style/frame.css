@@ -120,6 +120,10 @@ h1 {
     /* margin: 10px; */
 }
 
+.calendar_add_but {
+    margin-bottom: 5px;
+}
+
 .unselected_day {
     height: 50px;
     aspect-ratio: 1;
