@@ -30,6 +30,22 @@ public class MemoList {
         memoItems.remove(memoItem);
     }
 
+    public void addLabelOnMemoItem(long id, List<String> labels) {
+        MemoItem memoItem = findMemoItemById(id);
+        for(String label : labels) {
+            memoItem.addLabel(new Label(label));
+        }
+    }
+
+    public MemoItem findMemoItemById(Long id) {
+        for (MemoItem memoItem : memoItems) {
+            if (memoItem.getId().equals(id)) {
+                return memoItem;
+            }
+        }
+        return null;
+    }
+
     public Long generateId() {
         Long id;
         // 生成隨機數字

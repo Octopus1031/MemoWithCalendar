@@ -17,6 +17,22 @@
     <div class="block_memo">
         <!-- 自定義按鈕 -->
         <button id="show">+</button>
+        <button id="addLabel">新增標籤</button>
+        <dialog id="selectLabel">
+            <form id="addLabelForm" action="/click_label" method="post" target="hidden_iframe">
+
+            </form>
+            <button onclick="selectLabelClose()">cancel</button>
+        </dialog>
+        <dialog id="LabelModal"> <!-- 彈出新增MemoItem的視窗 -->
+            <form id="LabelForm" action="/add_label" method="post" target="hidden_iframe">
+                <label for="title">LabelName:</label><br>
+                <input type="text" id="LabelTitle" name="title"><br>
+                <button id="LabelSubmit">submit</button>
+            </form>
+            <iframe name="hidden_iframe" style="display:none;"></iframe>
+            <button id="LabelCancel">cancel</button>
+        </dialog>
         <dialog id="infoModal"> <!-- 彈出新增MemoItem的視窗 -->
             <form id="memoForm" action="/add_memo_item" method="post" target="hidden_iframe">
                 <label for="title">Title:</label><br>
@@ -300,6 +316,46 @@
             console.error('Error:', error);
         });
     }
+    let addLabel = document.querySelector("#addLabel");
+    let LabelModal = document.querySelector("#LabelModal");
+    let LabelSubmit = document.querySelector("#LabelSubmit");
+    let LabelCancel = document.querySelector("#LabelCancel");
+    addLabel.addEventListener("click", function () {
+        LabelModal.showModal();
+    })
+
+    LabelCancel.addEventListener("click", function () {
+        LabelModal.close();
+        document.getElementById('LabelTitle').value = '';
+    })
+
+    LabelSubmit.addEventListener("click", function (event) {
+        event.preventDefault(); // 防止表單提交後的頁面刷新
+
+        // 獲取表單數據
+        let formData = new FormData(document.getElementById('LabelForm'));
+
+        // 使用 fetch API 提交表單數據
+        fetch('/add_label', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                // 更新 memoItem 的內容
+                updateMemoItem();
+                // 關閉彈出視窗
+                LabelModal.close();
+                // 初始化表單
+                document.getElementById('LabelTitle').value = '';
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        console.log()
+    })
     // 初始化表單
     function resetForm() {
         document.getElementById('title').value = '';
@@ -310,7 +366,6 @@
         document.getElementById('minute').value = '00';
         document.getElementById('alertTimeSelection').value = '';
         document.getElementById('description').value = '';
-        updateFormDaysOption();
     }
 
     // 動態生成年份選項
@@ -379,6 +434,7 @@
 
     updateMemoItem();
 
+    let getClickMemoItemId;
     // 輸出MemoItem的資訊
     function updateMemoItem() {
         let memoItemSet = document.getElementById('memoItem');
@@ -386,30 +442,90 @@
         fetch('/get_memo_items')
             .then(response => response.json())
             .then(memoItems => {
-            memoItems.forEach(memoItem => {
-                const setItem = document.createElement('div');
-                if (memoItem.description !== "") {
-                    setItem.innerHTML = `<span class="memo_item_title"><b>${memoItem.title}</b>
-											 <br>${memoItem.description}<br>${memoItem.time}</span>
-											 <button class="memo_item_edit_button"
-											 onclick="openEditDialog(${memoItem.id})">edit</button>
-											 <button class="memo_item_delete_button"
-											 onclick="deleteMemoItem(${memoItem.id})">delete</button>`;
-                    setItem.style.height = "60px";
-                } else {
-                    setItem.innerHTML = `<span class="memo_item_title"><b>${memoItem.title}</b>
-											 <br>${memoItem.time}</span>
-											 <button class="memo_item_edit_button"
-											 onclick="openEditDialog(${memoItem.id})">edit</button>
-											 <button class="memo_item_delete_button"
-											 onclick="deleteMemoItem(${memoItem.id})">delete</button>`;
-                    setItem.style.height = "40px";
-                }
-                setItem.className = "memo_item";
-                memoItemSet.appendChild(setItem);
+                memoItems.forEach(memoItem => {
+                    const setItem = document.createElement('div');
+
+                    let labelsHtml = '';
+                    console.log(memoItem.labelSet.length)
+                    if (memoItem.labelSet && memoItem.labelSet.length > 0) {
+                        labelsHtml = '<ul>';
+                        memoItem.labelSet.forEach(label => {
+                            labelsHtml += `<li>${label.name}</li>`;
+                        });
+                        labelsHtml += '</ul>';
+                    }
+
+                    if (memoItem.description !== "") {
+                        setItem.innerHTML = `<span class="memo_item_title"><b>${memoItem.title}</b><br>${memoItem.description}<br>${memoItem.time}</span>
+                                             ${labelsHtml}
+                                             <button onclick="selectLabelOpen(${memoItem.id})" id="label">add label</button>
+                                             <button class="memo_item_edit_button"
+                                             onclick="openEditDialog(${memoItem.id})">edit</button>
+                                             <button class="memo_item_delete_button" onclick="deleteMemoItem(${memoItem.id})">delete</button>`;
+                        //setItem.style.height = "60px";
+                    } else {
+                        setItem.innerHTML = `<span class="memo_item_title"><b>${memoItem.title}</b><br>${memoItem.time}</span>
+                                             ${labelsHtml}
+                                             <button onclick="selectLabelOpen(${memoItem.id})" id="label">add label</button>
+                                             <button class="memo_item_edit_button"
+                                             onclick="openEditDialog(${memoItem.id})">edit</button>
+                                             <button class="memo_item_delete_button" onclick="deleteMemoItem(${memoItem.id})">delete</button>`;
+                        //setItem.style.height = "40px";
+                    }
+                    setItem.className = "memo_item";
+                    memoItemSet.appendChild(setItem);
+                })
             })
         })
             .catch(error => console.error('Error fetching name:', error));
+
+        let selectLabel = document.getElementById('addLabelForm');
+        selectLabel.innerHTML = '<span>請選擇想要新增的標籤</span>';
+        fetch('/get_label')
+            .then(response => response.json())
+            .then(labelList => {
+                labelList.forEach(label => {
+                    const setItem = document.createElement('div');
+                    setItem.innerHTML = `<input type="checkbox" id="${label.name}" name="labels" value="${label.name}"/>
+                                         <label for="${label.name}">${label.name}</label>`;
+                    setItem.className = "label";
+                    selectLabel.appendChild(setItem);
+                })
+                selectLabel.innerHTML += '<br><button onclick="addLabelSubmit(getClickMemoItemId)">submit</button><br>';
+            })
+            .catch(error => console.error('Error fetching name:', error));
+    }
+
+    function addLabelSubmit(){
+        //event.preventDefault(); // 防止表單提交後的頁面刷新
+
+        const selectedLabels = [];
+        document.querySelectorAll('input[name="labels"]:checked').forEach(checkbox => {
+            selectedLabels.push(checkbox.value);
+        });
+        // 使用 fetch API 提交表單數據
+        console.log(selectedLabels)
+        fetch('/click_label', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8',
+            },
+            body: JSON.stringify({id: getClickMemoItemId, labels: selectedLabels}),
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                // 更新 memoItem 的內容
+                updateMemoItem();
+                // 關閉彈出視窗
+                selectLabelClose();
+                // 初始化表單
+                document.getElementById('LabelTitle').value = '';
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
     }
 
     function deleteMemoItem(id) {
@@ -428,6 +544,16 @@
             .catch(error => {
             console.error('Error:', error);
         });
+    }
+
+    function selectLabelOpen(id) {
+        getClickMemoItemId = id;
+        let selectLabel = document.getElementById('selectLabel');
+        selectLabel.showModal();
+    }
+    function selectLabelClose() {
+        let selectLabel = document.getElementById('selectLabel');
+        selectLabel.close();
     }
 </script>
 </body>
