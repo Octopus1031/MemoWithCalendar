@@ -56,6 +56,9 @@
     </div>
     <div class="block_calendar">
         <div class="calendar">
+            <div>
+                <button class="calendar_add_but" onclick="openAddByCalendarDialog()">+</button>
+            </div>
             <div class="calendar_header">
                 <div class="year_picker">
                     <!-- 年份 -->
@@ -88,6 +91,7 @@
 
 <script>
     var today, year, month, day;
+    var selectDayNum = -1; // -1表示未選擇日期
     var monthNames = ["一月", "二月", "三月", "四月", "五月", "六月",
         "七月", "八月", "九月", "十月", "十一月", "十二月"];
     window.onload = function () {
@@ -107,6 +111,7 @@
         year = today.getFullYear();
         month = today.getMonth() + 1;
         day = today.getDate();
+        selectDayNum = day;
         fetch('/calendar?year=' + year + '&month=' + month + '&day=' + day)
             .then(response => response.text())
             .then(calendarHtml => {
@@ -129,6 +134,11 @@
         // 如果不是當年月，則日期設為1
         if( !(year==today.getFullYear() && month==today.getMonth()+1) ){
             day = 1;
+            selectDayNum = -1;
+        }
+        else{
+            day = today.getDate();
+            selectDayNum = day;
         }
         console.log("year: " + year + ", month: " + month + ", day: " + day);
         fetch('/calendar?year=' + year + '&month=' + month + '&day=' + day)
@@ -179,6 +189,8 @@
 
         // 改變被選擇日期的樣式
         var id = event.target.id;
+        selectDayNum = id.split("_")[1];
+        console.log("selectDayNum: " + selectDayNum);
         document.querySelector("#" + id).setAttribute('class', 'selected_day');
     }
 // 在新增MemoItem的彈出視窗按下按鈕時並做出相應的行為
@@ -192,46 +204,75 @@ cancel.addEventListener("click", function () {
     resetForm();
 })
 function openAddDialog() {
-    openDialog(0);
+    openDialog(0, 0);
 }
 function openEditDialog(id) {
-    openDialog(id);
+    openDialog(id, 0);
 }
-function openDialog(id) {
+function openAddByCalendarDialog() {
+    if(selectDayNum != -1)
+        openDialog(0, 1);
+    else
+        alert("Please select a day first.");
+}
+function openDialog(id, type) {
     let infoModal = document.querySelector("#infoModal");
     let submit = document.querySelector("#submit");
     let form = document.getElementById('memoForm');
 
-    if (id === 0) {
-        // Add operation
+    if (type === 0){ // 0: memo
+        if (id === 0) {
+            // Add operation
+            form.action = '/add_memo_item';
+            submit.onclick = function(event) {
+                event.preventDefault();
+                submitForm('POST');
+            };
+        } else {
+            // Edit operation
+            form.action = '/edit_memo_item/' + id;
+            submit.onclick = function(event) {
+                event.preventDefault();
+                submitForm('PUT');
+            };
+            fetch('/get_memo_item/' + id)
+                .then(response => response.json())
+                .then(memoItem => {
+                    document.getElementById('title').value = memoItem.title;
+                    let dateTime = memoItem.time.split(' ');
+                    let date = dateTime[0].split('/');
+                    let time = dateTime[1].split(':');
+                    document.getElementById('year').value = date[0];
+                    document.getElementById('month').value = date[1];
+                    document.getElementById('day').value = date[2];
+                    document.getElementById('hour').value = time[0];
+                    document.getElementById('minute').value = time[1];
+                    document.getElementById('alertTimeSelection').value = memoItem.alertTimeSelection;
+                    document.getElementById('description').value = memoItem.description;
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    } else { // 1: calendar
         form.action = '/add_memo_item';
         submit.onclick = function(event) {
             event.preventDefault();
             submitForm('POST');
+            selectDayNum = -1;
         };
-    } else {
-        // Edit operation
-        form.action = '/edit_memo_item/' + id;
-        submit.onclick = function(event) {
-            event.preventDefault();
-            submitForm('PUT');
-        };
-        fetch('/get_memo_item/' + id)
-            .then(response => response.json())
-            .then(memoItem => {
-                document.getElementById('title').value = memoItem.title;
-                let dateTime = memoItem.time.split(' ');
-                let date = dateTime[0].split('/');
-                let time = dateTime[1].split(':');
-                document.getElementById('year').value = date[0];
-                document.getElementById('month').value = date[1];
-                document.getElementById('day').value = date[2];
-                document.getElementById('hour').value = time[0];
-                document.getElementById('minute').value = time[1];
-                document.getElementById('alertTimeSelection').value = memoItem.alertTimeSelection;
-                document.getElementById('description').value = memoItem.description;
-            })
-            .catch(error => console.error('Error:', error));
+
+        // TODO: 當月進行操作時，新增完了後仍會選擇當天，但目前都會在新增後把選擇的日期reset
+        // 非當月進行操作時，新增後仍會選擇剛選擇的那天，但gui未顯示（現用260進行reset）
+        // 再想想怎麼設計比較好
+        document.getElementById('year').value = year;
+        if(month<10)
+            document.getElementById('month').value = '0' + month;
+        else
+            document.getElementById('month').value = month;
+
+        if(selectDayNum<10)
+            document.getElementById('day').value = '0' +selectDayNum;
+        else
+            document.getElementById('day').value = selectDayNum;
     }
 
     infoModal.showModal();
