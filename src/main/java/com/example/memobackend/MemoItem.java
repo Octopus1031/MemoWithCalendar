@@ -1,6 +1,8 @@
 package com.example.memobackend;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.time.LocalDateTime;
@@ -18,6 +20,8 @@ public class MemoItem {
     String description;
 
     final Long id;
+
+    Set<Label> labelList = new HashSet<>();
 
     public MemoItem(String title, String time, String alertTimeSelection, String description, Long id) {
         this.title = title;
@@ -99,6 +103,13 @@ public class MemoItem {
 
     public Long getId() {
         return this.id;
+    }
+
+    public void addLabel(Label label) {
+        labelList.add(label);
+    }
+    public Set<Label> getLabelSet() {
+        return this.labelList;
     }
 
     @Override

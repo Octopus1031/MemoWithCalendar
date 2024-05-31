@@ -3,6 +3,8 @@ package com.example.memobackend;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @RestController
@@ -56,5 +58,18 @@ public class MemoController {
                              @RequestParam("description") String description) {
         String time = year + '/' + month + '/' + day + ' ' + hour + ':' + minute;
         memoList.editContentOfMemoItemById(title, time, alertTimeSelection, description, id);
+    }
+
+    @PostMapping("/click_label")
+    public void handleLabelClick(@RequestBody Map<String, Object> payload) {
+        long GetId = ((Number) payload.get("id")).longValue();
+        List<String> labels = (List<String>) payload.get("labels");
+
+        System.out.println("Received ID: " + GetId);
+        System.out.println("Received labels: " + labels);
+
+        memoList.addLabelOnMemoItem(GetId, labels);
+
+        //return new ResponseEntity<>("Labels received", HttpStatus.OK);
     }
 }
