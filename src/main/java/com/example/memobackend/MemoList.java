@@ -88,11 +88,11 @@ public class MemoList {
     }
   
     // 取得所有的日期
-    public List<Integer> getAllMemoItemDay(){
+    public List<Integer> getAllMemoItemParseDayFormatToInt(){
         List<Integer> days = new ArrayList<>();
         System.out.println("memoItems.size(): " + memoItems.size());
         for (MemoItem memoItem : memoItems) {
-            days.add(memoItem.parsedDay());
+            days.add(memoItem.parseDayFormatToInt());
         }
         return days;
     }
