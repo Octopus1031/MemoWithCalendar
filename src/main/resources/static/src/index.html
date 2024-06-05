@@ -341,19 +341,19 @@
             body: formData
         })
             .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                // 更新 memoItem 的內容
-                updateMemoItem();
-                // 關閉彈出視窗
-                LabelModal.close();
-                // 初始化表單
-                document.getElementById('LabelTitle').value = '';
-            })
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            // 更新 memoItem 的內容
+            updateMemoItem();
+            // 關閉彈出視窗
+            LabelModal.close();
+            // 初始化表單
+            document.getElementById('LabelTitle').value = '';
+        })
             .catch(error => {
-                console.error('Error:', error);
-            });
+            console.error('Error:', error);
+        });
         console.log()
     })
     // 初始化表單
@@ -442,39 +442,38 @@
         fetch('/get_memo_items')
             .then(response => response.json())
             .then(memoItems => {
-                memoItems.forEach(memoItem => {
-                    const setItem = document.createElement('div');
+            memoItems.forEach(memoItem => {
+                const setItem = document.createElement('div');
 
-                    let labelsHtml = '';
-                    console.log(memoItem.labelSet.length)
-                    if (memoItem.labelSet && memoItem.labelSet.length > 0) {
-                        labelsHtml = '<ul>';
-                        memoItem.labelSet.forEach(label => {
-                            labelsHtml += `<li>${label.name}</li>`;
-                        });
-                        labelsHtml += '</ul>';
-                    }
+                let labelsHtml = '';
+                console.log(memoItem.labelSet.length)
+                if (memoItem.labelSet && memoItem.labelSet.length > 0) {
+                    labelsHtml = '<ul>';
+                    memoItem.labelSet.forEach(label => {
+                        labelsHtml += `<li>${label.name}</li>`;
+                    });
+                    labelsHtml += '</ul>';
+                }
 
-                    if (memoItem.description !== "") {
-                        setItem.innerHTML = `<span class="memo_item_title"><b>${memoItem.title}</b><br>${memoItem.description}<br>${memoItem.time}</span>
+                if (memoItem.description !== "") {
+                    setItem.innerHTML = `<span class="memo_item_title"><b>${memoItem.title}</b><br>${memoItem.description}<br>${memoItem.time}</span>
                                              ${labelsHtml}
                                              <button onclick="selectLabelOpen(${memoItem.id})" id="label">add label</button>
                                              <button class="memo_item_edit_button"
                                              onclick="openEditDialog(${memoItem.id})">edit</button>
                                              <button class="memo_item_delete_button" onclick="deleteMemoItem(${memoItem.id})">delete</button>`;
-                        //setItem.style.height = "60px";
-                    } else {
-                        setItem.innerHTML = `<span class="memo_item_title"><b>${memoItem.title}</b><br>${memoItem.time}</span>
+                    //setItem.style.height = "60px";
+                } else {
+                    setItem.innerHTML = `<span class="memo_item_title"><b>${memoItem.title}</b><br>${memoItem.time}</span>
                                              ${labelsHtml}
                                              <button onclick="selectLabelOpen(${memoItem.id})" id="label">add label</button>
                                              <button class="memo_item_edit_button"
                                              onclick="openEditDialog(${memoItem.id})">edit</button>
                                              <button class="memo_item_delete_button" onclick="deleteMemoItem(${memoItem.id})">delete</button>`;
-                        //setItem.style.height = "40px";
-                    }
-                    setItem.className = "memo_item";
-                    memoItemSet.appendChild(setItem);
-                })
+                    //setItem.style.height = "40px";
+                }
+                setItem.className = "memo_item";
+                memoItemSet.appendChild(setItem);
             })
         })
             .catch(error => console.error('Error fetching name:', error));
@@ -484,15 +483,15 @@
         fetch('/get_label')
             .then(response => response.json())
             .then(labelList => {
-                labelList.forEach(label => {
-                    const setItem = document.createElement('div');
-                    setItem.innerHTML = `<input type="checkbox" id="${label.name}" name="labels" value="${label.name}"/>
+            labelList.forEach(label => {
+                const setItem = document.createElement('div');
+                setItem.innerHTML = `<input type="checkbox" id="${label.name}" name="labels" value="${label.name}"/>
                                          <label for="${label.name}">${label.name}</label>`;
-                    setItem.className = "label";
-                    selectLabel.appendChild(setItem);
-                })
-                selectLabel.innerHTML += '<br><button onclick="addLabelSubmit(getClickMemoItemId)">submit</button><br>';
+                setItem.className = "label";
+                selectLabel.appendChild(setItem);
             })
+            selectLabel.innerHTML += '<br><button onclick="addLabelSubmit(getClickMemoItemId)">submit</button><br>';
+        })
             .catch(error => console.error('Error fetching name:', error));
     }
 
@@ -513,19 +512,19 @@
             body: JSON.stringify({id: getClickMemoItemId, labels: selectedLabels}),
         })
             .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                // 更新 memoItem 的內容
-                updateMemoItem();
-                // 關閉彈出視窗
-                selectLabelClose();
-                // 初始化表單
-                document.getElementById('LabelTitle').value = '';
-            })
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            // 更新 memoItem 的內容
+            updateMemoItem();
+            // 關閉彈出視窗
+            selectLabelClose();
+            // 初始化表單
+            document.getElementById('LabelTitle').value = '';
+        })
             .catch(error => {
-                console.error('Error:', error);
-            });
+            console.error('Error:', error);
+        });
     }
 
     function deleteMemoItem(id) {
