@@ -23,8 +23,15 @@ h1 {
 .block_memo {
     flex: 1;
     margin: 10px;
-    background-color: #e27f95;
-    overflow-y: scroll; /* 允許垂直滾動 */
+    background-color: #f7c3ce;
+    /* overflow-y: scroll; */
+    /* 允許垂直滾動 */
+}
+
+.memo_box {
+    overflow-y: scroll;
+    /* 允許垂直滾動 */
+    height: 100%;
 }
 
 .block_calendar {
@@ -35,20 +42,20 @@ h1 {
 }
 
 .calendar {
-    height: 90%;
+    /* height: 90%; */
     width: 90%;
     border-radius: 30px;
     padding: 20px;
     position: relative;
     background-color: #f0f0f0;
-    margin-bottom: 10px;
+    /* margin-bottom: 10px; */
 }
 
 .calendar_header {
     text-align: center;
     font-size: 20px;
     padding: 10px;
-    background-color: #5CADAD;
+    background-color: #7dc4ca;
     border: 1px solid #5c5c5c;
     border-radius: 20px 20px 0 0;
 }
@@ -98,7 +105,8 @@ h1 {
     border-right: 1px solid #5c5c5c;
     border-bottom: 1px solid #5c5c5c;
     border-radius: 0 0 20px 20px;
-    background-color: #D1E9E9;
+    background-color: #FFFFFF;
+    margin-bottom: 10px;
 }
 
 .calendar_days {
@@ -127,6 +135,7 @@ h1 {
 .unselected_day {
     height: 50px;
     aspect-ratio: 1;
+    color: #565c6a;
     /* margin: 10px; */
 }
 
@@ -134,12 +143,12 @@ h1 {
     height: 50px;
     aspect-ratio: 1;
     /* margin: 10px; */
-    background-color: #48916e;
+    background-color: #565c6a;
     color: white;
     border-radius: 50%;
 }
 
-.no_event{
+.no_event {
     /* background-color: #dbc753; */
     height: 5px;
     width: 40px;
@@ -155,12 +164,58 @@ h1 {
     margin-top: -5px;
 }
 
+.color-picker {
+    display: flex;
+    justify-content: center;
+    background: #ffffff55;
+    border-radius: 2.5vmax;
+    gap: 0.5vmax;
+    padding: 0.5vmax 1vmax;
+    box-shadow: 0 0.3vmax 1vmax #00000022;
+}
+
+.color-option {
+    width: 2.5vmax;
+    height: 2.5vmax;
+    cursor: pointer;
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+}
+
+.color-option:hover {
+    box-shadow: 0 0 1vmax #ffdb4d55;
+}
+
+.color-picker input[type="color"] {
+    width: 5vw;
+    height: 5vw;
+    opacity: 0;
+    cursor: pointer;
+}
+
+#color_font::after, #color_bgheader::after, #color_bgbody::after{
+    content: "+";
+    font-size: 0.5em;
+    top: 50%;
+    left: 50%;
+    pointer-events: none;
+    position: absolute;
+    color: #000;
+    transform: translate(-50%, -50%);
+    font-size: 1.5rem;
+}
+
 .title {
-    font-size: 24px; /* 放大文字大小 */
-    font-weight: bold; /* 設置粗體 */
-    text-align: center; /* 文字置中 */
+    font-size: 24px;
+    /* 放大文字大小 */
+    font-weight: bold;
+    /* 設置粗體 */
+    text-align: center;
+    /* 文字置中 */
     /*border-bottom: 1px solid #ccc; !* 添加底部邊線 *!*/
-    padding: 10px; /* 在底線下添加一些間距 */
+    padding: 10px;
+    /* 在底線下添加一些間距 */
     /*margin-bottom: 5px;*/
 }
 
@@ -178,26 +233,34 @@ h1 {
     /*對內部字體*/
     display: flex;
     justify-content: space-between;
-    align-items: center; /*縱向居中對齊*/
+    align-items: center;
+    /*縱向居中對齊*/
 
     /*設定memoItem與背景框外圍的*/
-    margin-left: 10px; /* 設定右邊間距 */
+    margin-left: 10px;
+    /* 設定右邊間距 */
     margin-bottom: 5px;
 }
 
 .memo_item_title {
-    text-align: left; /*文字左對齊*/
+    text-align: left;
+    /*文字左對齊*/
 }
 
 .memo_item_edit_button {
-    margin-left: 280px; /*與delete按鈕之間縮小間距*/
-    border-radius: 8px; /*外框圓潤化*/
+    margin-left: 280px;
+    /*與delete按鈕之間縮小間距*/
+    border-radius: 8px;
+    /*外框圓潤化*/
 }
 
 .memo_item_delete_button {
-    color: white; /* 設置按鈕內部文字顏色為白色 */
-    background-color: #FF3358; /* 新增此行 */
-    border-radius: 8px; /*外框圓潤化*/
+    color: white;
+    /* 設置按鈕內部文字顏色為白色 */
+    background-color: #FF3358;
+    /* 新增此行 */
+    border-radius: 8px;
+    /*外框圓潤化*/
 }
 
 .add_memo {
