@@ -233,7 +233,7 @@
         document.querySelector('.month').textContent = monthNames[month - 1];
     }
 
-    function updateCalendarHighlight(){
+    function updateCalendarHighlight() {
         fetch('refresh_highlight?year=' + year + '&month=' + month)
             .then(response => response.json())
             .then(eventDays => {
@@ -275,6 +275,7 @@
         console.log("selectDayNum: " + selectDayNum);
         document.querySelector("#" + id).setAttribute('class', 'selected_day');
     }
+
     // 在新增MemoItem的彈出視窗按下按鈕時並做出相應的行為
     let btn = document.querySelector("#show");
     btn.addEventListener("click", function () {
@@ -360,6 +361,7 @@
 
         infoModal.showModal();
     }
+
     function submitForm(method) {
         let formData = new FormData(document.getElementById('memoForm'));
         let actionUrl = document.getElementById('memoForm').action;
@@ -688,6 +690,62 @@
         selectLabel.close();
     }
 
+    // 計算到下一分鐘開始還有多少毫秒
+    let now = new Date();
+    let delay = 60 * 1000 - (now.getSeconds() * 1000 + now.getMilliseconds());
+    // 在下一分鐘開始時執行第一次檢查
+    setTimeout(function() {
+        checkAlertTimes();
+        // 然後每分鐘檢查一次
+        setInterval(checkAlertTimes, 60 * 1000);
+    }, delay);
+    function checkAlertTimes() {
+        // 在網頁載入時，從後端獲取所有的 MemoItem
+        fetch('/get_memo_items')
+            .then(response => response.json())
+            .then(memoItems => {
+                memoItems.forEach(memoItem => {
+                    const alertTime = new Date(memoItem.time);
+                    console.log(alertTime);
+                    const now = new Date();
+                    const delay = alertTime.getTime() - now.getTime();
+                    console.log(delay);
+                    if (delay >= -1000 && delay <= 1000) {
+                        // 如果 MemoItem 的 alert_time 還沒到達，則設定一個定時器在 alert_time 到達時播放提醒聲
+                        setTimeout(() => {
+                            const audio = new Audio('other/alert_sound.mp3');
+                            audio.play();
+
+                            // 創建彈出視窗
+                            let dialog = document.createElement('dialog');
+                            dialog.id = 'dialog_' + memoItem.id; // 彈出視窗的elementID會加上memoitem的id
+                            dialog.style.width = "100px"; // 設定彈出視窗的寬度
+                            dialog.style.height = "80px"; // 設定彈出視窗的高度
+
+                            // 顯示 memoItem 的 title
+                            let title = document.createElement('p');
+                            title.textContent = memoItem.title;
+                            dialog.appendChild(title);
+
+                            // 創建關閉按鈕
+                            let closeButton = document.createElement('button');
+                            closeButton.textContent = 'Close';
+                            closeButton.onclick = function() {
+                                dialog.close();
+                            };
+                            dialog.appendChild(closeButton);
+
+                            // 將彈出視窗添加到頁面中
+                            document.body.appendChild(dialog);
+
+                            // 顯示彈出視窗
+                            dialog.showModal();
+                        }, delay);
+                    }
+                });
+            });
+    }
+    
     function changeFontColor(color){
         // 遍歷所有的style，找到.unselected_day改變它的顏色設定
         for (let i = 0; i < document.styleSheets.length; i++) {
@@ -706,7 +764,7 @@
     function changeMemoBackgroundColor(color){
         document.querySelector('.block_memo').style.backgroundColor = color;
     }
-    
+  
     function changeCalendarBackgroundColor(color){
         document.querySelector('.calendar_body').style.backgroundColor = color;
     }
