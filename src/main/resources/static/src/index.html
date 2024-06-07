@@ -17,7 +17,10 @@
     <div class="block_memo">
         <!-- 自定義按鈕 -->
         <button id="show">+</button>
-        <button id="addLabel">新增標籤</button>
+        <button id="addLabel">新增標籤</button><br>
+        <div id="labelFilterContainer">
+
+        </div>
         <dialog id="selectLabel">
             <form id="addLabelForm" action="/click_label" method="post" target="hidden_iframe">
 
@@ -300,6 +303,7 @@ function submitForm(method) {
                 }
                 // 更新 memoItem 的內容
                 updateMemoItem();
+                fetchAndDisplayLabels();
                 // 關閉彈出視窗
                 LabelModal.close();
                 // 初始化表單
@@ -385,7 +389,71 @@ function resetForm() {
         option.text = minute;
         minuteSelect.appendChild(option);
     }
+    function fetchAndDisplayLabels() {
+        fetch('/get_label')
+            .then(response => response.json())
+            .then(labels => {
+                const labelContainer = document.getElementById('labelFilterContainer');
+                labelContainer.innerHTML = '<button onclick="updateMemoItem()">All</button>';
 
+                labels.forEach(label => {
+                    const button = document.createElement('button');
+                    button.textContent = label.name;
+                    button.onclick = () => filterMemoItemsByLabel(label.name);
+                    labelContainer.appendChild(button);
+                });
+            })
+            .catch(error => console.error('Error fetching labels:', error));
+    }
+
+    function filterMemoItemsByLabel(labelName) {
+        fetch(`/get_memo_items_by_label?label=${encodeURIComponent(labelName)}`)
+            .then(response => response.json())
+            .then(memoItems => {
+                displayMemoItems(memoItems);
+            })
+            .catch(error => console.error('Error fetching memo items:', error));
+    }
+
+    function displayMemoItems(memoItems) {
+        const memoItemContainer = document.getElementById('memoItem');
+        memoItemContainer.innerHTML = '';
+
+        memoItems.forEach(memoItem => {
+            const setItem = document.createElement('div');
+
+            let labelsHtml = '';
+            console.log(memoItem.labelSet)
+            if (memoItem.labelSet && memoItem.labelSet.length > 0) {
+                labelsHtml = '<ul>';
+                memoItem.labelSet.forEach(label => {
+                    labelsHtml += `<li>${label.name}</li>`;
+                });
+                labelsHtml += '</ul>';
+            }
+
+            if (memoItem.description !== "") {
+                setItem.innerHTML = `<span class="memo_item_title"><b>${memoItem.title}</b><br>${memoItem.description}<br>${memoItem.time}</span>
+                                 ${labelsHtml}
+                                 <button onclick="selectLabelOpen(${memoItem.id})" id="label">add label</button>
+                                 <button class="memo_item_edit_button"
+                                 onclick="openEditDialog(${memoItem.id})">edit</button>
+                                 <button class="memo_item_delete_button" onclick="deleteMemoItem(${memoItem.id})">delete</button>`;
+            } else {
+                setItem.innerHTML = `<span class="memo_item_title"><b>${memoItem.title}</b><br>${memoItem.time}</span>
+                                 ${labelsHtml}
+                                 <button onclick="selectLabelOpen(${memoItem.id})" id="label">add label</button>
+                                 <button class="memo_item_edit_button"
+                                 onclick="openEditDialog(${memoItem.id})">edit</button>
+                                 <button class="memo_item_delete_button" onclick="deleteMemoItem(${memoItem.id})">delete</button>`;
+            }
+            setItem.className = "memo_item";
+            memoItemContainer.appendChild(setItem);
+        });
+    }
+
+    // 调用函数获取和显示标签
+    fetchAndDisplayLabels();
     updateMemoItem();
 
     let getClickMemoItemId;
@@ -444,7 +512,7 @@ function resetForm() {
                     setItem.className = "label";
                     selectLabel.appendChild(setItem);
                 })
-                selectLabel.innerHTML += '<br><button onclick="addLabelSubmit(getClickMemoItemId)">submit</button><br>';
+                selectLabel.innerHTML += '<br><button onclick="addLabelSubmit()">submit</button><br>';
             })
             .catch(error => console.error('Error fetching name:', error));
     }

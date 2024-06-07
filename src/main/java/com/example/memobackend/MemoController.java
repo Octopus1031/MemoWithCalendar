@@ -1,11 +1,11 @@
 package com.example.memobackend;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @RestController
 public class MemoController {
@@ -71,5 +71,19 @@ public class MemoController {
         memoList.addLabelOnMemoItem(GetId, labels);
 
         //return new ResponseEntity<>("Labels received", HttpStatus.OK);
+    }
+
+    @GetMapping("/get_memo_items_by_label")
+    public ResponseEntity<Set<MemoItem>> getMemoItemsByLabel(@RequestParam String label) {
+        Set<MemoItem> memoItems = new HashSet<>();
+        Set<MemoItem> oldMemoItems = memoList.getMemoItems();
+        for (MemoItem memoItem : oldMemoItems) {
+            for (Label memoLabel : memoItem.getLabelSet()) {
+                if (Objects.equals(memoLabel.getName(), label)) {
+                    memoItems.add(memoItem);
+                }
+            }
+        }
+        return new ResponseEntity<>(memoItems, HttpStatus.OK);
     }
 }
