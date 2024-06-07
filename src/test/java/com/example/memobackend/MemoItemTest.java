@@ -68,4 +68,15 @@ public class MemoItemTest {
         assertEquals("123456", memoItem.getDescription());
         assertEquals(Optional.of(0L), Optional.of(memoItem.getId()));
     }
+
+    @Test
+    public void parseDayFormatToInt() throws Exception {
+        String title = "aaa";
+        String time = "2024/06/05 15:00";
+        String alertTimeSelection = "Time of Memo";
+        String description = "123456";
+        MemoItem memoItem = new MemoItem(title, time, alertTimeSelection, description, 0L);
+        assertEquals(20240605, memoItem.parseDayFormatToInt());
+
+    }
 }

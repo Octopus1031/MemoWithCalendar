@@ -12,69 +12,93 @@
 <div>
     <h1>Memo With Calendar</h1>
 </div>
-<div>歡迎，<span id="username"></span>！</div>
+<div>Welcome! <span id="username"></span></div>
 <div class="container">
     <div class="block_memo">
-        <!-- 自定義按鈕 -->
-        <button id="show">+</button>
-        <button id="addLabel">新增標籤</button><br>
-        <div id="labelFilterContainer">
+        <div class="memo_box">
+            <!-- 自定義按鈕 -->
+            <button id="show">+</button>
+            <button id="addLabel">新增標籤</button><br>
+            <div id="labelFilterContainer">
 
+            </div>
+            <dialog id="selectLabel">
+                <form id="addLabelForm" action="/click_label" method="post" target="hidden_iframe">
+
+                </form>
+                <button onclick="selectLabelClose()">cancel</button>
+            </dialog>
+            <dialog id="LabelModal"> <!-- 彈出新增MemoItem的視窗 -->
+                <form id="LabelForm" action="/add_label" method="post" target="hidden_iframe">
+                    <label for="title">LabelName:</label><br>
+                    <input type="text" id="LabelTitle" name="title"><br>
+                    <button id="LabelSubmit">submit</button>
+                </form>
+                <iframe name="hidden_iframe" style="display:none;"></iframe>
+                <button id="LabelCancel">cancel</button>
+            </dialog>
+            <dialog id="infoModal"> <!-- 彈出新增MemoItem的視窗 -->
+                <form id="memoForm" action="/add_memo_item" method="post" target="hidden_iframe">
+                    <label for="title">Title:</label><br>
+                    <input type="text" id="title" name="title"><br>
+                    <label>Time</label><br>
+                    <label for="year"></label>
+                    <label for="month"></label>
+                    <label for="day"></label>
+                    <label for="hour"></label>
+                    <label for="minute"></label>
+                    <select id="year" name="year" onchange="updateFormDaysOption()"></select><label> /</label>
+                    <select id="month" name="month" onchange="updateFormDaysOption()"></select><label> /</label>
+                    <select id="day" name="day"></select><br>
+                    <select id="hour" name="hour"></select><label> :</label>
+                    <select id="minute" name="minute"></select><br>
+                    <label for="alertTimeSelection">Alert Time:</label><br>
+                    <select id="alertTimeSelection" name="alertTimeSelection">
+                        <option value=""></option>
+                        <option value="Time of Memo">Time of Memo</option>
+                        <option value="5 minutes ago">5 minutes ago</option>
+                        <option value="10 minutes ago">10 minutes ago</option>
+                        <option value="15 minutes ago">15 minutes ago</option>
+                        <option value="30 minutes ago">30 minutes ago</option>
+                        <option value="1 hour ago">1 hour ago</option>
+                        <option value="2 hours ago">2 hours ago</option>
+                    </select><br>
+                    <label for="description">Description:</label><br>
+                    <textarea id="description" name="description"></textarea><br><br>
+                    <button id="submit">submit</button>
+                </form>
+                <iframe name="hidden_iframe" style="display:none;"></iframe>
+                <button id="cancel">cancel</button>
+            </dialog>
+            <!-- 標題 -->
+            <div class="title">Memo List</div>
+            <div id="memoItem"></div>
         </div>
-        <dialog id="selectLabel">
-            <form id="addLabelForm" action="/click_label" method="post" target="hidden_iframe">
-
-            </form>
-            <button onclick="selectLabelClose()">cancel</button>
-        </dialog>
-        <dialog id="LabelModal"> <!-- 彈出新增MemoItem的視窗 -->
-            <form id="LabelForm" action="/add_label" method="post" target="hidden_iframe">
-                <label for="title">LabelName:</label><br>
-                <input type="text" id="LabelTitle" name="title"><br>
-                <button id="LabelSubmit">submit</button>
-            </form>
-            <iframe name="hidden_iframe" style="display:none;"></iframe>
-            <button id="LabelCancel">cancel</button>
-        </dialog>
-        <dialog id="infoModal"> <!-- 彈出新增MemoItem的視窗 -->
-            <form id="memoForm" action="/add_memo_item" method="post" target="hidden_iframe">
-                <label for="title">Title:</label><br>
-                <input type="text" id="title" name="title"><br>
-                <label>Time</label><br>
-                <label for="year"></label>
-                <label for="month"></label>
-                <label for="day"></label>
-                <label for="hour"></label>
-                <label for="minute"></label>
-                <select id="year" name="year" onchange="updateDays()"></select><label> /</label>
-                <select id="month" name="month" onchange="updateDays()"></select><label> /</label>
-                <select id="day" name="day"></select><br>
-                <select id="hour" name="hour"></select><label> :</label>
-                <select id="minute" name="minute"></select><br>
-                <label for="alertTimeSelection">Alert Time:</label><br>
-                <select id="alertTimeSelection" name="alertTimeSelection">
-                    <option value=""></option>
-                    <option value="Time of Memo">Time of Memo</option>
-                    <option value="5 minutes ago">5 minutes ago</option>
-                    <option value="10 minutes ago">10 minutes ago</option>
-                    <option value="15 minutes ago">15 minutes ago</option>
-                    <option value="30 minutes ago">30 minutes ago</option>
-                    <option value="1 hour ago">1 hour ago</option>
-                    <option value="2 hours ago">2 hours ago</option>
-                </select><br>
-                <label for="description">Description:</label><br>
-                <textarea id="description" name="description"></textarea><br><br>
-                <button id="submit">submit</button>
-            </form>
-            <iframe name="hidden_iframe" style="display:none;"></iframe>
-            <button id="cancel">cancel</button>
-        </dialog>
-        <!-- 標題 -->
-        <div class="title">Memo List</div>
-        <div id="memoItem"></div>
+        <div class="memoColorPickerBox">
+            <span>Background Color</span>
+            <span class="color-picker">
+                <div class="color-option" style="background-color: #7aaaf1" onclick="changeMemoBackgroundColor('#7aaaf1')"></div>
+                <div class="color-option" style="background-color: #8683ff" onclick="changeMemoBackgroundColor('#8683ff')"></div>
+                <div class="color-option" style="background-color: #e683bc" onclick="changeMemoBackgroundColor('#e683bc')"></div>
+                <div class="color-option" style="background-color: #ff788c" onclick="changeMemoBackgroundColor('#ff788c')"></div>
+                <div class="color-option" style="background-color: #ff8d7b" onclick="changeMemoBackgroundColor('#ff8d7b')"></div>
+                <div class="color-option" style="background-color: #f8d175" onclick="changeMemoBackgroundColor('#f8d175')"></div>
+                <div class="color-option" style="background-color: #9ac78f" onclick="changeMemoBackgroundColor('#9ac78f')"></div>
+                <div class="color-option" style="background-color: #7dc4ca" onclick="changeMemoBackgroundColor('#7dc4ca')"></div>
+                <div class="color-option" style="background-color: #FFFFFF" onclick="changeMemoBackgroundColor('#FFFFFF')"></div>
+                <div class="color-option" style="background-color: #565c6a" onclick="changeMemoBackgroundColor('#565c6a')"></div>
+                <div class="color-option" style="background-color: #6b5762" onclick="changeMemoBackgroundColor('#6b5762')"></div>
+                <div class="color-option" id="color_bgbody">
+                    <input type="color" onchange="document.getElementById('color_bgbody').style.backgroundColor=this.value;changeMemoBackgroundColor(this.value)">
+                </div>
+            </span>
+        </div>
     </div>
     <div class="block_calendar">
         <div class="calendar">
+            <div>
+                <button class="calendar_add_but" onclick="openAddByCalendarDialog()">+</button>
+            </div>
             <div class="calendar_header">
                 <div class="year_picker">
                     <!-- 年份 -->
@@ -101,12 +125,55 @@
                     <!-- 日期 -->
                 </div>
             </div>
+            <span>Background Color</span>
+            <span class="color-picker">
+                <div class="color-option" style="background-color: #7aaaf1" onclick="changeCalendarBackgroundColor('#7aaaf1')"></div>
+                <div class="color-option" style="background-color: #8683ff" onclick="changeCalendarBackgroundColor('#8683ff')"></div>
+                <div class="color-option" style="background-color: #e683bc" onclick="changeCalendarBackgroundColor('#e683bc')"></div>
+                <div class="color-option" style="background-color: #ff788c" onclick="changeCalendarBackgroundColor('#ff788c')"></div>
+                <div class="color-option" style="background-color: #ff8d7b" onclick="changeCalendarBackgroundColor('#ff8d7b')"></div>
+                <div class="color-option" style="background-color: #f8d175" onclick="changeCalendarBackgroundColor('#f8d175')"></div>
+                <div class="color-option" style="background-color: #9ac78f" onclick="changeCalendarBackgroundColor('#9ac78f')"></div>
+                <div class="color-option" style="background-color: #7dc4ca" onclick="changeCalendarBackgroundColor('#7dc4ca')"></div>
+                <div class="color-option" style="background-color: #FFFFFF" onclick="changeCalendarBackgroundColor('#FFFFFF')"></div>
+                <div class="color-option" style="background-color: #565c6a" onclick="changeCalendarBackgroundColor('#565c6a')"></div>
+                <div class="color-option" style="background-color: #6b5762" onclick="changeCalendarBackgroundColor('#6b5762')"></div>
+                <div class="color-option" id="color_bgbody">
+                    <input type="color" onchange="document.getElementById('color_bgbody').style.backgroundColor=this.value;changeCalendarBackgroundColor(this.value)">
+                </div>
+            </span>
+            <span>Header Color</span>
+            <span class="color-picker">
+                <div class="color-option" style="background-color: #7aaaf1" onclick="changeHeaderColor('#7aaaf1')"></div>
+                <div class="color-option" style="background-color: #8683ff" onclick="changeHeaderColor('#8683ff')"></div>
+                <div class="color-option" style="background-color: #e683bc" onclick="changeHeaderColor('#e683bc')"></div>
+                <div class="color-option" style="background-color: #ff788c" onclick="changeHeaderColor('#ff788c')"></div>
+                <div class="color-option" style="background-color: #ff8d7b" onclick="changeHeaderColor('#ff8d7b')"></div>
+                <div class="color-option" style="background-color: #f8d175" onclick="changeHeaderColor('#f8d175')"></div>
+                <div class="color-option" style="background-color: #9ac78f" onclick="changeHeaderColor('#9ac78f')"></div>
+                <div class="color-option" style="background-color: #7dc4ca" onclick="changeHeaderColor('#7dc4ca')"></div>
+                <div class="color-option" style="background-color: #FFFFFF" onclick="changeHeaderColor('#FFFFFF')"></div>
+                <div class="color-option" style="background-color: #565c6a" onclick="changeHeaderColor('#565c6a')"></div>
+                <div class="color-option" style="background-color: #6b5762" onclick="changeHeaderColor('#6b5762')"></div>
+                <div class="color-option" id="color_bgheader">
+                    <input type="color" onchange="document.getElementById('color_bgheader').style.backgroundColor=this.value;changeHeaderColor(this.value)">
+                </div>
+            </span>
+            <span>Days Font Color</span>
+            <span class="color-picker">
+                <div class="color-option" style="background-color: #FFFFFF" onclick="changeFontColor('#FFFFFF')"></div>
+                <div class="color-option" style="background-color: #565c6a" onclick="changeFontColor('#565c6a')"></div>
+                <div class="color-option" id="color_font">
+                    <input type="color" onchange="document.getElementById('color_font').style.backgroundColor=this.value;changeFontColor(this.value)">
+                </div>
+            </span>
         </div>
     </div>
 </div>
 
 <script>
     var today, year, month, day;
+    var selectDayNum = -1; // -1表示未選擇日期
     var monthNames = ["一月", "二月", "三月", "四月", "五月", "六月",
         "七月", "八月", "九月", "十月", "十一月", "十二月"];
     window.onload = function () {
@@ -114,8 +181,8 @@
         fetch('/user_info')
             .then(response => response.json())
             .then(userInfo => {
-                document.getElementById('username').textContent = userInfo["given_name"];
-            });
+            document.getElementById('username').textContent = userInfo["given_name"];
+        });
 
         // 製作行事曆
         generateCalendar();
@@ -126,11 +193,12 @@
         year = today.getFullYear();
         month = today.getMonth() + 1;
         day = today.getDate();
+        selectDayNum = day;
         fetch('/calendar?year=' + year + '&month=' + month + '&day=' + day)
             .then(response => response.text())
             .then(calendarHtml => {
-                document.querySelector('.calendar_days').innerHTML = calendarHtml;
-            });
+            document.querySelector('.calendar_days').innerHTML = calendarHtml;
+        });
         document.querySelector('.year_picker').textContent = year;
         document.querySelector('.month').textContent = monthNames[month - 1];
     }
@@ -145,12 +213,22 @@
             month = 12;
             year -= 1;
         }
+        // 如果不是當年月，則日期設為1
+        if( !(year==today.getFullYear() && month==today.getMonth()+1) ){
+            day = 1;
+            selectDayNum = -1;
+        }
+        else{
+            day = today.getDate();
+            selectDayNum = day;
+        }
+        console.log("year: " + year + ", month: " + month + ", day: " + day);
         fetch('/calendar?year=' + year + '&month=' + month + '&day=' + day)
             .then(response => response.text())
             .then(calendarHtml => {
-                document.querySelector('.calendar_days').innerHTML = calendarHtml;
-                updateCalendarHighlight();
-            });
+            document.querySelector('.calendar_days').innerHTML = calendarHtml;
+            updateCalendarHighlight();
+        });
         document.querySelector('.year_picker').textContent = year;
         document.querySelector('.month').textContent = monthNames[month - 1];
     }
@@ -159,10 +237,10 @@
         fetch('refresh_highlight?year=' + year + '&month=' + month)
             .then(response => response.json())
             .then(eventDays => {
-                eventDays.forEach(eventDay => {
-                    addHighlightEventDay(eventDay);
-                });
+            eventDays.forEach(eventDay => {
+                addHighlightEventDay(eventDay);
             });
+        });
     }
 
     function addHighlightEventDay(eventDay) {
@@ -176,9 +254,9 @@
         fetch('/calendar?year=' + year + '&month=' + month + '&day=' + day)
             .then(response => response.text())
             .then(calendarHtml => {
-                document.querySelector('.calendar_days').innerHTML = calendarHtml;
-                updateCalendarHighlight();
-            });
+            document.querySelector('.calendar_days').innerHTML = calendarHtml;
+            updateCalendarHighlight();
+        });
         document.querySelector('.year_picker').textContent = year;
         document.querySelector('.month').textContent = monthNames[month - 1];
     }
@@ -193,86 +271,117 @@
 
         // 改變被選擇日期的樣式
         var id = event.target.id;
+        selectDayNum = id.split("_")[1];
+        console.log("selectDayNum: " + selectDayNum);
         document.querySelector("#" + id).setAttribute('class', 'selected_day');
     }
-// 在新增MemoItem的彈出視窗按下按鈕時並做出相應的行為
-let btn = document.querySelector("#show");
-btn.addEventListener("click", function () {
-    openAddDialog();
-})
-let cancel = document.querySelector("#cancel");
-cancel.addEventListener("click", function () {
-    document.querySelector("#infoModal").close();
-    resetForm();
-})
-function openAddDialog() {
-    openDialog(0);
-}
-function openEditDialog(id) {
-    openDialog(id);
-}
-function openDialog(id) {
-    let infoModal = document.querySelector("#infoModal");
-    let submit = document.querySelector("#submit");
-    let form = document.getElementById('memoForm');
-
-    if (id === 0) {
-        // Add operation
-        form.action = '/add_memo_item';
-        submit.onclick = function(event) {
-            event.preventDefault();
-            submitForm('POST');
-        };
-    } else {
-        // Edit operation
-        form.action = '/edit_memo_item/' + id;
-        submit.onclick = function(event) {
-            event.preventDefault();
-            submitForm('PUT');
-        };
-        fetch('/get_memo_item/' + id)
-            .then(response => response.json())
-            .then(memoItem => {
-                document.getElementById('title').value = memoItem.title;
-                let dateTime = memoItem.time.split(' ');
-                let date = dateTime[0].split('/');
-                let time = dateTime[1].split(':');
-                document.getElementById('year').value = date[0];
-                document.getElementById('month').value = date[1];
-                document.getElementById('day').value = date[2];
-                document.getElementById('hour').value = time[0];
-                document.getElementById('minute').value = time[1];
-                document.getElementById('alertTimeSelection').value = memoItem.alertTimeSelection;
-                document.getElementById('description').value = memoItem.description;
-            })
-            .catch(error => console.error('Error:', error));
-    }
-
-    infoModal.showModal();
-}
-function submitForm(method) {
-    let formData = new FormData(document.getElementById('memoForm'));
-    let actionUrl = document.getElementById('memoForm').action;
-
-    fetch(actionUrl, {
-        method: method,
-        body: formData
+    // 在新增MemoItem的彈出視窗按下按鈕時並做出相應的行為
+    let btn = document.querySelector("#show");
+    btn.addEventListener("click", function () {
+        openAddDialog();
     })
-        .then(response => {
+    let cancel = document.querySelector("#cancel");
+    cancel.addEventListener("click", function () {
+        document.querySelector("#infoModal").close();
+        resetForm();
+    })
+    function openAddDialog() {
+        openDialog(0, 0);
+    }
+    function openEditDialog(id) {
+        openDialog(id, 0);
+    }
+    function openAddByCalendarDialog() {
+        if(selectDayNum != -1)
+        openDialog(0, 1);
+        else
+        alert("Please select a day first.");
+    }
+    function openDialog(id, type) {
+        let infoModal = document.querySelector("#infoModal");
+        let submit = document.querySelector("#submit");
+        let form = document.getElementById('memoForm');
+
+        if (type === 0){ // 0: memo
+            if (id === 0) {
+                // Add operation
+                form.action = '/add_memo_item';
+                submit.onclick = function(event) {
+                    event.preventDefault();
+                    submitForm('POST');
+                };
+            } else {
+                // Edit operation
+                form.action = '/edit_memo_item/' + id;
+                submit.onclick = function(event) {
+                    event.preventDefault();
+                    submitForm('PUT');
+                };
+                fetch('/get_memo_item/' + id)
+                    .then(response => response.json())
+                    .then(memoItem => {
+                    document.getElementById('title').value = memoItem.title;
+                    let dateTime = memoItem.time.split(' ');
+                    let date = dateTime[0].split('/');
+                    let time = dateTime[1].split(':');
+                    document.getElementById('year').value = date[0];
+                    document.getElementById('month').value = date[1];
+                    document.getElementById('day').value = date[2];
+                    document.getElementById('hour').value = time[0];
+                    document.getElementById('minute').value = time[1];
+                    document.getElementById('alertTimeSelection').value = memoItem.alertTimeSelection;
+                    document.getElementById('description').value = memoItem.description;
+                })
+                    .catch(error => console.error('Error:', error));
+            }
+        } else { // 1: calendar
+            form.action = '/add_memo_item';
+            submit.onclick = function(event) {
+                event.preventDefault();
+                submitForm('POST');
+
+                // 非當年月，新增完會消除嗨賴，故需要重製為-1
+                if( !(year==today.getFullYear() && month==today.getMonth()+1) ){
+                    selectDayNum = -1;
+                }
+            };
+
+            document.getElementById('year').value = year;
+            if(month<10)
+            document.getElementById('month').value = '0' + month;
+            else
+            document.getElementById('month').value = month;
+
+            if(selectDayNum<10)
+            document.getElementById('day').value = '0' +selectDayNum;
+            else
+            document.getElementById('day').value = selectDayNum;
+        }
+
+        infoModal.showModal();
+    }
+    function submitForm(method) {
+        let formData = new FormData(document.getElementById('memoForm'));
+        let actionUrl = document.getElementById('memoForm').action;
+
+        fetch(actionUrl, {
+            method: method,
+            body: formData
+        })
+            .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
             updateMemoItem();
             document.querySelector("#infoModal").close();
             // 更新日曆
-            updateCalendarHighlight();
+            deleteHighlightEventDay();
             resetForm();
         })
-        .catch(error => {
+            .catch(error => {
             console.error('Error:', error);
         });
-}
-
+    }
     let addLabel = document.querySelector("#addLabel");
     let LabelModal = document.querySelector("#LabelModal");
     let LabelSubmit = document.querySelector("#LabelSubmit");
@@ -298,33 +407,33 @@ function submitForm(method) {
             body: formData
         })
             .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                // 更新 memoItem 的內容
-                updateMemoItem();
-                fetchAndDisplayLabels();
-                // 關閉彈出視窗
-                LabelModal.close();
-                // 初始化表單
-                document.getElementById('LabelTitle').value = '';
-            })
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            // 更新 memoItem 的內容
+            updateMemoItem();
+            fetchAndDisplayLabels();
+            // 關閉彈出視窗
+            LabelModal.close();
+            // 初始化表單
+            document.getElementById('LabelTitle').value = '';
+        })
             .catch(error => {
-                console.error('Error:', error);
-            });
+            console.error('Error:', error);
+        });
         console.log()
     })
-// 初始化表單
-function resetForm() {
-    document.getElementById('title').value = '';
-    document.getElementById('year').value = '2024';
-    document.getElementById('month').value = '01';
-    document.getElementById('day').value = '01';
-    document.getElementById('hour').value = '00';
-    document.getElementById('minute').value = '00';
-    document.getElementById('alertTimeSelection').value = '';
-    document.getElementById('description').value = '';
-}
+    // 初始化表單
+    function resetForm() {
+        document.getElementById('title').value = '';
+        document.getElementById('year').value = '2024';
+        document.getElementById('month').value = '01';
+        document.getElementById('day').value = '01';
+        document.getElementById('hour').value = '00';
+        document.getElementById('minute').value = '00';
+        document.getElementById('alertTimeSelection').value = '';
+        document.getElementById('description').value = '';
+    }
 
     // 動態生成年份選項
     let currentYear = new Date().getFullYear();
@@ -354,7 +463,7 @@ function resetForm() {
         daySelect.appendChild(option);
     }
 
-    function updateDays(){
+    function updateFormDaysOption(){
         const year = document.getElementById('year').value;
         const month = document.getElementById('month').value;
         const daySelect = document.getElementById('day');
@@ -464,40 +573,40 @@ function resetForm() {
         fetch('/get_memo_items')
             .then(response => response.json())
             .then(memoItems => {
-                memoItems.forEach(memoItem => {
-                    const setItem = document.createElement('div');
+            memoItems.forEach(memoItem => {
+                const setItem = document.createElement('div');
 
-                    let labelsHtml = '';
-                    console.log(memoItem.labelSet.length)
-                    if (memoItem.labelSet && memoItem.labelSet.length > 0) {
-                        labelsHtml = '<ul>';
-                        memoItem.labelSet.forEach(label => {
-                            labelsHtml += `<li>${label.name}</li>`;
-                        });
-                        labelsHtml += '</ul>';
-                    }
+                let labelsHtml = '';
+                console.log(memoItem.labelSet.length)
+                if (memoItem.labelSet && memoItem.labelSet.length > 0) {
+                    labelsHtml = '<ul>';
+                    memoItem.labelSet.forEach(label => {
+                        labelsHtml += `<li>${label.name}</li>`;
+                    });
+                    labelsHtml += '</ul>';
+                }
 
-                    if (memoItem.description !== "") {
-                        setItem.innerHTML = `<span class="memo_item_title"><b>${memoItem.title}</b><br>${memoItem.description}<br>${memoItem.time}</span>
+                if (memoItem.description !== "") {
+                    setItem.innerHTML = `<span class="memo_item_title"><b>${memoItem.title}</b><br>${memoItem.description}<br>${memoItem.time}</span>
                                              ${labelsHtml}
                                              <button onclick="selectLabelOpen(${memoItem.id})" id="label">add label</button>
                                              <button class="memo_item_edit_button"
                                              onclick="openEditDialog(${memoItem.id})">edit</button>
                                              <button class="memo_item_delete_button" onclick="deleteMemoItem(${memoItem.id})">delete</button>`;
-                        //setItem.style.height = "60px";
-                    } else {
-                        setItem.innerHTML = `<span class="memo_item_title"><b>${memoItem.title}</b><br>${memoItem.time}</span>
+                    //setItem.style.height = "60px";
+                } else {
+                    setItem.innerHTML = `<span class="memo_item_title"><b>${memoItem.title}</b><br>${memoItem.time}</span>
                                              ${labelsHtml}
                                              <button onclick="selectLabelOpen(${memoItem.id})" id="label">add label</button>
                                              <button class="memo_item_edit_button"
                                              onclick="openEditDialog(${memoItem.id})">edit</button>
                                              <button class="memo_item_delete_button" onclick="deleteMemoItem(${memoItem.id})">delete</button>`;
-                        //setItem.style.height = "40px";
-                    }
-                    setItem.className = "memo_item";
-                    memoItemSet.appendChild(setItem);
-                })
+                    //setItem.style.height = "40px";
+                }
+                setItem.className = "memo_item";
+                memoItemSet.appendChild(setItem);
             })
+        })
             .catch(error => console.error('Error fetching name:', error));
 
         let selectLabel = document.getElementById('addLabelForm');
@@ -505,15 +614,17 @@ function resetForm() {
         fetch('/get_label')
             .then(response => response.json())
             .then(labelList => {
-                labelList.forEach(label => {
-                    const setItem = document.createElement('div');
-                    setItem.innerHTML = `<input type="checkbox" id="${label.name}" name="labels" value="${label.name}"/>
+            labelList.forEach(label => {
+                const setItem = document.createElement('div');
+                setItem.innerHTML = `<input type="checkbox" id="${label.name}" name="labels" value="${label.name}"/>
                                          <label for="${label.name}">${label.name}</label>`;
                     setItem.className = "label";
                     selectLabel.appendChild(setItem);
                 })
                 selectLabel.innerHTML += '<br><button onclick="addLabelSubmit()">submit</button><br>';
             })
+            selectLabel.innerHTML += '<br><button onclick="addLabelSubmit(getClickMemoItemId)">submit</button><br>';
+        })
             .catch(error => console.error('Error fetching name:', error));
     }
 
@@ -534,19 +645,19 @@ function resetForm() {
             body: JSON.stringify({id: getClickMemoItemId, labels: selectedLabels}),
         })
             .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                // 更新 memoItem 的內容
-                updateMemoItem();
-                // 關閉彈出視窗
-                selectLabelClose();
-                // 初始化表單
-                document.getElementById('LabelTitle').value = '';
-            })
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            // 更新 memoItem 的內容
+            updateMemoItem();
+            // 關閉彈出視窗
+            selectLabelClose();
+            // 初始化表單
+            document.getElementById('LabelTitle').value = '';
+        })
             .catch(error => {
-                console.error('Error:', error);
-            });
+            console.error('Error:', error);
+        });
     }
 
     function deleteMemoItem(id) {
@@ -555,16 +666,16 @@ function resetForm() {
             method: 'DELETE'
         })
             .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                // 更新 memoItem 的內容
-                updateMemoItem();
-                deleteHighlightEventDay();
-            })
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            // 更新 memoItem 的內容
+            updateMemoItem();
+            deleteHighlightEventDay();
+        })
             .catch(error => {
-                console.error('Error:', error);
-            });
+            console.error('Error:', error);
+        });
     }
 
     function selectLabelOpen(id) {
@@ -576,6 +687,34 @@ function resetForm() {
         let selectLabel = document.getElementById('selectLabel');
         selectLabel.close();
     }
+
+    function changeFontColor(color){
+        // 遍歷所有的style，找到.unselected_day改變它的顏色設定
+        for (let i = 0; i < document.styleSheets.length; i++) {
+            let sheet = document.styleSheets[i];
+            // 遍歷樣式表中的所有規則
+            for (let j = 0; j < sheet.cssRules.length; j++) {
+                let rule = sheet.cssRules[j];
+                // 檢查是否為 .stl 規則
+                if (rule.selectorText === '.unselected_day') {
+                    rule.style.color = color;
+                }
+            }
+        }
+    }
+
+    function changeMemoBackgroundColor(color){
+        document.querySelector('.block_memo').style.backgroundColor = color;
+    }
+    
+    function changeCalendarBackgroundColor(color){
+        document.querySelector('.calendar_body').style.backgroundColor = color;
+    }
+
+    function changeHeaderColor(color){
+        document.querySelector('.calendar_header').style.backgroundColor = color;
+    }
+
 </script>
 </body>
 

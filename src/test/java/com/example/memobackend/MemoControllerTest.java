@@ -1,52 +1,50 @@
 package com.example.memobackend;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.util.HashSet;
-import java.util.Set;
+@SpringBootTest
+@AutoConfigureMockMvc
+class MemoControllerTest {
+    @Autowired
+    private MockMvc mockMvc;
 
-import static org.junit.Assert.*;
-
-public class MemoControllerTest {
-
-    @Before
-    public void setUp() throws Exception {
-    }
-
-    @After
-    public void tearDown() throws Exception {
-    }
+    @Autowired
+    private MemoList memoList;
 
     @Test
+    @WithMockUser
     public void testGetMemoItemSetAndAddMemo() throws Exception {
-        Set<MemoItem> expectedMemoItemSet = new HashSet<>();
-        expectedMemoItemSet.add(new MemoItem("aaa", "2024/04/29 15:00",
-                "Time of Memo", "", 0L));
-        expectedMemoItemSet.add(new MemoItem("bbb", "2024/04/30 12:00",
-                "1 hour ago", "123456", 0L));
-
-        MemoController memoController = new MemoController();
-        memoController.addMemo("aaa", "2024", "04", "29", "15", "00",
-                "Time of Memo", "");
-        memoController.addMemo("bbb", "2024", "04", "30", "12", "00",
-                "1 hour ago", "123456");
-        Set<MemoItem> resultMemoItemSet = memoController.getMemoItemSetOfMemoList();
-
-        for (MemoItem expectedMemoItem : expectedMemoItemSet) {
-            boolean isMatched = false;
-            for (MemoItem resultMemoItem : resultMemoItemSet) {
-                if (expectedMemoItem.getTitle().equals(resultMemoItem.getTitle())
-                        && expectedMemoItem.getTime().equals(resultMemoItem.getTime())
-                        && expectedMemoItem.getAlertTimeSelection().equals(resultMemoItem.getAlertTimeSelection())
-                        && expectedMemoItem.getAlertTime().equals(resultMemoItem.getAlertTime())
-                        && expectedMemoItem.getDescription().equals(resultMemoItem.getDescription())) {
-                    isMatched = true;
-                    break;
-                }
-            }
-            assertTrue(isMatched);
-        }
+        mockMvc.perform(MockMvcRequestBuilders.post("/add_memo_item")
+                .param("title", "aaa")
+                .param("year", "2024")
+                .param("month", "04")
+                .param("day", "29")
+                .param("hour", "15")
+                .param("minute", "00")
+                .param("alertTimeSelection", "Time of Memo")
+                .param("description", "654321"))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+        mockMvc.perform(MockMvcRequestBuilders.post("/add_memo_item")
+                .param("title", "bbb")
+                .param("year", "2024")
+                .param("month", "06")
+                .param("day", "06")
+                .param("hour", "12")
+                .param("minute", "00")
+                .param("alertTimeSelection", "1 hour ago")
+                .param("description", "123456"))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+        mockMvc.perform(MockMvcRequestBuilders.get("/get_memo_items"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json("[{\"title\":\"aaa\",\"time\":\"2024/04/29 15:00\",\"alertTimeSelection\":\"Time of Memo\",\"alertTime\":\"2024/04/29 15:00\",\"description\":\"654321\"}," +
+                        "{\"title\":\"bbb\",\"time\":\"2024/06/06 12:00\",\"alertTimeSelection\":\"1 hour ago\",\"alertTime\":\"2024/06/06 11:00\",\"description\":\"123456\"}]"));
     }
+
 }

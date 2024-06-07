@@ -32,8 +32,8 @@ public class Calendar {
             return "Illegal date input!";
         }
         // 儲存正在顯示的年月以做為後續更新日曆判別是否加上event highlight的參數
-        showingYear = year;
-        showingMonth = month;
+        setShowingYear(year);
+        setShowingMonth(month);
         System.out.println("update showingYear: " + showingYear + ", showingMonth: " + showingMonth);
         YearMonth yearMonth = YearMonth.of(year, month);
         LocalDate firstOfMonth = yearMonth.atDay(1);
@@ -85,7 +85,7 @@ public class Calendar {
     // 取得當年月的所有有event的日期
     public List<Integer> getMonthHighlightDays() {
         List<Integer> monthHighlightDays = new ArrayList<>();
-        List<Integer> allMemoItemDay = memoList.getAllMemoItemDay();
+        List<Integer> allMemoItemDay = memoList.getAllMemoItemParseDayFormatToInt();
         System.out.println("memoList.getAllMemoItemDay().size(): " + allMemoItemDay.size());
         for (Integer i : allMemoItemDay) {
             int year = i / 10000;
@@ -98,5 +98,13 @@ public class Calendar {
         }
         System.out.println("showingYear: " + showingYear + ", showingMonth: " + showingMonth);
         return monthHighlightDays;
+    }
+
+    public void setShowingYear(int showingYear) {
+        this.showingYear = showingYear;
+    }
+
+    public void setShowingMonth(int showingMonth) {
+        this.showingMonth = showingMonth;
     }
 }
