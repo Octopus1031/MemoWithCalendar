@@ -23,7 +23,7 @@ h1 {
 .block_memo {
     flex: 1;
     margin: 10px;
-    background-color: #f7c3ce;
+    background-color: #f8d175;
     /* overflow-y: scroll; */
     /* 允許垂直滾動 */
 }
@@ -32,6 +32,13 @@ h1 {
     overflow-y: scroll;
     /* 允許垂直滾動 */
     height: 100%;
+}
+
+.memoColorPickerBox {
+    background-color: #f0f0f0;
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+    padding: 10px 20px 20px;
 }
 
 .block_calendar {

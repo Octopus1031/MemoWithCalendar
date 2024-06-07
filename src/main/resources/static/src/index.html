@@ -71,23 +71,25 @@
             <div class="title">Memo List</div>
             <div id="memoItem"></div>
         </div>
-        <span>Background Color</span>
-        <span class="color-picker">
-            <div class="color-option" style="background-color: #7aaaf1" onclick="changeMemoBackgroundColor('#7aaaf1')"></div>
-            <div class="color-option" style="background-color: #8683ff" onclick="changeMemoBackgroundColor('#8683ff')"></div>
-            <div class="color-option" style="background-color: #e683bc" onclick="changeMemoBackgroundColor('#e683bc')"></div>
-            <div class="color-option" style="background-color: #ff788c" onclick="changeMemoBackgroundColor('#ff788c')"></div>
-            <div class="color-option" style="background-color: #ff8d7b" onclick="changeMemoBackgroundColor('#ff8d7b')"></div>
-            <div class="color-option" style="background-color: #f8d175" onclick="changeMemoBackgroundColor('#f8d175')"></div>
-            <div class="color-option" style="background-color: #9ac78f" onclick="changeMemoBackgroundColor('#9ac78f')"></div>
-            <div class="color-option" style="background-color: #7dc4ca" onclick="changeMemoBackgroundColor('#7dc4ca')"></div>
-            <div class="color-option" style="background-color: #FFFFFF" onclick="changeMemoBackgroundColor('#FFFFFF')"></div>
-            <div class="color-option" style="background-color: #565c6a" onclick="changeMemoBackgroundColor('#565c6a')"></div>
-            <div class="color-option" style="background-color: #6b5762" onclick="changeMemoBackgroundColor('#6b5762')"></div>
-            <div class="color-option" id="color_bgbody">
-                <input type="color" onchange="document.getElementById('color_bgbody').style.backgroundColor=this.value;changeMemoBackgroundColor(this.value)">
-            </div>
-        </span>
+        <div class="memoColorPickerBox">
+            <span>Background Color</span>
+            <span class="color-picker">
+                <div class="color-option" style="background-color: #7aaaf1" onclick="changeMemoBackgroundColor('#7aaaf1')"></div>
+                <div class="color-option" style="background-color: #8683ff" onclick="changeMemoBackgroundColor('#8683ff')"></div>
+                <div class="color-option" style="background-color: #e683bc" onclick="changeMemoBackgroundColor('#e683bc')"></div>
+                <div class="color-option" style="background-color: #ff788c" onclick="changeMemoBackgroundColor('#ff788c')"></div>
+                <div class="color-option" style="background-color: #ff8d7b" onclick="changeMemoBackgroundColor('#ff8d7b')"></div>
+                <div class="color-option" style="background-color: #f8d175" onclick="changeMemoBackgroundColor('#f8d175')"></div>
+                <div class="color-option" style="background-color: #9ac78f" onclick="changeMemoBackgroundColor('#9ac78f')"></div>
+                <div class="color-option" style="background-color: #7dc4ca" onclick="changeMemoBackgroundColor('#7dc4ca')"></div>
+                <div class="color-option" style="background-color: #FFFFFF" onclick="changeMemoBackgroundColor('#FFFFFF')"></div>
+                <div class="color-option" style="background-color: #565c6a" onclick="changeMemoBackgroundColor('#565c6a')"></div>
+                <div class="color-option" style="background-color: #6b5762" onclick="changeMemoBackgroundColor('#6b5762')"></div>
+                <div class="color-option" id="color_bgbody">
+                    <input type="color" onchange="document.getElementById('color_bgbody').style.backgroundColor=this.value;changeMemoBackgroundColor(this.value)">
+                </div>
+            </span>
+        </div>
     </div>
     <div class="block_calendar">
         <div class="calendar">
@@ -152,6 +154,14 @@
                 <div class="color-option" style="background-color: #6b5762" onclick="changeHeaderColor('#6b5762')"></div>
                 <div class="color-option" id="color_bgheader">
                     <input type="color" onchange="document.getElementById('color_bgheader').style.backgroundColor=this.value;changeHeaderColor(this.value)">
+                </div>
+            </span>
+            <span>Days Font Color</span>
+            <span class="color-picker">
+                <div class="color-option" style="background-color: #FFFFFF" onclick="changeFontColor('#FFFFFF')"></div>
+                <div class="color-option" style="background-color: #565c6a" onclick="changeFontColor('#565c6a')"></div>
+                <div class="color-option" id="color_font">
+                    <input type="color" onchange="document.getElementById('color_font').style.backgroundColor=this.value;changeFontColor(this.value)">
                 </div>
             </span>
         </div>
@@ -606,6 +616,21 @@
     function selectLabelClose() {
         let selectLabel = document.getElementById('selectLabel');
         selectLabel.close();
+    }
+
+    function changeFontColor(color){
+        // 遍歷所有的style，找到.unselected_day改變它的顏色設定
+        for (let i = 0; i < document.styleSheets.length; i++) {
+            let sheet = document.styleSheets[i];
+            // 遍歷樣式表中的所有規則
+            for (let j = 0; j < sheet.cssRules.length; j++) {
+                let rule = sheet.cssRules[j];
+                // 檢查是否為 .stl 規則
+                if (rule.selectorText === '.unselected_day') {
+                    rule.style.color = color;
+                }
+            }
+        }
     }
 
     function changeMemoBackgroundColor(color){
