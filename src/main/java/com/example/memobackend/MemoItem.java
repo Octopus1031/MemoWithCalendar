@@ -130,7 +130,7 @@ public class MemoItem {
     }
 
     // return format is yyyyMMdd
-    public int parsedDay(){
+    public int parseDayFormatToInt(){
         String time = this.time;
         String regex = "(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2})";
         Pattern pattern = Pattern.compile(regex);

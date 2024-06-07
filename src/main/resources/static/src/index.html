@@ -12,63 +12,84 @@
 <div>
     <h1>Memo With Calendar</h1>
 </div>
-<div>歡迎，<span id="username"></span>！</div>
+<div>Welcome! <span id="username"></span></div>
 <div class="container">
     <div class="block_memo">
-        <!-- 自定義按鈕 -->
-        <button id="show">+</button>
-        <button id="addLabel">新增標籤</button>
-        <dialog id="selectLabel">
-            <form id="addLabelForm" action="/click_label" method="post" target="hidden_iframe">
+        <div class="memo_box">
+            <!-- 自定義按鈕 -->
+            <button id="show">+</button>
+            <button id="addLabel">新增標籤</button>
+            <dialog id="selectLabel">
+                <form id="addLabelForm" action="/click_label" method="post" target="hidden_iframe">
 
-            </form>
-            <button onclick="selectLabelClose()">cancel</button>
-        </dialog>
-        <dialog id="LabelModal"> <!-- 彈出新增MemoItem的視窗 -->
-            <form id="LabelForm" action="/add_label" method="post" target="hidden_iframe">
-                <label for="title">LabelName:</label><br>
-                <input type="text" id="LabelTitle" name="title"><br>
-                <button id="LabelSubmit">submit</button>
-            </form>
-            <iframe name="hidden_iframe" style="display:none;"></iframe>
-            <button id="LabelCancel">cancel</button>
-        </dialog>
-        <dialog id="infoModal"> <!-- 彈出新增MemoItem的視窗 -->
-            <form id="memoForm" action="/add_memo_item" method="post" target="hidden_iframe">
-                <label for="title">Title:</label><br>
-                <input type="text" id="title" name="title"><br>
-                <label>Time</label><br>
-                <label for="year"></label>
-                <label for="month"></label>
-                <label for="day"></label>
-                <label for="hour"></label>
-                <label for="minute"></label>
-                <select id="year" name="year" onchange="updateFormDaysOption()"></select><label> /</label>
-                <select id="month" name="month" onchange="updateFormDaysOption()"></select><label> /</label>
-                <select id="day" name="day"></select><br>
-                <select id="hour" name="hour"></select><label> :</label>
-                <select id="minute" name="minute"></select><br>
-                <label for="alertTimeSelection">Alert Time:</label><br>
-                <select id="alertTimeSelection" name="alertTimeSelection">
-                    <option value=""></option>
-                    <option value="Time of Memo">Time of Memo</option>
-                    <option value="5 minutes ago">5 minutes ago</option>
-                    <option value="10 minutes ago">10 minutes ago</option>
-                    <option value="15 minutes ago">15 minutes ago</option>
-                    <option value="30 minutes ago">30 minutes ago</option>
-                    <option value="1 hour ago">1 hour ago</option>
-                    <option value="2 hours ago">2 hours ago</option>
-                </select><br>
-                <label for="description">Description:</label><br>
-                <textarea id="description" name="description"></textarea><br><br>
-                <button id="submit">submit</button>
-            </form>
-            <iframe name="hidden_iframe" style="display:none;"></iframe>
-            <button id="cancel">cancel</button>
-        </dialog>
-        <!-- 標題 -->
-        <div class="title">Memo List</div>
-        <div id="memoItem"></div>
+                </form>
+                <button onclick="selectLabelClose()">cancel</button>
+            </dialog>
+            <dialog id="LabelModal"> <!-- 彈出新增MemoItem的視窗 -->
+                <form id="LabelForm" action="/add_label" method="post" target="hidden_iframe">
+                    <label for="title">LabelName:</label><br>
+                    <input type="text" id="LabelTitle" name="title"><br>
+                    <button id="LabelSubmit">submit</button>
+                </form>
+                <iframe name="hidden_iframe" style="display:none;"></iframe>
+                <button id="LabelCancel">cancel</button>
+            </dialog>
+            <dialog id="infoModal"> <!-- 彈出新增MemoItem的視窗 -->
+                <form id="memoForm" action="/add_memo_item" method="post" target="hidden_iframe">
+                    <label for="title">Title:</label><br>
+                    <input type="text" id="title" name="title"><br>
+                    <label>Time</label><br>
+                    <label for="year"></label>
+                    <label for="month"></label>
+                    <label for="day"></label>
+                    <label for="hour"></label>
+                    <label for="minute"></label>
+                    <select id="year" name="year" onchange="updateFormDaysOption()"></select><label> /</label>
+                    <select id="month" name="month" onchange="updateFormDaysOption()"></select><label> /</label>
+                    <select id="day" name="day"></select><br>
+                    <select id="hour" name="hour"></select><label> :</label>
+                    <select id="minute" name="minute"></select><br>
+                    <label for="alertTimeSelection">Alert Time:</label><br>
+                    <select id="alertTimeSelection" name="alertTimeSelection">
+                        <option value=""></option>
+                        <option value="Time of Memo">Time of Memo</option>
+                        <option value="5 minutes ago">5 minutes ago</option>
+                        <option value="10 minutes ago">10 minutes ago</option>
+                        <option value="15 minutes ago">15 minutes ago</option>
+                        <option value="30 minutes ago">30 minutes ago</option>
+                        <option value="1 hour ago">1 hour ago</option>
+                        <option value="2 hours ago">2 hours ago</option>
+                    </select><br>
+                    <label for="description">Description:</label><br>
+                    <textarea id="description" name="description"></textarea><br><br>
+                    <button id="submit">submit</button>
+                </form>
+                <iframe name="hidden_iframe" style="display:none;"></iframe>
+                <button id="cancel">cancel</button>
+            </dialog>
+            <!-- 標題 -->
+            <div class="title">Memo List</div>
+            <div id="memoItem"></div>
+        </div>
+        <div class="memoColorPickerBox">
+            <span>Background Color</span>
+            <span class="color-picker">
+                <div class="color-option" style="background-color: #7aaaf1" onclick="changeMemoBackgroundColor('#7aaaf1')"></div>
+                <div class="color-option" style="background-color: #8683ff" onclick="changeMemoBackgroundColor('#8683ff')"></div>
+                <div class="color-option" style="background-color: #e683bc" onclick="changeMemoBackgroundColor('#e683bc')"></div>
+                <div class="color-option" style="background-color: #ff788c" onclick="changeMemoBackgroundColor('#ff788c')"></div>
+                <div class="color-option" style="background-color: #ff8d7b" onclick="changeMemoBackgroundColor('#ff8d7b')"></div>
+                <div class="color-option" style="background-color: #f8d175" onclick="changeMemoBackgroundColor('#f8d175')"></div>
+                <div class="color-option" style="background-color: #9ac78f" onclick="changeMemoBackgroundColor('#9ac78f')"></div>
+                <div class="color-option" style="background-color: #7dc4ca" onclick="changeMemoBackgroundColor('#7dc4ca')"></div>
+                <div class="color-option" style="background-color: #FFFFFF" onclick="changeMemoBackgroundColor('#FFFFFF')"></div>
+                <div class="color-option" style="background-color: #565c6a" onclick="changeMemoBackgroundColor('#565c6a')"></div>
+                <div class="color-option" style="background-color: #6b5762" onclick="changeMemoBackgroundColor('#6b5762')"></div>
+                <div class="color-option" id="color_bgbody">
+                    <input type="color" onchange="document.getElementById('color_bgbody').style.backgroundColor=this.value;changeMemoBackgroundColor(this.value)">
+                </div>
+            </span>
+        </div>
     </div>
     <div class="block_calendar">
         <div class="calendar">
@@ -101,6 +122,48 @@
                     <!-- 日期 -->
                 </div>
             </div>
+            <span>Background Color</span>
+            <span class="color-picker">
+                <div class="color-option" style="background-color: #7aaaf1" onclick="changeCalendarBackgroundColor('#7aaaf1')"></div>
+                <div class="color-option" style="background-color: #8683ff" onclick="changeCalendarBackgroundColor('#8683ff')"></div>
+                <div class="color-option" style="background-color: #e683bc" onclick="changeCalendarBackgroundColor('#e683bc')"></div>
+                <div class="color-option" style="background-color: #ff788c" onclick="changeCalendarBackgroundColor('#ff788c')"></div>
+                <div class="color-option" style="background-color: #ff8d7b" onclick="changeCalendarBackgroundColor('#ff8d7b')"></div>
+                <div class="color-option" style="background-color: #f8d175" onclick="changeCalendarBackgroundColor('#f8d175')"></div>
+                <div class="color-option" style="background-color: #9ac78f" onclick="changeCalendarBackgroundColor('#9ac78f')"></div>
+                <div class="color-option" style="background-color: #7dc4ca" onclick="changeCalendarBackgroundColor('#7dc4ca')"></div>
+                <div class="color-option" style="background-color: #FFFFFF" onclick="changeCalendarBackgroundColor('#FFFFFF')"></div>
+                <div class="color-option" style="background-color: #565c6a" onclick="changeCalendarBackgroundColor('#565c6a')"></div>
+                <div class="color-option" style="background-color: #6b5762" onclick="changeCalendarBackgroundColor('#6b5762')"></div>
+                <div class="color-option" id="color_bgbody">
+                    <input type="color" onchange="document.getElementById('color_bgbody').style.backgroundColor=this.value;changeCalendarBackgroundColor(this.value)">
+                </div>
+            </span>
+            <span>Header Color</span>
+            <span class="color-picker">
+                <div class="color-option" style="background-color: #7aaaf1" onclick="changeHeaderColor('#7aaaf1')"></div>
+                <div class="color-option" style="background-color: #8683ff" onclick="changeHeaderColor('#8683ff')"></div>
+                <div class="color-option" style="background-color: #e683bc" onclick="changeHeaderColor('#e683bc')"></div>
+                <div class="color-option" style="background-color: #ff788c" onclick="changeHeaderColor('#ff788c')"></div>
+                <div class="color-option" style="background-color: #ff8d7b" onclick="changeHeaderColor('#ff8d7b')"></div>
+                <div class="color-option" style="background-color: #f8d175" onclick="changeHeaderColor('#f8d175')"></div>
+                <div class="color-option" style="background-color: #9ac78f" onclick="changeHeaderColor('#9ac78f')"></div>
+                <div class="color-option" style="background-color: #7dc4ca" onclick="changeHeaderColor('#7dc4ca')"></div>
+                <div class="color-option" style="background-color: #FFFFFF" onclick="changeHeaderColor('#FFFFFF')"></div>
+                <div class="color-option" style="background-color: #565c6a" onclick="changeHeaderColor('#565c6a')"></div>
+                <div class="color-option" style="background-color: #6b5762" onclick="changeHeaderColor('#6b5762')"></div>
+                <div class="color-option" id="color_bgheader">
+                    <input type="color" onchange="document.getElementById('color_bgheader').style.backgroundColor=this.value;changeHeaderColor(this.value)">
+                </div>
+            </span>
+            <span>Days Font Color</span>
+            <span class="color-picker">
+                <div class="color-option" style="background-color: #FFFFFF" onclick="changeFontColor('#FFFFFF')"></div>
+                <div class="color-option" style="background-color: #565c6a" onclick="changeFontColor('#565c6a')"></div>
+                <div class="color-option" id="color_font">
+                    <input type="color" onchange="document.getElementById('color_font').style.backgroundColor=this.value;changeFontColor(this.value)">
+                </div>
+            </span>
         </div>
     </div>
 </div>
@@ -554,6 +617,34 @@
         let selectLabel = document.getElementById('selectLabel');
         selectLabel.close();
     }
+
+    function changeFontColor(color){
+        // 遍歷所有的style，找到.unselected_day改變它的顏色設定
+        for (let i = 0; i < document.styleSheets.length; i++) {
+            let sheet = document.styleSheets[i];
+            // 遍歷樣式表中的所有規則
+            for (let j = 0; j < sheet.cssRules.length; j++) {
+                let rule = sheet.cssRules[j];
+                // 檢查是否為 .stl 規則
+                if (rule.selectorText === '.unselected_day') {
+                    rule.style.color = color;
+                }
+            }
+        }
+    }
+
+    function changeMemoBackgroundColor(color){
+        document.querySelector('.block_memo').style.backgroundColor = color;
+    }
+    
+    function changeCalendarBackgroundColor(color){
+        document.querySelector('.calendar_body').style.backgroundColor = color;
+    }
+
+    function changeHeaderColor(color){
+        document.querySelector('.calendar_header').style.backgroundColor = color;
+    }
+
 </script>
 </body>
 
