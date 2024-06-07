@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 
 import static org.junit.Assert.*;
@@ -64,5 +65,23 @@ public class MemoListTest {
             }
             assertTrue(isMatched);
         }
+    }
+
+    @Test
+    public void getAllMemoItemParseDayFormatToInt(){
+        memoList.addMemoItem(memoItem);
+
+        String title = "bbb";
+        String time = "2024/06/05 12:00";
+        String alertTimeSelection = "1 hour ago";
+        String description = "654321";
+        Long id = 1L;
+        MemoItem memoItem2 = new MemoItem(title, time, alertTimeSelection, description, id);
+        memoList.addMemoItem(memoItem2);
+
+        List<Integer> result = memoList.getAllMemoItemParseDayFormatToInt();
+        assertEquals(20240605, result.get(0).intValue());
+        assertEquals(20240429, result.get(1).intValue());
+        assertEquals(2, result.size());
     }
 }

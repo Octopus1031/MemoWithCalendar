@@ -1,9 +1,11 @@
 package com.example.memobackend;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Set;
+import java.util.*;
 
 @RestController
 public class MemoController {
@@ -56,5 +58,32 @@ public class MemoController {
                              @RequestParam("description") String description) {
         String time = year + '/' + month + '/' + day + ' ' + hour + ':' + minute;
         memoList.editContentOfMemoItemById(title, time, alertTimeSelection, description, id);
+    }
+
+    @PostMapping("/click_label")
+    public void handleLabelClick(@RequestBody Map<String, Object> payload) {
+        long GetId = ((Number) payload.get("id")).longValue();
+        List<String> labels = (List<String>) payload.get("labels");
+
+        System.out.println("Received ID: " + GetId);
+        System.out.println("Received labels: " + labels);
+
+        memoList.addLabelOnMemoItem(GetId, labels);
+
+        //return new ResponseEntity<>("Labels received", HttpStatus.OK);
+    }
+
+    @GetMapping("/get_memo_items_by_label")
+    public ResponseEntity<Set<MemoItem>> getMemoItemsByLabel(@RequestParam String label) {
+        Set<MemoItem> memoItems = new HashSet<>();
+        Set<MemoItem> oldMemoItems = memoList.getMemoItems();
+        for (MemoItem memoItem : oldMemoItems) {
+            for (Label memoLabel : memoItem.getLabelSet()) {
+                if (Objects.equals(memoLabel.getName(), label)) {
+                    memoItems.add(memoItem);
+                }
+            }
+        }
+        return new ResponseEntity<>(memoItems, HttpStatus.OK);
     }
 }

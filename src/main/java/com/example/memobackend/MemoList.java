@@ -30,6 +30,22 @@ public class MemoList {
         memoItems.remove(memoItem);
     }
 
+    public void addLabelOnMemoItem(long id, List<String> labels) {
+        MemoItem memoItem = findMemoItemById(id);
+        for(String label : labels) {
+            memoItem.addLabel(new Label(label));
+        }
+    }
+
+    public MemoItem findMemoItemById(Long id) {
+        for (MemoItem memoItem : memoItems) {
+            if (memoItem.getId().equals(id)) {
+                return memoItem;
+            }
+        }
+        return null;
+    }
+
     public Long generateId() {
         Long id;
         // 生成隨機數字
@@ -72,11 +88,11 @@ public class MemoList {
     }
   
     // 取得所有的日期
-    public List<Integer> getAllMemoItemDay(){
+    public List<Integer> getAllMemoItemParseDayFormatToInt(){
         List<Integer> days = new ArrayList<>();
         System.out.println("memoItems.size(): " + memoItems.size());
         for (MemoItem memoItem : memoItems) {
-            days.add(memoItem.parsedDay());
+            days.add(memoItem.parseDayFormatToInt());
         }
         return days;
     }

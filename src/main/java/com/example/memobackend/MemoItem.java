@@ -1,6 +1,8 @@
 package com.example.memobackend;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.time.LocalDateTime;
@@ -18,6 +20,8 @@ public class MemoItem {
     String description;
 
     final Long id;
+
+    Set<Label> labelList = new HashSet<>();
 
     public MemoItem(String title, String time, String alertTimeSelection, String description, Long id) {
         this.title = title;
@@ -102,6 +106,13 @@ public class MemoItem {
         return this.id;
     }
 
+    public void addLabel(Label label) {
+        labelList.add(label);
+    }
+    public Set<Label> getLabelSet() {
+        return this.labelList;
+    }
+
     @Override
     public boolean equals(Object obj) { // 由於MemoItem內容會有被改變的可能，因此MemoItem間的比較以id為主
         if (this == obj) {
@@ -120,7 +131,7 @@ public class MemoItem {
     }
 
     // return format is yyyyMMdd
-    public int parsedDay(){
+    public int parseDayFormatToInt(){
         String time = this.time;
         String regex = "(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2})";
         Pattern pattern = Pattern.compile(regex);
