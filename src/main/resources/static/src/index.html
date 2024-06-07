@@ -408,11 +408,36 @@
                     const now = new Date();
                     const delay = alertTime.getTime() - now.getTime();
                     console.log(delay);
-                    if (delay >= -1000) {
+                    if (delay >= -1000 && delay <= 1000) {
                         // 如果 MemoItem 的 alert_time 還沒到達，則設定一個定時器在 alert_time 到達時播放提醒聲
                         setTimeout(() => {
                             const audio = new Audio('other/alert_sound.mp3');
                             audio.play();
+
+                            // 創建彈出視窗
+                            let dialog = document.createElement('dialog');
+                            dialog.id = 'dialog_' + memoItem.id; // 彈出視窗的elementID會加上memoitem的id
+                            dialog.style.width = "100px"; // 設定彈出視窗的寬度
+                            dialog.style.height = "80px"; // 設定彈出視窗的高度
+
+                            // 顯示 memoItem 的 title
+                            let title = document.createElement('p');
+                            title.textContent = memoItem.title;
+                            dialog.appendChild(title);
+
+                            // 創建關閉按鈕
+                            let closeButton = document.createElement('button');
+                            closeButton.textContent = 'Close';
+                            closeButton.onclick = function() {
+                                dialog.close();
+                            };
+                            dialog.appendChild(closeButton);
+
+                            // 將彈出視窗添加到頁面中
+                            document.body.appendChild(dialog);
+
+                            // 顯示彈出視窗
+                            dialog.showModal();
                         }, delay);
                     }
                 });
