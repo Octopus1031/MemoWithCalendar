@@ -131,7 +131,7 @@ class MemoControllerTest {
 
     @Test
     @WithMockUser
-    public void testGetMemoItemSetAndQueryMemo() throws Exception {
+    public void testAddMemoItems() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/add_memo_item")
                         .param("title", "aaa")
                         .param("year", "2024")
@@ -152,15 +152,33 @@ class MemoControllerTest {
                         .param("alertTimeSelection", "1 hour ago")
                         .param("description", "123456"))
                 .andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @Test
+    @WithMockUser
+    public void testQueryMemoItem() throws Exception {
+        // 先添加一個 memo item
+        mockMvc.perform(MockMvcRequestBuilders.post("/add_memo_item")
+                        .param("title", "aaa")
+                        .param("year", "2024")
+                        .param("month", "04")
+                        .param("day", "29")
+                        .param("hour", "15")
+                        .param("minute", "00")
+                        .param("alertTimeSelection", "Time of Memo")
+                        .param("description", "654321"))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+
+        // 獲取添加的 memo item 的 id
         MvcResult getResult = mockMvc.perform(MockMvcRequestBuilders.get("/get_memo_items"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn();
-
         String jsonResponse = getResult.getResponse().getContentAsString();
         JSONArray memoItemsArray = new JSONArray(jsonResponse);
         JSONObject memoItemObject = memoItemsArray.getJSONObject(0);
         Long id = memoItemObject.getLong("id");
 
+        // 使用獲取的 id 來查詢 memo item
         mockMvc.perform(MockMvcRequestBuilders.get("/get_memo_item/" + id))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json("{\"title\":\"aaa\",\"time\":\"2024/04/29 15:00\",\"alertTimeSelection\":\"Time of Memo\",\"alertTime\":\"2024/04/29 15:00\",\"description\":\"654321\"}"));
