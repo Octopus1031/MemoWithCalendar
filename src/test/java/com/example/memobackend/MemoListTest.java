@@ -41,6 +41,12 @@ public class MemoListTest {
     }
 
     @Test
+    public void testMemoItemNotFound() throws Exception {
+        memoList.addMemoItem(memoItem);
+        assertNull(memoList.getMemoItemById(111111L));
+    }
+
+    @Test
     public void testGetMemoItems() throws Exception {
         memoList.addMemoItem(memoItem);
         String title = "bbb";
