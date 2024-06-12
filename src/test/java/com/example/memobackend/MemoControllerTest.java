@@ -30,7 +30,7 @@ class MemoControllerTest {
 
     @BeforeEach
     public void setup() {
-        memoList.getMemoItems().clear(); // 在每个测试前清空 MemoList
+        memoList.getMemoItems().clear();
     }
 
     @Test
