@@ -79,4 +79,22 @@ public class MemoItemTest {
         assertEquals(20240605, memoItem.parseDayFormatToInt());
 
     }
+
+    @Test
+    public void checkMemoItemNotRepeat() throws Exception {
+        String title1 = "aaa";
+        String time1 = "2024/04/29 15:00";
+        String alertTimeSelection1 = "";
+        String description1 = "123456";
+        MemoItem memoItem1 = new MemoItem(title1, time1, alertTimeSelection1, description1, 0L);
+        assertTrue(memoItem1.equals(memoItem1));
+        String title2 = "aaa";
+        String time2 = "2024/04/29 15:00";
+        String alertTimeSelection2 = "";
+        String description2 = "123456";
+        MemoItem memoItem2 = new MemoItem(title2, time2, alertTimeSelection2, description2, 0L);
+        assertTrue(memoItem1.equals(memoItem2));
+        MemoItem memoItem3 = null;
+        assertFalse(memoItem1.equals(memoItem3));
+    }
 }
