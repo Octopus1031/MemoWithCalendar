@@ -201,7 +201,7 @@ h1 {
     cursor: pointer;
 }
 
-#color_font::after, #color_bgheader::after, #color_bgbody::after{
+#color_calendarFont::after, #color_calendarBGheader::after, #color_calendarBGbody::after, #color_memoBGbody::after {
     content: "+";
     font-size: 0.5em;
     top: 50%;
