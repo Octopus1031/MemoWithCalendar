@@ -11,20 +11,24 @@ OOAD 課程專題
 使用者可以新增待辦項目並描述該事項的細節，加入日期便可在行事曆上做出標記，方便看出何時有行程需要處理，並且可以加入事項的重要性或分類標籤，在待辦事項列表中可以使用這兩項因素來做排序與整理。 
 
 ## Use case diagram
-![Use Case Diagram](./img/USD.png)
+<img text="Use Case Diagram" src="./img/USD.png" width="450"/>
 
 ## Design Class Model
-![Design Class Model](./img/DCM.png)
-
+<img text="Design Class Model" src="./img/DCM.png" width="600"/>
 
 ## Snapshots of system execution
 
 - Login
-![Login](./img/demo1.png)
+
+  <img text="Login" src="./img/demo1.png" width="600"/>
+
 - Main page
-![Main page](./img/demo2.png)
+
+  <img text="Main page" src="./img/demo2.png" width="600"/>
+
 - Create memo
-![Create memo1](./img/demo3.png)
-![Create memo2](./img/demo4.png)
-![Create memo3](./img/demo5.png)
+
+  <img text="Create memo1" src="./img/demo3.png" width="600"/>
+  <img text="Create memo2" src="./img/demo4.png" width="600"/>
+  <img text="Create memo3" src="./img/demo5.png" width="600"/>
 
